@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luma — Cloud Core Flow Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E2A44;
+    --gold: #FFC94D;
+    --star: #FFD66B;
+    --cream: #F7F5EF;
+    --gray: #6B6459;
+    --paper: #FBF7EE;
+    --skin: #F0B48C;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; background: var(--paper); color: var(--navy);
+    font-family: 'Nunito', -apple-system, sans-serif;
+  }
+  h1,h2,h3,.display { font-family: 'Baloo 2', 'Nunito', sans-serif; }
+
+  /* ---------- page chrome ---------- */
+  .toolbar {
+    position: sticky; top: 0; z-index: 30; background: #fff; border-bottom: 1px solid #ECE4D3;
+    padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  .toolbar .title { font-weight: 800; font-size: 16px; color: var(--navy); }
+  .toolbar .sub { font-size: 12px; color: var(--gray); font-weight: 600; }
+  .ctrl-btn {
+    border: 1.5px solid #E4DAC4; background: #FFFDF8; color: var(--navy);
+    padding: 7px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: 700;
+  }
+  .ctrl-btn:hover { background: #FFF3D9; }
+
+  .layout {
+    max-width: 1100px; margin: 24px auto 60px; padding: 0 20px;
+    display: flex; gap: 36px; justify-content: center; align-items: flex-start; flex-wrap: wrap;
+  }
+
+  /* ---------- step map sidebar ---------- */
+  .stepmap {
+    width: 260px; background: #fff; border: 1px solid #ECE4D3; border-radius: 16px; padding: 18px;
+  }
+  .stepmap h3 { margin: 0 0 4px; font-size: 15px; }
+  .stepmap .hint { font-size: 12px; color: var(--gray); margin-bottom: 14px; line-height: 1.5; }
+  .stepmap .item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: #B7AD98;
+  }
+  .stepmap .item.active { color: var(--navy); background: #FFF3D9; }
+  .stepmap .item .dot { width: 8px; height: 8px; border-radius: 50%; background: #E4DAC4; flex-shrink: 0; }
+  .stepmap .item.active .dot { background: var(--gold); }
+  .stepmap .item.done .dot { background: #7FB069; }
+
+  /* ---------- phone chrome ---------- */
+  .phone {
+    width: 310px; height: 650px; border-radius: 42px; background: #14110E; padding: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08); flex-shrink: 0;
+  }
+  .phone .notch { width: 90px; height: 18px; background: #14110E; border-radius: 0 0 14px 14px; margin: 0 auto; }
+  .screen { width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: var(--cream); }
+  .screen-scroll { width: 100%; height: 100%; overflow-y: auto; }
+  .screen-scroll::-webkit-scrollbar { width: 0; }
+
+  /* ================= shared bits ================= */
+  .app-topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 18px 4px; }
+  .icon-btn { width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid #ECE4D3; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+
+  .cloud-row { display: flex; align-items: center; gap: 10px; padding: 6px 18px 10px; }
+  .cloud-row .greet-name { font-weight: 800; font-size: 15px; }
+  .cloud-row .greet-sub { font-size: 12px; color: var(--gray); font-weight: 600; }
+
+  .badge-pill {
+    display: inline-flex; align-items: center; gap: 5px; background: #FFF3D9; color: #9A6B00;
+    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px; margin: 0 18px 8px;
+  }
+
+  /* wisdom card (home) */
+  .wisdom-card {
+    margin: 0 18px 18px; border-radius: 20px; background: linear-gradient(160deg, #FFE7B0, #FFD66B);
+    padding: 16px; box-shadow: 0 8px 18px rgba(255,201,77,0.35);
+  }
+  .wisdom-card .illus {
+    height: 110px; border-radius: 14px; background: rgba(255,255,255,0.55);
+    display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 10px;
+  }
+  .wisdom-card .w-title { font-size: 19px; font-weight: 800; color: var(--navy); margin-bottom: 3px; }
+  .wisdom-card .w-meta { font-size: 12px; color: #7A5A00; font-weight: 700; margin-bottom: 12px; }
+  .btn-start {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: var(--navy); color: #fff; padding: 12px; border-radius: 14px; font-weight: 800; font-size: 14px;
+    border: none; width: 100%; cursor: pointer;
+  }
+
+  .section-label { font-size: 12px; font-weight: 800; color: #A79C89; text-transform: uppercase; letter-spacing: 0.5px; margin: 4px 18px 8px; }
+
+  .locked-row {
+    display: flex; align-items: center; gap: 12px; margin: 0 18px 10px; padding: 12px 14px;
+    background: #fff; border: 1px dashed #E4DAC4; border-radius: 14px;
+  }
+  .locked-row .lock-icon { font-size: 18px; opacity: 0.7; }
+  .locked-row .lt { font-size: 12.5px; font-weight: 700; color: #8A7F6C; }
+  .locked-row .lt b { color: var(--navy); }
+
+  .cat-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 4px 18px 22px; }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-chip {
+    flex: 0 0 auto; width: 92px; background: #fff; border: 1px solid #ECE4D3; border-radius: 16px; padding: 14px 8px;
+    text-align: center; cursor: pointer;
+  }
+  .cat-chip .emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+  .cat-chip .cn { font-size: 11px; font-weight: 800; color: var(--navy); }
+  .cat-chip .cp { font-size: 9.5px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+
+  /* category detail */
+  .cat-header { display: flex; align-items: center; gap: 10px; padding: 18px; }
+  .cat-header .back { cursor: pointer; font-size: 18px; }
+  .cat-header .ct { font-size: 17px; font-weight: 800; }
+  .path-wrap { padding: 4px 18px 24px; }
+  .path-row { display: flex; align-items: center; gap: 12px; padding: 10px 4px; }
+  .path-node {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .path-node.done { background: #7FB069; color: #fff; }
+  .path-node.current { background: var(--gold); color: var(--navy); border: 2px solid var(--navy); }
+  .path-node.locked { background: #fff; border: 1.5px dashed #E4DAC4; color: #C6BCA5; }
+  .path-text .pn { font-size: 13.5px; font-weight: 800; }
+  .path-text .pd { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 1px; }
+  .path-line-v { width: 2px; height: 16px; background: #ECE4D3; margin-left: 17px; }
+  .cloud-note {
+    margin: 6px 18px 6px; background: #EAF1FF; border: 1px solid #D3E1FA; border-radius: 14px; padding: 12px 14px;
+    font-size: 12px; color: #2C4570; font-weight: 700; display: flex; gap: 8px; align-items: flex-start;
+  }
+
+  /* wisdom flow */
+  .flow-topbar { display: flex; align-items: center; gap: 10px; padding: 16px 18px 6px; }
+  .flow-steps { display: flex; gap: 6px; flex: 1; }
+  .flow-steps .seg { height: 5px; border-radius: 3px; flex: 1; background: #ECE4D3; }
+  .flow-steps .seg.done { background: #7FB069; }
+  .flow-steps .seg.active { background: var(--gold); }
+
+  .read-illus {
+    margin: 14px 18px 8px; height: 140px; border-radius: 16px;
+    background: linear-gradient(150deg, #C9E4DE, #A8D5CC); display: flex; align-items: center; justify-content: center; font-size: 46px;
+  }
+  .read-title { font-size: 20px; font-weight: 800; margin: 4px 18px 8px; }
+  .read-body { font-size: 13.5px; line-height: 1.7; color: #3A3229; margin: 0 18px 16px; font-weight: 500; }
+
+  .btn-primary {
+    display: block; width: calc(100% - 36px); margin: 8px 18px 20px; background: var(--navy); color: #fff;
+    text-align: center; padding: 13px; border-radius: 14px; font-weight: 800; font-size: 14px; border: none; cursor: pointer;
+  }
+  .btn-primary:disabled { background: #D8D3C8; cursor: not-allowed; }
+
+  .chat-wrap { padding: 16px 18px; }
+  .cloud-bubble-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; }
+  .cloud-bubble {
+    background: #fff; border: 1px solid #ECE4D3; border-radius: 4px 16px 16px 16px; padding: 12px 14px;
+    font-size: 13px; font-weight: 700; color: var(--navy); max-width: 220px; line-height: 1.5;
+  }
+  .choice-list { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; }
+  .choice-btn {
+    background: #fff; border: 1.5px solid #E4DAC4; border-radius: 12px; padding: 11px 14px; text-align: left;
+    font-size: 13px; font-weight: 700; color: var(--navy); cursor: pointer;
+  }
+  .choice-btn:hover { border-color: var(--gold); background: #FFF9EC; }
+  .choice-btn.picked { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .user-bubble-row { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+  .user-bubble {
+    background: var(--navy); color: #fff; border-radius: 16px 4px 16px 16px; padding: 10px 14px; font-size: 13px; font-weight: 700; max-width: 200px;
+  }
+
+  .challenge-card {
+    margin: 16px 18px; background: #FFF3D9; border: 1.5px solid #FFE1A3; border-radius: 16px; padding: 18px;
+  }
+  .challenge-card .ct2 { font-size: 12px; font-weight: 800; color: #9A6B00; margin-bottom: 6px; }
+  .challenge-card .cb { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.55; }
+
+  /* completion */
+  .complete-wrap { text-align: center; padding: 40px 24px 10px; }
+  .complete-wrap .big-check { font-size: 52px; }
+  .complete-wrap h2 { font-size: 20px; margin: 10px 0 4px; }
+  .complete-wrap p { font-size: 13px; color: var(--gray); font-weight: 700; margin: 0 0 20px; }
+  .lib-added-card {
+    margin: 0 18px 18px; background: #fff; border: 1px solid #ECE4D3; border-radius: 14px; padding: 14px;
+    display: flex; align-items: center; gap: 12px; text-align: left;
+  }
+  .heart-btn { margin-left: auto; font-size: 20px; cursor: pointer; background: none; border: none; }
+  .tomorrow-teaser {
+    margin: 4px 18px 22px; background: var(--navy); color: #fff; border-radius: 16px; padding: 16px;
+  }
+  .tomorrow-teaser .tt-label { font-size: 11px; font-weight: 800; color: var(--star); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+  .tomorrow-teaser .tt-body { font-size: 13px; font-weight: 700; line-height: 1.5; }
+
+  /* library */
+  .lib-header { padding: 18px; display: flex; align-items: center; gap: 10px; }
+  .lib-header .bt { font-size: 17px; font-weight: 800; }
+  .lib-cat-title { font-size: 12px; font-weight: 800; color: #A79C89; text-transform: uppercase; margin: 14px 18px 6px; }
+  .lib-item {
+    display: flex; align-items: center; gap: 12px; margin: 0 18px 8px; padding: 12px 12px; background: #fff;
+    border: 1px solid #ECE4D3; border-radius: 12px;
+  }
+  .lib-item .li-check { width: 26px; height: 26px; border-radius: 50%; background: #7FB069; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .lib-item .li-name { font-size: 13px; font-weight: 800; flex: 1; }
+  .lib-item .li-tag { font-size: 10px; font-weight: 800; color: #9A6B00; background: #FFF3D9; padding: 2px 7px; border-radius: 8px; margin-right: 6px; }
+  .lib-item .li-heart { font-size: 16px; }
+
+  footer.note { max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; font-size: 12px; color: #9A9080; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div>
+    <div class="title">Luma — Cloud Core Flow Prototype</div>
+    <div class="sub">Home → Category → Wisdom Flow (Read · Talk with Cloud · Reflect · Challenge) → Unlock Tomorrow → Library</div>
+  </div>
+  <button class="ctrl-btn" id="resetBtn">↺ Restart from Home</button>
+</div>
+
+<div class="layout">
+  <div class="stepmap" id="stepmap"></div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen"><div class="screen-scroll"><div id="screenContent"></div></div></div>
+  </div>
+</div>
+
+<footer class="note">Clickable concept prototype — tap through it like the real app. Built to map the Home → Wisdom → Library journey before this gets designed in production tools.</footer>
+
+<script>
+/* ---------------- Cloud avatar (flat vector) ---------------- */
+function cloudAvatar(size, expr) {
+  expr = expr || "happy";
+  const mouths = {
+    happy: `<path d="M42 62 Q50 70 58 62" stroke="#1E2A44" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    excited: `<path d="M40 60 Q50 74 60 60 Q50 68 40 60Z" fill="#1E2A44"/>`,
+    kind: `<path d="M43 63 Q50 68 57 63" stroke="#1E2A44" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    curious: `<ellipse cx="50" cy="64" rx="4" ry="5" fill="#1E2A44"/>`,
+  };
+  const brows = expr === "curious"
+    ? `<path d="M34 42 Q38 38 43 41" stroke="#2B2620" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M57 40 Q62 36 66 40" stroke="#2B2620" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+    : `<path d="M34 42 Q39 39 44 41" stroke="#2B2620" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M56 41 Q61 39 66 42" stroke="#2B2620" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="48" fill="#FBF0DA"/>
+    <path d="M20 78 Q20 58 50 58 Q80 58 80 78 L80 92 Q50 100 20 92 Z" fill="#1E2A44"/>
+    <path d="M43 58 L50 68 L57 58" fill="none" stroke="#FFC94D" stroke-width="3"/>
+    <circle cx="50" cy="70" r="5" fill="#FFC94D"/>
+    <ellipse cx="50" cy="42" rx="24" ry="23" fill="#F0B48C"/>
+    <path d="M27 34 Q24 14 40 18 Q34 12 50 14 Q66 12 60 18 Q76 14 73 34 Q70 20 50 20 Q30 20 27 34Z" fill="#2B2620"/>
+    <circle cx="40" cy="46" r="4.2" fill="#2B2620"/>
+    <circle cx="60" cy="46" r="4.2" fill="#2B2620"/>
+    ${brows}
+    ${mouths[expr] || mouths.happy}
+    <circle cx="33" cy="53" r="3.4" fill="#FFB199" opacity="0.55"/>
+    <circle cx="67" cy="53" r="3.4" fill="#FFB199" opacity="0.55"/>
+  </svg>`;
+}
+function starIcon(size, color) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.8 4.6 1.1 6.6L12 17.2 6.2 20.5l1.1-6.6-4.8-4.6 6.6-.8z" fill="${color||'#FFC94D'}"/></svg>`;
+}
+
+/* ---------------- data ---------------- */
+const categories = [
+  { id: "money", emoji: "💰", name: "Money Wisdom",
+    items: [
+      { name: "Needs vs Wants", state: "current" },
+      { name: "The Three Jars", state: "locked", unlock: "Unlocks tomorrow" },
+      { name: "Compound Growth", state: "locked", unlock: "Unlocks in 2 days" },
+      { name: "Opportunity Cost", state: "locked", unlock: "Unlocks in 3 days" },
+      { name: "Investing Basics", state: "locked", unlock: "Unlocks in 4 days" },
+    ] },
+  { id: "thinking", emoji: "🧠", name: "Thinking Wisdom",
+    items: [
+      { name: "Fact or Opinion?", state: "done" },
+      { name: "Spotting a Bias", state: "locked", unlock: "Unlocks tomorrow" },
+      { name: "Ask How You Know", state: "locked", unlock: "Unlocks in 2 days" },
+    ] },
+  { id: "people", emoji: "🤝", name: "People Wisdom",
+    items: [
+      { name: "Saying Sorry and Meaning It", state: "done" },
+      { name: "Fair Trades", state: "locked", unlock: "Unlocks tomorrow" },
+    ] },
+  { id: "street", emoji: "🛡", name: "Street Smart",
+    items: [
+      { name: "The Uh-Oh Feeling", state: "done" },
+      { name: "The Stranger Who Was Too Nice", state: "locked", unlock: "Unlocks tomorrow" },
+    ] },
+  { id: "future", emoji: "🚀", name: "Future Wisdom",
+    items: [
+      { name: "What Makes a Good Goal", state: "done" },
+      { name: "Plan B Thinking", state: "locked", unlock: "Unlocks tomorrow" },
+    ] },
+];
+
+const todayWisdom = {
+  category: "Money Wisdom", emoji: "🪙", title: "Needs vs Wants", minutes: 6,
+  storyTitle: "The Toy and the Lunch Money",
+  story: "Andy had exactly $10. At the store, a shiny toy robot cost $10 &mdash; but he also needed $6 of that for lunch money next week.<br><br>He really wanted the robot. But something made him pause and think about next week, not just today.",
+  talkQuestion: "If you were Andy, what would you do?",
+  talkChoices: ["Buy the toy — I can figure out lunch later", "Wait and think about it before deciding", "Ask a grown-up what they'd do"],
+  talkFollowup: {
+    0: "That's honest — lots of people feel that pull! The tricky part is that \"figuring it out later\" is exactly how needs get skipped. What might you do differently next time?",
+    1: "That pause is the whole trick. Giving yourself a little time to think is how you tell a want from a need.",
+    2: "Smart move. Asking someone you trust is never something to be embarrassed about — even adults do it with money.",
+  },
+  reflectQuestion: "Has something like this happened to you — wanting something but needing the money for something else?",
+  reflectChoices: ["Yes, all the time", "A little bit", "Not really, but I get it"],
+  challenge: "Before you buy something this week, pause and ask yourself: is this a need or a want? Tell Cloud what you decided next time you open the app.",
+};
+
+/* ---------------- state ---------------- */
+let state = { view: "home", category: null, flowStep: 0, talkPicked: null, reflectPicked: null, favorited: {} };
+let history = [];
+
+function goto(view, extra) {
+  history.push(JSON.parse(JSON.stringify(state)));
+  state.view = view;
+  if (extra) Object.assign(state, extra);
+  render();
+}
+function back() {
+  if (history.length) { state = history.pop(); render(); }
+}
+function advanceFlow(step) {
+  history.push(JSON.parse(JSON.stringify(state)));
+  state.flowStep = step;
+  render();
+}
+function resetAll() {
+  state = { view: "home", category: null, flowStep: 0, talkPicked: null, reflectPicked: null, favorited: {} };
+  history = [];
+  render();
+}
+
+/* ---------------- screens ---------------- */
+function screenHome() {
+  const cats = categories.map(c => `
+    <div class="cat-chip" onclick="goto('category',{category:'${c.id}'})">
+      <span class="emoji">${c.emoji}</span>
+      <div class="cn">${c.name.replace(" Wisdom","")}</div>
+      <div class="cp">${c.items.filter(i=>i.state==='done').length} done</div>
+    </div>`).join("");
+  return `
+    <div class="app-topbar">
+      <div class="icon-btn">👪</div>
+      <div class="icon-btn" onclick="goto('library')">📚</div>
+    </div>
+    <div class="cloud-row">
+      ${cloudAvatar(46, "happy")}
+      <div>
+        <div class="greet-name">Good Evening, Andy</div>
+        <div class="greet-sub">Cloud picked something special for you today.</div>
+      </div>
+    </div>
+    <div class="badge-pill">✨ Today's Discovery</div>
+    <div class="wisdom-card">
+      <div class="illus">${todayWisdom.emoji}</div>
+      <div class="w-title">${todayWisdom.title}</div>
+      <div class="w-meta">${todayWisdom.category} · ⏱ ${todayWisdom.minutes} min</div>
+      <button class="btn-start" onclick="goto('flow',{flowStep:0})">▶ Start</button>
+    </div>
+    <div class="section-label">Coming Up</div>
+    <div class="locked-row"><span class="lock-icon">✨</span><span class="lt">Tomorrow — Cloud is preparing <b>The Three Jars</b></span></div>
+    <div class="locked-row"><span class="lock-icon">🔒</span><span class="lt">In 2 days — <b>Compound Growth</b> is on its way</span></div>
+    <div class="section-label">Explore Categories</div>
+    <div class="cat-scroll">${cats}</div>
+  `;
+}
+
+function screenCategory() {
+  const cat = categories.find(c => c.id === state.category);
+  const rows = cat.items.map((it, i) => {
+    const cls = it.state === "done" ? "done" : it.state === "current" ? "current" : "locked";
+    const node = it.state === "done" ? "✓" : it.state === "current" ? "★" : "🔒";
+    const sub = it.state === "done" ? "Completed — tap to revisit" : it.state === "current" ? "Today's wisdom" : it.unlock;
+    const isLast = i === cat.items.length - 1;
+    const clickable = it.state === "current" ? ` onclick="goto('flow',{flowStep:0})" style="cursor:pointer;"` : "";
+    return `<div class="path-row"${clickable}><div class="path-node ${cls}">${node}</div><div class="path-text"><div class="pn">${it.name}</div><div class="pd">${sub}</div></div></div>${isLast ? "" : '<div class="path-line-v"></div>'}`;
+  }).join("");
+  return `
+    <div class="cat-header"><span class="back" onclick="back()">&larr;</span><span class="ct">${cat.emoji} ${cat.name}</span></div>
+    <div class="cloud-note">${cloudAvatar(28,"curious")}<span>Andy really enjoys ${cat.name} — want me to line up Entrepreneurship next after this path?</span></div>
+    <div class="path-wrap">${rows}</div>
+  `;
+}
+
+function screenFlow() {
+  const steps = ["Read", "Talk with Cloud", "Reflection", "Challenge"];
+  const segs = steps.map((s, i) => `<div class="seg ${i < state.flowStep ? 'done' : i === state.flowStep ? 'active' : ''}"></div>`).join("");
+  let body = "";
+  if (state.flowStep === 0) {
+    body = `
+      <div class="read-illus">${todayWisdom.emoji}</div>
+      <div class="read-title">${todayWisdom.storyTitle}</div>
+      <div class="read-body">${todayWisdom.story}</div>
+      <button class="btn-primary" onclick="advanceFlow(1)">Continue to Talk with Cloud →</button>`;
+  } else if (state.flowStep === 1) {
+    const picked = state.talkPicked;
+    body = `
+      <div class="chat-wrap">
+        <div class="cloud-bubble-row">${cloudAvatar(38,"curious")}<div class="cloud-bubble">${todayWisdom.talkQuestion}</div></div>
+        <div class="choice-list">
+          ${todayWisdom.talkChoices.map((c,i)=>`<button class="choice-btn ${picked===i?'picked':''}" onclick="pickTalk(${i})">${c}</button>`).join("")}
+        </div>
+        ${picked !== null ? `<div class="user-bubble-row"><div class="user-bubble">${todayWisdom.talkChoices[picked]}</div></div>
+        <div class="cloud-bubble-row">${cloudAvatar(38,"kind")}<div class="cloud-bubble">${todayWisdom.talkFollowup[picked]}</div></div>` : ""}
+      </div>
+      <button class="btn-primary" ${picked===null?'disabled':''} onclick="advanceFlow(2)">Continue to Reflection →</button>`;
+  } else if (state.flowStep === 2) {
+    const picked = state.reflectPicked;
+    body = `
+      <div class="chat-wrap">
+        <div class="cloud-bubble-row">${cloudAvatar(38,"happy")}<div class="cloud-bubble">${todayWisdom.reflectQuestion}</div></div>
+        <div class="choice-list">
+          ${todayWisdom.reflectChoices.map((c,i)=>`<button class="choice-btn ${picked===i?'picked':''}" onclick="pickReflect(${i})">${c}</button>`).join("")}
+        </div>
+        ${picked !== null ? `<div class="cloud-bubble-row">${cloudAvatar(38,"kind")}<div class="cloud-bubble">Thanks for sharing that with me — noticing it is half the work.</div></div>` : ""}
+      </div>
+      <button class="btn-primary" ${picked===null?'disabled':''} onclick="advanceFlow(3)">Continue to Challenge →</button>`;
+  } else if (state.flowStep === 3) {
+    body = `
+      <div class="challenge-card">
+        <div class="ct2">⭐ TODAY'S CHALLENGE</div>
+        <div class="cb">${todayWisdom.challenge}</div>
+      </div>
+      <button class="btn-primary" onclick="goto('complete')">I did it! Mark complete</button>`;
+  }
+  return `
+    <div class="flow-topbar"><span class="back" onclick="back()">&larr;</span><div class="flow-steps">${segs}</div></div>
+    ${body}
+  `;
+}
+
+function screenComplete() {
+  return `
+    <div class="complete-wrap">
+      <div class="big-check">${cloudAvatar(72,"excited")}</div>
+      <h2>You completed today's wisdom!</h2>
+      <p>Great thinking today, Andy.</p>
+    </div>
+    <div class="lib-added-card">
+      <span style="font-size:20px;">${todayWisdom.emoji}</span>
+      <div><b>${todayWisdom.title}</b><div style="font-size:11px;color:var(--gray);font-weight:700;">Added to your Wisdom Library</div></div>
+      <button class="heart-btn" onclick="toggleFav('needsvswants', this)">${state.favorited['needsvswants'] ? '❤️' : '🤍'}</button>
+    </div>
+    <div class="tomorrow-teaser">
+      <div class="tt-label">Coming Tomorrow</div>
+      <div class="tt-body">✨ Cloud is preparing something new: <b>The Three Jars</b>. Come back tomorrow — or revisit your favorites and chat with Cloud any time before then.</div>
+    </div>
+    <button class="btn-primary" onclick="resetAll()">Back to Home</button>
+  `;
+}
+
+function screenLibrary() {
+  const groups = categories.map(c => {
+    const done = c.items.filter(i => i.state === "done" || i.state === "current" && false);
+    const doneItems = c.items.filter(i => i.state === "done");
+    if (!doneItems.length) return "";
+    return `<div class="lib-cat-title">${c.emoji} ${c.name}</div>` + doneItems.map(it => `
+      <div class="lib-item">
+        <div class="li-check">✓</div>
+        <div class="li-name">${it.name}</div>
+        <span class="li-heart">🤍</span>
+      </div>`).join("");
+  }).join("");
+  return `
+    <div class="lib-header"><span class="back" onclick="back()">&larr;</span><span class="bt">📚 Your Wisdom Library</span></div>
+    ${groups}
+  `;
+}
+
+function pickTalk(i){ state.talkPicked = i; render(); }
+function pickReflect(i){ state.reflectPicked = i; render(); }
+function toggleFav(key, el){ state.favorited[key] = !state.favorited[key]; render(); }
+
+function render() {
+  const map = { home: screenHome, category: screenCategory, flow: screenFlow, complete: screenComplete, library: screenLibrary };
+  document.getElementById("screenContent").innerHTML = map[state.view]();
+  renderStepmap();
+}
+
+function renderStepmap() {
+  const stages = [
+    { key: "home", label: "1 · Home — Today's Wisdom" },
+    { key: "category", label: "2 · Category Path (optional)" },
+    { key: "flow-0", label: "3 · Read the story" },
+    { key: "flow-1", label: "4 · Talk with Cloud" },
+    { key: "flow-2", label: "5 · Reflection" },
+    { key: "flow-3", label: "6 · Challenge" },
+    { key: "complete", label: "7 · Complete + unlock tomorrow" },
+    { key: "library", label: "8 · Wisdom Library (any time)" },
+  ];
+  const activeKey = state.view === "flow" ? `flow-${state.flowStep}` : state.view;
+  const order = stages.map(s => s.key);
+  const activeIdx = order.indexOf(activeKey);
+  document.getElementById("stepmap").innerHTML = `
+    <h3>The Flow</h3>
+    <div class="hint">This is the journey ChatGPT mapped out — tap through the phone on the right to walk it end to end.</div>
+    ${stages.map((s, i) => `<div class="item ${i===activeIdx?'active':i<activeIdx?'done':''}"><span class="dot"></span>${s.label}</div>`).join("")}
+  `;
+}
+
+document.getElementById("resetBtn").addEventListener("click", resetAll);
+render();
+</script>
+</body>
+</html>
