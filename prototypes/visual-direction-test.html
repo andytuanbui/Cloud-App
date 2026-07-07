@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luma — Visual Direction Test</title>
+<style>
+  :root {
+    --page-bg: #EDEAE3;
+    --ink: #2B2620;
+    --muted: #857A6B;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* ---------- Top toolbar ---------- */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    background: #FFFFFF;
+    border-bottom: 1px solid #DDD7CB;
+    padding: 14px 20px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .toolbar h1 {
+    font-size: 16px; margin: 0 16px 0 0; font-weight: 700; letter-spacing: 0.2px;
+  }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tab {
+    border: 1px solid #DDD7CB; background: #FAF8F4; color: var(--ink);
+    padding: 8px 14px; border-radius: 20px; font-size: 13px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .tab:hover { background: #F0ECE3; }
+  .tab.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .controls { display: flex; gap: 8px; align-items: center; }
+  .ctrl-btn {
+    border: 1px solid #DDD7CB; background: #FAF8F4; color: var(--ink);
+    padding: 8px 14px; border-radius: 20px; font-size: 13px; cursor: pointer;
+  }
+  .ctrl-btn:hover { background: #F0ECE3; }
+  .ctrl-btn.on { background: #2B2620; color: #fff; border-color: #2B2620; }
+
+  /* ---------- How-to panel ---------- */
+  .howto-wrap { max-width: 1100px; margin: 14px auto 0; padding: 0 20px; }
+  details.howto {
+    background: #FFFDF9; border: 1px solid #E6E0D4; border-radius: 10px; padding: 10px 16px;
+    font-size: 13px; color: #55503F; line-height: 1.55;
+  }
+  details.howto summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+  details.howto ol { margin: 10px 0 4px; padding-left: 20px; }
+
+  /* ---------- Stage ---------- */
+  .stage {
+    max-width: 1100px; margin: 22px auto 60px; padding: 0 20px;
+    display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  }
+  .phone-slot { display: flex; flex-direction: column; align-items: center; }
+  .label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    color: #B7AF9E; margin-bottom: 10px; visibility: hidden; height: 16px;
+  }
+  body.revealed .label { visibility: visible; color: #7A6F5A; }
+
+  /* ---------- Phone chrome ---------- */
+  .phone {
+    width: 300px; height: 630px;
+    border-radius: 40px;
+    background: #14110E;
+    padding: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .phone .notch {
+    width: 90px; height: 18px; background: #14110E; border-radius: 0 0 14px 14px;
+    margin: 0 auto; position: relative; top: 0;
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+  .screen-scroll { width: 100%; height: 100%; overflow-y: auto; }
+  .screen-scroll::-webkit-scrollbar { width: 0; }
+
+  /* ================= VERSION A — calm / editorial ================= */
+  .versionA {
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    background: #F7F3EC;
+    color: #3A3229;
+    min-height: 100%;
+  }
+  .versionA .sans { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; }
+  .versionA .topbar {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 22px 22px 6px;
+  }
+  .versionA .logotype { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .versionA .date { font-family: -apple-system, Arial, sans-serif; font-size: 11px; color: #A79C89; }
+  .versionA .divider { height: 1px; background: #E6DFD1; margin: 14px 22px; }
+
+  .versionA .cat-list { padding: 0 18px 24px; }
+  .versionA .cat-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 6px; border-bottom: 1px solid #EDE7DA;
+  }
+  .versionA .cat-node {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.4px solid #B9A98C; color: #8B7E63; flex-shrink: 0;
+  }
+  .versionA .cat-node.done { background: #8B9A7B; border-color: #8B9A7B; color: #fff; }
+  .versionA .cat-node.current { border-color: #C08552; color: #C08552; }
+  .versionA .cat-node svg { width: 15px; height: 15px; }
+  .versionA .cat-text .name { font-size: 15px; }
+  .versionA .cat-text .status { font-family: -apple-system, Arial, sans-serif; font-size: 11px; color: #A79C89; margin-top: 2px; }
+
+  .versionA .illus {
+    margin: 4px 22px 10px; height: 130px; border-radius: 12px;
+    background: linear-gradient(180deg, #EFE8D8, #E3DCC9);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .versionA .illus svg { width: 44px; height: 44px; display: block; }
+  .versionA .reader-topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 0; font-family: -apple-system, Arial, sans-serif; font-size: 11px; color: #A79C89; }
+  .versionA .story-title { font-size: 20px; margin: 4px 22px 10px; line-height: 1.3; }
+  .versionA .story-body { font-size: 13.5px; line-height: 1.75; color: #4A4335; margin: 0 22px 18px; }
+  .versionA .continue-link {
+    margin: 6px 22px 26px; font-family: -apple-system, Arial, sans-serif;
+    font-size: 13px; color: #C08552; text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  .versionA .journey-title { font-size: 19px; padding: 22px 22px 4px; }
+  .versionA .journey-sub { font-family: -apple-system, Arial, sans-serif; font-size: 11px; color: #A79C89; padding: 0 22px 18px; }
+  .versionA .path { padding: 0 26px; }
+  .versionA .path-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+  .versionA .path-line { width: 1px; height: 24px; background: #DED4BE; margin-left: 11px; }
+  .versionA .path-dot { width: 23px; height: 23px; border-radius: 50%; flex-shrink: 0; }
+  .versionA .path-dot.done { background: #8B9A7B; }
+  .versionA .path-dot.current { border: 2px solid #C08552; background: #fff; }
+  .versionA .path-dot.locked { border: 1.4px dashed #D8CFBB; background: transparent; }
+  .versionA .path-label { font-size: 13px; }
+  .versionA .path-label.locked { color: #C6BCA5; }
+  .versionA .weeknote { font-family: -apple-system, Arial, sans-serif; font-size: 11.5px; color: #A79C89; margin: 18px 26px 0; }
+
+  .versionA .streak-card { margin: 24px 22px; padding: 20px; border: 1px solid #E6DFD1; border-radius: 12px; text-align: center; }
+  .versionA .streak-num { font-size: 34px; }
+  .versionA .streak-caption { font-family: -apple-system, Arial, sans-serif; font-size: 12px; color: #A79C89; margin-top: 4px; }
+
+  /* ================= VERSION B — bright / mascot ================= */
+  .versionB {
+    font-family: 'Baloo 2', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+    background: linear-gradient(180deg, #FFE29A 0%, #FFF6E0 220px, #FFF6E0 100%);
+    color: #21324A;
+    min-height: 100%;
+  }
+  .versionB .topbar {
+    display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 6px;
+  }
+  .versionB .logotype {
+    font-size: 26px; font-weight: 800; color: #FF6B35; text-shadow: 1px 2px 0 rgba(0,0,0,0.08);
+  }
+  .versionB .streak-pill {
+    background: #FFFFFF; border: 2px solid #FF6B35; border-radius: 20px;
+    padding: 5px 12px; font-weight: 800; font-size: 13px; color: #FF6B35;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .versionB .xpbar-wrap { margin: 6px 16px 10px; }
+  .versionB .xpbar-label { font-size: 11px; font-weight: 700; color: #7A5A00; margin-bottom: 4px; }
+  .versionB .xpbar-track { background: #FFFFFF; border: 2px solid #FFD23F; border-radius: 10px; height: 14px; overflow: hidden; }
+  .versionB .xpbar-fill { background: linear-gradient(90deg, #58CC02, #7DDB2C); height: 100%; width: 62%; }
+
+  .versionB .mascot-row { display: flex; justify-content: center; margin: 4px 0 8px; }
+
+  .versionB .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 6px 14px 20px; }
+  .versionB .cat-tile {
+    border-radius: 18px; padding: 14px 10px; text-align: center; position: relative;
+    color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    border: 2px solid rgba(255,255,255,0.5);
+  }
+  .versionB .cat-tile .emoji { font-size: 26px; display: block; margin-bottom: 4px; }
+  .versionB .cat-tile .name { font-size: 12px; font-weight: 800; line-height: 1.2; }
+  .versionB .cat-tile .stars { font-size: 10px; margin-top: 4px; }
+  .versionB .cat-tile.locked { filter: grayscale(0.5) brightness(0.85); }
+  .versionB .badge-new {
+    position: absolute; top: -6px; right: -6px; background: #FFD23F; color: #7A5A00;
+    font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 8px;
+    border: 1.5px solid #fff; transform: rotate(8deg);
+  }
+  .versionB .lock-icon { position: absolute; top: 8px; right: 8px; font-size: 14px; }
+
+  .versionB .reader-topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 0; font-size: 12px; font-weight: 700; color: #7A5A00; }
+  .versionB .progress-mini { background: #fff; border: 2px solid #58CC02; border-radius: 8px; height: 10px; width: 100px; overflow: hidden; }
+  .versionB .progress-mini-fill { background: #58CC02; height: 100%; width: 50%; }
+  .versionB .story-illus {
+    margin: 10px 14px; height: 130px; border-radius: 16px;
+    background: linear-gradient(135deg, #4ECDC4, #6FE3DA);
+    display: flex; align-items: center; justify-content: center; font-size: 46px;
+    border: 3px solid #fff; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+  }
+  .versionB .story-title { font-size: 20px; font-weight: 800; margin: 2px 16px 8px; color: #21324A; }
+  .versionB .bubble {
+    background: #fff; border: 2px solid #FF6B35; border-radius: 14px; padding: 8px 12px;
+    margin: 0 16px 10px; font-size: 12px; font-weight: 700; color: #FF6B35; position: relative;
+  }
+  .versionB .story-body { font-size: 13px; line-height: 1.6; margin: 0 16px 16px; font-weight: 500; }
+  .versionB .cta {
+    display: block; margin: 6px 16px 24px; background: #FF6B35; color: #fff; text-align: center;
+    padding: 13px; border-radius: 16px; font-weight: 800; font-size: 14px;
+    border: none; box-shadow: 0 4px 0 #C7502A;
+  }
+
+  .versionB .streak-banner {
+    margin: 14px 14px 10px; padding: 18px; border-radius: 18px; text-align: center;
+    background: linear-gradient(135deg, #FF6B35, #FFA640); color: #fff;
+    box-shadow: 0 5px 0 #C7502A;
+  }
+  .versionB .streak-banner .flamewrap { font-size: 30px; letter-spacing: 2px; }
+  .versionB .streak-banner .num { font-size: 30px; font-weight: 900; margin: 2px 0; }
+  .versionB .streak-banner .warn { font-size: 11.5px; font-weight: 800; background: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 8px; margin-top: 6px; display: inline-block; }
+
+  .versionB .level-row { display: flex; justify-content: center; gap: 8px; margin: 12px 0; }
+  .versionB .level-chip { background: #FFD23F; border: 2px solid #7A5A00; color: #7A5A00; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 10px; }
+
+  .versionB .badge-row { display: flex; justify-content: center; gap: 10px; margin: 10px 0 16px; }
+  .versionB .badge-circle { width: 46px; height: 46px; border-radius: 50%; background: #fff; border: 3px solid #FFD23F; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+
+  .versionB .level-path { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 4px 0 24px; }
+  .versionB .level-node {
+    width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; border: 3px solid #fff; box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+  }
+  .versionB .level-node.done { background: #58CC02; }
+  .versionB .level-node.current { background: #FFD23F; animation: pulse 1.6s infinite; }
+  .versionB .level-node.locked { background: #D8D3C8; box-shadow: none; }
+  @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.08);} }
+
+  /* streak probe cards (used inside phone for the "streak" tab) */
+  .probe-card { margin: 40px 16px; }
+  .versionA .probe-plain {
+    border: 1px solid #E6DFD1; border-radius: 14px; padding: 28px 18px; text-align: center;
+  }
+  .versionA .probe-plain .n { font-size: 40px; }
+  .versionA .probe-plain .t { font-family: -apple-system, Arial, sans-serif; font-size: 12px; color: #A79C89; margin-top: 6px; }
+  .versionB .probe-streak {
+    border-radius: 20px; padding: 26px 16px; text-align: center; color: #fff;
+    background: linear-gradient(135deg, #FF3B3B, #FF8A3B); box-shadow: 0 5px 0 #B32323;
+  }
+  .versionB .probe-streak .flame { font-size: 40px; }
+  .versionB .probe-streak .n { font-size: 30px; font-weight: 900; }
+  .versionB .probe-streak .warn { font-size: 12px; font-weight: 800; margin-top: 8px; background: rgba(0,0,0,0.15); padding: 6px 10px; border-radius: 10px; display: inline-block; }
+
+  footer.note {
+    max-width: 1100px; margin: 0 auto 60px; padding: 0 20px; font-size: 12px; color: #9A9080; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>Luma — Visual Direction Test</h1>
+  <div class="tabs">
+    <button class="tab active" data-screen="home">Home / Category Map</button>
+    <button class="tab" data-screen="reader">Wisdom Reader</button>
+    <button class="tab" data-screen="progress">Progress / Unlock</button>
+    <button class="tab" data-screen="streak">Streak Probe (Step 5)</button>
+  </div>
+  <div class="controls">
+    <button class="ctrl-btn" id="shuffleBtn">🔀 Swap sides</button>
+    <button class="ctrl-btn" id="revealBtn">🏷️ Reveal labels</button>
+  </div>
+</div>
+
+<div class="howto-wrap">
+  <details class="howto">
+    <summary>How to use this during a session</summary>
+    <ol>
+      <li>Labels are hidden by default so the first look is blind, as the testing plan calls for. Keep it that way while you ask "which would you tap on / which would you want to open?"</li>
+      <li>Use <b>Swap sides</b> between participants so the same version isn't always on the left — guards against a left-side bias in answers.</li>
+      <li>Use the tabs to move through the three key screens once initial reactions are captured, then open the <b>Streak Probe</b> tab for Step 5's optional counter-vs-streak question.</li>
+      <li>Tap <b>Reveal labels</b> only after you've captured reactions, to confirm which version the participant preferred.</li>
+      <li>This file works offline once loaded — open it on a phone or tablet and hand it over, or share your screen.</li>
+    </ol>
+  </details>
+</div>
+
+<div class="stage">
+  <div class="phone-slot" id="slotLeft">
+    <div class="label" id="labelLeft">Version A</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen"><div class="screen-scroll"><div class="screen-content"></div></div></div>
+    </div>
+  </div>
+  <div class="phone-slot" id="slotRight">
+    <div class="label" id="labelRight">Version B</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen"><div class="screen-scroll"><div class="screen-content"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="note">Static concept mockups for directional testing only — not the production app. Built to accompany the Luma Visual Direction Testing Plan.</footer>
+
+<script>
+// ---------- inline icon set for Version A ----------
+const iconShield = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`;
+const iconCoin = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c0-1.2 1.1-2 2.5-2s2.5.7 2.5 1.8-1 1.5-2.5 1.9-2.5.9-2.5 2 1.1 1.8 2.5 1.8 2.5-.8 2.5-2"/></svg>`;
+const iconBulb = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18h6M10 21h4M8 14a5 5 0 1 1 8 0c-.8.9-1.3 1.6-1.3 2.6H9.3c0-1-.5-1.7-1.3-2.6z"/></svg>`;
+const iconPeople = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.6"/><path d="M4 19c0-3 2.5-5 5-5s5 2 5 5M14.5 19c.2-2 1.6-3.6 3.5-3.9"/></svg>`;
+const iconStar = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3.5l2.6 5.4 5.9.7-4.3 4.1 1 5.9L12 16.7 6.8 19.6l1-5.9-4.3-4.1 5.9-.7z"/></svg>`;
+const iconChip = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l1.8 1.8M16.2 16.2 18 18M18 6l-1.8 1.8M7.8 16.2 6 18"/></svg>`;
+const iconBook = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5c-.8 0-1.5-.7-1.5-1.5z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5c.8 0 1.5-.7 1.5-1.5z"/></svg>`;
+
+const categoriesA = [
+  {icon: iconShield, name: "Street Wisdom", status: "Today's wisdom ready", state: "current"},
+  {icon: iconCoin, name: "Money Wisdom", status: "3 completed · come back tomorrow", state: "done"},
+  {icon: iconBulb, name: "Thinking Wisdom", status: "Today's wisdom ready", state: "current"},
+  {icon: iconPeople, name: "People Wisdom", status: "1 completed · come back tomorrow", state: "done"},
+  {icon: iconStar, name: "Character Wisdom", status: "Today's wisdom ready", state: "current"},
+  {icon: iconChip, name: "Modern World Wisdom", status: "Not started yet", state: "new"},
+  {icon: iconBook, name: "Life Wisdom", status: "Today's wisdom ready", state: "current"},
+];
+
+function nodeClass(state){ return state === "done" ? "done" : state === "current" ? "current" : ""; }
+function nodeInner(state, icon){ return state === "done" ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>` : icon; }
+
+const homeA = `
+<div class="versionA">
+  <div class="topbar"><div class="logotype">Luma</div><div class="date">Wednesday, July 3</div></div>
+  <div class="divider"></div>
+  <div class="cat-list">
+    ${categoriesA.map(c => `
+      <div class="cat-row">
+        <div class="cat-node ${nodeClass(c.state)}">${nodeInner(c.state, c.icon)}</div>
+        <div class="cat-text"><div class="name">${c.name}</div><div class="status">${c.status}</div></div>
+      </div>`).join("")}
+  </div>
+</div>`;
+
+const categoriesB = [
+  {emoji:"🛡️", name:"Street Wisdom", color:"#FF6B6B", stars:"★★★☆☆", state:"ok"},
+  {emoji:"💰", name:"Money Wisdom", color:"#58CC02", stars:"★★★★★", state:"ok", isNew:false},
+  {emoji:"🧠", name:"Thinking Wisdom", color:"#5B4FE9", stars:"★★☆☆☆", state:"ok"},
+  {emoji:"🤝", name:"People Wisdom", color:"#FF9F1C", stars:"★★★★☆", state:"ok"},
+  {emoji:"⭐", name:"Character Wisdom", color:"#FFB703", stars:"★★★☆☆", state:"ok", isNew:true},
+  {emoji:"🤖", name:"Modern World", color:"#4ECDC4", stars:"☆☆☆☆☆", state:"locked"},
+  {emoji:"📘", name:"Life Wisdom", color:"#A66DD4", stars:"★★☆☆☆", state:"ok"},
+];
+
+const homeB = `
+<div class="versionB">
+  <div class="topbar">
+    <div class="logotype">LUMA!</div>
+    <div class="streak-pill">🔥 7</div>
+  </div>
+  <div class="xpbar-wrap">
+    <div class="xpbar-label">450 / 725 XP TO LEVEL 6</div>
+    <div class="xpbar-track"><div class="xpbar-fill"></div></div>
+  </div>
+  <div class="mascot-row">${mascotSVG(54)}</div>
+  <div class="cat-grid">
+    ${categoriesB.map(c => `
+      <div class="cat-tile ${c.state === 'locked' ? 'locked' : ''}" style="background:${c.color}">
+        ${c.isNew ? '<div class="badge-new">NEW!</div>' : ''}
+        ${c.state === 'locked' ? '<div class="lock-icon">🔒</div>' : ''}
+        <span class="emoji">${c.emoji}</span>
+        <div class="name">${c.name}</div>
+        <div class="stars">${c.stars}</div>
+      </div>`).join("")}
+  </div>
+</div>`;
+
+function mascotSVG(size){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="58" rx="34" ry="30" fill="#4ECDC4"/>
+    <path d="M26 34 Q22 14 34 22 Q30 30 34 38 Z" fill="#4ECDC4"/>
+    <path d="M74 34 Q78 14 66 22 Q70 30 66 38 Z" fill="#4ECDC4"/>
+    <circle cx="38" cy="54" r="10" fill="#fff"/>
+    <circle cx="62" cy="54" r="10" fill="#fff"/>
+    <circle cx="39" cy="55" r="4.5" fill="#21324A"/>
+    <circle cx="63" cy="55" r="4.5" fill="#21324A"/>
+    <circle cx="26" cy="66" r="5" fill="#FF9F1C" opacity="0.6"/>
+    <circle cx="74" cy="66" r="5" fill="#FF9F1C" opacity="0.6"/>
+    <path d="M42 72 Q50 80 58 72" stroke="#21324A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+
+const readerA = `
+<div class="versionA">
+  <div class="reader-topbar"><span>&larr; Back</span><span>2 of 4</span></div>
+  <div class="illus">${iconWrap(iconShield, 44, "#B9A98C")}</div>
+  <div class="story-title">The Stranger Who Was Too Nice</div>
+  <div class="story-body">Maya was waiting for her mom outside the grocery store when a man she didn't know smiled and said, &ldquo;Your mom sent me to walk you to the car &mdash; hurry, she's waiting!&rdquo;<br><br>Something about it made Maya's stomach feel tight. She didn't know why exactly &mdash; he seemed friendly enough. But the feeling was there, so she stayed by the door and looked for a store worker instead.</div>
+  <div class="continue-link">Continue reading &rarr;</div>
+</div>`;
+
+const readerB = `
+<div class="versionB">
+  <div class="reader-topbar"><span>⬅ BACK</span><div class="progress-mini"><div class="progress-mini-fill"></div></div><span>2/4</span></div>
+  <div class="story-illus">🕵️‍♀️</div>
+  <div class="story-title">The Stranger Who Was TOO Nice! 😬</div>
+  <div class="bubble">💡 Psst! Watch for the "uh-oh" feeling in this one...</div>
+  <div class="story-body">Maya was waiting for her mom when a man she'd NEVER met said, "Your mom sent me — hurry, she's waiting!" 😲<br><br>Maya's tummy went tight. Was he telling the truth...? Or was something FISHY going on?? 🐟</div>
+  <button class="cta">KEEP READING ➜</button>
+</div>`;
+
+const progressA = `
+<div class="versionA">
+  <div class="journey-title">Your Journey</div>
+  <div class="journey-sub">Street Wisdom</div>
+  <div class="path">
+    <div class="path-item"><div class="path-dot done"></div><div class="path-label">The Uh-Oh Feeling</div></div>
+    <div class="path-line"></div>
+    <div class="path-item"><div class="path-dot done"></div><div class="path-label">Safe Secrets, Unsafe Secrets</div></div>
+    <div class="path-line"></div>
+    <div class="path-item"><div class="path-dot current"></div><div class="path-label">The Stranger Who Was Too Nice</div></div>
+    <div class="path-line"></div>
+    <div class="path-item"><div class="path-dot locked"></div><div class="path-label locked">Asking for Help Safely</div></div>
+    <div class="path-line"></div>
+    <div class="path-item"><div class="path-dot locked"></div><div class="path-label locked">Reading a Room</div></div>
+  </div>
+  <div class="weeknote">4 wisdoms completed this week, across 3 categories</div>
+</div>`;
+
+const progressB = `
+<div class="versionB">
+  <div class="streak-banner">
+    <div class="flamewrap">🔥🔥🔥</div>
+    <div class="num">7 DAY STREAK!</div>
+    <div class="warn">⚠️ DON'T BREAK YOUR STREAK — COME BACK TODAY!</div>
+  </div>
+  <div class="level-row"><span class="level-chip">LEVEL 5</span><span class="level-chip">450 XP</span></div>
+  <div class="badge-row">
+    <div class="badge-circle">🏆</div><div class="badge-circle">🥇</div><div class="badge-circle">⚡</div><div class="badge-circle">🎯</div>
+  </div>
+  <div class="level-path">
+    <div class="level-node done">✓</div>
+    <div class="level-node done">✓</div>
+    <div class="level-node current">🛡️</div>
+    <div class="level-node locked">🔒</div>
+    <div class="level-node locked">🔒</div>
+  </div>
+</div>`;
+
+const streakA = `
+<div class="versionA">
+  <div class="journey-title">Your Journey</div>
+  <div class="probe-card">
+    <div class="probe-plain">
+      <div class="n">12</div>
+      <div class="t">days you've opened Luma</div>
+    </div>
+  </div>
+  <div class="weeknote" style="margin-top:6px;">No pressure if you miss a day &mdash; everything's still here when you're ready.</div>
+</div>`;
+
+const streakB = `
+<div class="versionB">
+  <div class="topbar"><div class="logotype" style="font-size:20px;">STREAK</div></div>
+  <div class="probe-card" style="margin-top:16px;">
+    <div class="probe-streak">
+      <div class="flame">🔥</div>
+      <div class="n">7 DAY STREAK!</div>
+      <div class="warn">DON'T LOSE YOUR STREAK<br>COME BACK TODAY!</div>
+    </div>
+  </div>
+</div>`;
+
+function iconWrap(svg, size, color){
+  return `<span style="width:${size}px;height:${size}px;color:${color};display:inline-block;">${svg}</span>`;
+}
+
+const content = {
+  home: { A: homeA, B: homeB },
+  reader: { A: readerA, B: readerB },
+  progress: { A: progressA, B: progressB },
+  streak: { A: streakA, B: streakB },
+};
+
+let assignment = { left: "A", right: "B" };
+let currentScreen = "home";
+
+function render(){
+  document.querySelector("#slotLeft .screen-content").innerHTML = content[currentScreen][assignment.left];
+  document.querySelector("#slotRight .screen-content").innerHTML = content[currentScreen][assignment.right];
+  document.getElementById("labelLeft").textContent = "Version " + assignment.left + (assignment.left === "A" ? " — Calm/Editorial" : " — Bright/Mascot");
+  document.getElementById("labelRight").textContent = "Version " + assignment.right + (assignment.right === "A" ? " — Calm/Editorial" : " — Bright/Mascot");
+}
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentScreen = btn.dataset.screen;
+    render();
+  });
+});
+
+document.getElementById("shuffleBtn").addEventListener("click", () => {
+  assignment = { left: assignment.right, right: assignment.left };
+  render();
+});
+
+document.getElementById("revealBtn").addEventListener("click", (e) => {
+  document.body.classList.toggle("revealed");
+  e.target.classList.toggle("on");
+  e.target.textContent = document.body.classList.contains("revealed") ? "🙈 Hide labels" : "🏷️ Reveal labels";
+});
+
+render();
+</script>
+</body>
+</html>
