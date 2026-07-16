@@ -2,7 +2,10 @@ import {
   getCategories,
   getCategory,
   getCloudAvatar as getContentCloudAvatar,
+  getCloudBedroomImage as getContentCloudBedroomImage,
   getCloudDeskImage as getContentCloudDeskImage,
+  getLockedStorybookImage as getContentLockedStorybookImage,
+  getNeedsWantsJarsImage as getContentNeedsWantsJarsImage,
   getGlobalIdentity as getContentGlobalIdentity,
   getRecommendedWisdomCards as getContentRecommendedWisdomCards,
   getWisdom,
@@ -16,6 +19,18 @@ export function getCloudAvatar() {
 
 export function getCloudDeskImage() {
   return getContentCloudDeskImage();
+}
+
+export function getCloudBedroomImage() {
+  return getContentCloudBedroomImage();
+}
+
+export function getLockedStorybookImage() {
+  return getContentLockedStorybookImage();
+}
+
+export function getNeedsWantsJarsImage() {
+  return getContentNeedsWantsJarsImage();
 }
 
 export function getGlobalIdentity() {

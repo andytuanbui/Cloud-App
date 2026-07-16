@@ -78,6 +78,18 @@ export function getCloudDeskImage() {
   return assets.threeJars;
 }
 
+export function getCloudBedroomImage() {
+  return assets.bedroomScene;
+}
+
+export function getLockedStorybookImage() {
+  return assets.lockedStorybook;
+}
+
+export function getNeedsWantsJarsImage() {
+  return assets.needsWantsJars;
+}
+
 export function getRecommendedWisdomCards(): RecommendedWisdomCard[] {
   return [...recommendedWisdoms];
 }

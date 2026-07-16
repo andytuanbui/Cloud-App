@@ -23,6 +23,9 @@ export const assets = {
   thinking: require('../../assets/cloud/cat-thinking.png'),
   communication: require('../../assets/cloud/cat-communication.png'),
   modern: require('../../assets/cloud/cat-modern.png'),
+  bedroomScene: require('../../assets/cloud/home-bedroom-scene.png'),
+  lockedStorybook: require('../../assets/cloud/locked-storybook.png'),
+  needsWantsJars: require('../../assets/cloud/needs-wants-jars.png'),
 };
 
 export const globalIdentity: GlobalIdentity = {
