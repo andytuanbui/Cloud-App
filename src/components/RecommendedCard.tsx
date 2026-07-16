@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, ImageSourcePropType, Text } from 'react-native';
+import { colors as themeColors } from '../theme';
 import { styles } from '../theme/styles';
 
 export function RecommendedCard({
@@ -14,7 +15,7 @@ export function RecommendedCard({
   return (
     <LinearGradient colors={colors} style={styles.recommendedCard}>
       <Image source={image} style={styles.recommendedImage} resizeMode="cover" />
-      <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.68)']} style={styles.recommendedFade} />
+      <LinearGradient colors={themeColors.gradient.recommendedFade} style={styles.recommendedFade} />
       <Text style={styles.recommendedTitle}>{title}</Text>
     </LinearGradient>
   );

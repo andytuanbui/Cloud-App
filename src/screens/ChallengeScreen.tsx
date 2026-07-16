@@ -1,6 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { JourneyListItem, JourneyPanel } from '../components/JourneyPanel';
 import { JourneyScaffold } from '../components/JourneyScaffold';
+import { LoadingState } from '../components/LoadingState';
+import { useAsyncResource } from '../hooks/useAsyncResource';
 import { getChallenge } from '../services/contentService';
 import { getWisdomById, getWorldForWisdom } from '../services/wisdomService';
 import { WisdomJourneyParamList } from '../types/wisdom';
@@ -8,9 +10,22 @@ import { WisdomJourneyParamList } from '../types/wisdom';
 type ChallengeScreenProps = NativeStackScreenProps<WisdomJourneyParamList, 'Challenge'>;
 
 export function ChallengeScreen({ navigation, route }: ChallengeScreenProps) {
-  const wisdom = getWisdomById(route.params.wisdomId);
-  const world = getWorldForWisdom(wisdom.id);
-  const challenge = getChallenge(wisdom.challengeId);
+  const content = useAsyncResource(async () => {
+    const wisdom = await getWisdomById(route.params.wisdomId);
+    const [world, challenge] = await Promise.all([getWorldForWisdom(wisdom.id), getChallenge(wisdom.challengeId)]);
+
+    return { challenge, wisdom, world };
+  }, [route.params.wisdomId]);
+
+  if (content.error) {
+    throw content.error;
+  }
+
+  if (!content.data) {
+    return <LoadingState />;
+  }
+
+  const { challenge, wisdom, world } = content.data;
 
   return (
     <JourneyScaffold

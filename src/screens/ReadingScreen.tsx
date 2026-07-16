@@ -3,8 +3,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRef, useState } from 'react';
 import { Animated, Image, Pressable, Text, View } from 'react-native';
+import { LoadingState } from '../components/LoadingState';
+import { useAsyncResource } from '../hooks/useAsyncResource';
 import { getStory } from '../services/contentService';
 import { getWisdomById, getWorldForWisdom } from '../services/wisdomService';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 import { Story, StoryPage, WisdomJourneyParamList } from '../types/wisdom';
 
@@ -16,13 +19,30 @@ function buildStoryPages(story: Story, choice: StoryChoice | null): StoryPage[] 
 }
 
 export function ReadingScreen({ navigation, route }: ReadingScreenProps) {
-  const wisdom = getWisdomById(route.params.wisdomId);
-  const world = getWorldForWisdom(wisdom.id);
-  const story = getStory(wisdom.storyId);
+  const content = useAsyncResource(async () => {
+    const wisdom = await getWisdomById(route.params.wisdomId);
+    const [world, story] = await Promise.all([getWorldForWisdom(wisdom.id), getStory(wisdom.storyId)]);
+
+    return {
+      story,
+      wisdom,
+      world,
+    };
+  }, [route.params.wisdomId]);
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const [pageIndex, setPageIndex] = useState(0);
   const [choice, setChoice] = useState<StoryChoice | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  if (content.error) {
+    throw content.error;
+  }
+
+  if (!content.data) {
+    return <LoadingState />;
+  }
+
+  const { story, wisdom, world } = content.data;
   const storyPages = buildStoryPages(story, choice);
   const page = storyPages[Math.min(pageIndex, storyPages.length - 1)];
   const isChoicePage = page.interactionType === 'choice';
@@ -77,13 +97,13 @@ export function ReadingScreen({ navigation, route }: ReadingScreenProps) {
         <Animated.View style={[styles.storyPage, { opacity: fadeAnim }]}>
           <Image source={page.image} style={styles.storyIllustration} resizeMode="cover" />
           <LinearGradient
-            colors={['rgba(5,9,22,0.1)', 'rgba(5,9,22,0.3)', 'rgba(5,9,22,0.96)']}
+            colors={colors.gradient.storyFade}
             style={styles.storyImageFade}
           />
 
           <View style={styles.storyTopBar}>
             <Pressable style={styles.detailRoundButton} onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+              <Ionicons name="chevron-back" size={22} color={colors.text.primary} />
             </Pressable>
             <View style={styles.journeyStepPill}>
               <Text style={styles.journeyStepText}>
@@ -97,7 +117,7 @@ export function ReadingScreen({ navigation, route }: ReadingScreenProps) {
               <Ionicons
                 name={isChoicePage ? 'git-branch-outline' : 'book-outline'}
                 size={14}
-                color="#101827"
+                color={colors.text.inverse}
               />
               <Text style={styles.detailBadgeText}>{page.eyebrow}</Text>
             </View>
@@ -117,7 +137,7 @@ export function ReadingScreen({ navigation, route }: ReadingScreenProps) {
                     <LinearGradient colors={card.colors} style={styles.storyChoiceGradient}>
                       <Image source={card.image} style={styles.storyChoiceImage} resizeMode="cover" />
                       <LinearGradient
-                        colors={['rgba(5,9,22,0.08)', 'rgba(5,9,22,0.82)']}
+                        colors={colors.gradient.storyChoiceFade}
                         style={styles.storyChoiceFade}
                       />
                       <View style={styles.storyChoiceCopy}>
@@ -130,11 +150,11 @@ export function ReadingScreen({ navigation, route }: ReadingScreenProps) {
               </View>
             ) : (
               <Pressable onPress={advanceStory}>
-                <LinearGradient colors={['#FFD166', '#FFB347']} style={styles.storyContinueButton}>
+                <LinearGradient colors={colors.gradient.goldCta} style={styles.storyContinueButton}>
                   <Text style={styles.storyContinueText}>
                     {page.buttonLabel ?? (isFinalPage ? 'Talk with Cloud' : 'Continue')}
                   </Text>
-                  <Ionicons name="chevron-forward" size={20} color="#101827" />
+                  <Ionicons name="chevron-forward" size={20} color={colors.text.inverse} />
                 </LinearGradient>
               </Pressable>
             )}

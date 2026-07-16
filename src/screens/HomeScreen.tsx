@@ -1,247 +1,167 @@
+import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Image, ImageSourcePropType, Pressable, Text, View } from 'react-native';
-import { CloudPresenceProfile, getTodayCloudPresence } from '../services/cloudPresenceService';
-import { getCloudDeskImage, getHomeWisdomWorlds } from '../services/wisdomService';
+import { Animated, Image, ImageSourcePropType, Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { BottomNav } from '../components/BottomNav';
+import { LoadingState } from '../components/LoadingState';
+import { useAsyncResource } from '../hooks/useAsyncResource';
+import { getTodayCloudPresence } from '../services/cloudPresenceService';
+import {
+  getHomeBedroomImage,
+  getHomeWisdomWorlds,
+  getLockedStorybookImage,
+  getNeedsWantsJarsImage,
+} from '../services/wisdomService';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 import { RootStackParamList } from '../types/wisdom';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-type CloudPresenceProps = {
-  presence: CloudPresenceProfile;
-  reachProgress: Animated.Value;
-  cloudImage: ImageSourcePropType;
+
+type CloudRoomSceneProps = {
+  bedroomImage: ImageSourcePropType;
+  onStartStory: () => void;
+  isOpeningStory: boolean;
+  storybookProgress: Animated.Value;
+  waveEnergy: number;
+  heroHeight: number;
 };
 
-function CloudPresence({ presence, reachProgress, cloudImage }: CloudPresenceProps) {
-  const breath = useRef(new Animated.Value(0)).current;
-  const lookUp = useRef(new Animated.Value(0)).current;
-  const blink = useRef(new Animated.Value(0)).current;
-  const wave = useRef(new Animated.Value(0)).current;
-  const smile = useRef(new Animated.Value(0)).current;
-  const { expression } = presence;
+function CloudRoomScene({
+  bedroomImage,
+  isOpeningStory,
+  onStartStory,
+  storybookProgress,
+  waveEnergy,
+  heroHeight,
+}: CloudRoomSceneProps) {
+  const roomBreath = useRef(new Animated.Value(0)).current;
+  const roomEntrance = useRef(new Animated.Value(0)).current;
+  const waveWarmth = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const breathingLoop = Animated.loop(
       Animated.sequence([
-        Animated.timing(breath, {
-          duration: 2300,
+        Animated.timing(roomBreath, {
+          duration: 2600,
           toValue: 1,
           useNativeDriver: true,
         }),
-        Animated.timing(breath, {
-          duration: 2600,
+        Animated.timing(roomBreath, {
+          duration: 3000,
           toValue: 0,
           useNativeDriver: true,
         }),
       ]),
     );
+
     breathingLoop.start();
 
-    Animated.timing(lookUp, {
-      delay: 240,
-      duration: 900,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-
     Animated.sequence([
-      Animated.delay(1050),
-      Animated.parallel([
-        Animated.sequence([
-          Animated.timing(wave, {
-            duration: 260,
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-          Animated.timing(wave, {
-            duration: 380,
-            toValue: 0,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.sequence([
-          Animated.timing(smile, {
-            duration: 240,
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-          Animated.delay(760),
-          Animated.timing(smile, {
-            duration: 520,
-            toValue: 0,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]),
+      Animated.timing(roomEntrance, {
+        duration: 900,
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.timing(waveWarmth, {
+        duration: 420,
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.timing(waveWarmth, {
+        duration: 620,
+        toValue: 0,
+        useNativeDriver: true,
+      }),
     ]).start();
 
-    const blinkTimers: ReturnType<typeof setTimeout>[] = [];
-    let isMounted = true;
+    return () => breathingLoop.stop();
+  }, [roomBreath, roomEntrance, waveWarmth]);
 
-    const queueBlink = (delay: number) => {
-      const timer = setTimeout(() => {
-        if (!isMounted) {
-          return;
-        }
-
-        Animated.sequence([
-          Animated.timing(blink, {
-            duration: 70,
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-          Animated.timing(blink, {
-            duration: 90,
-            toValue: 0,
-            useNativeDriver: true,
-          }),
-        ]).start(() => queueBlink(3200 + Math.round(Math.random() * 2400)));
-      }, delay);
-
-      blinkTimers.push(timer);
-    };
-
-    queueBlink(1800);
-
-    return () => {
-      isMounted = false;
-      breathingLoop.stop();
-      blinkTimers.forEach(clearTimeout);
-    };
-  }, [blink, breath, lookUp, smile, wave]);
-
-  const breathingTranslateY = breath.interpolate({
+  const roomTranslateY = roomEntrance.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -3],
+    outputRange: [8, 0],
   });
-  const breathingScale = breath.interpolate({
+  const roomScale = roomBreath.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.014],
+    outputRange: [1, 1.006],
   });
-  const lookUpTranslateY = lookUp.interpolate({
+  const greetingScale = waveWarmth.interpolate({
     inputRange: [0, 1],
-    outputRange: [10, 0],
+    outputRange: [1, 1 + 0.016 * waveEnergy],
   });
-  const lookUpRotate = lookUp.interpolate({
+  const storybookScale = storybookProgress.interpolate({
     inputRange: [0, 1],
-    outputRange: ['1.2deg', '0deg'],
-  });
-  const reachTranslateX = reachProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -26],
-  });
-  const reachTranslateY = reachProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 12],
-  });
-  const reachRotate = reachProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '-3deg'],
-  });
-  const waveRotate = wave.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [
-      `${-10 * expression.waveEnergy}deg`,
-      `${15 * expression.waveEnergy}deg`,
-      `${-6 * expression.waveEnergy}deg`,
-    ],
-  });
-  const smileOpacity = smile.interpolate({
-    inputRange: [0, 1],
-    outputRange: [expression.smileOpacity, Math.min(expression.smileOpacity + 0.22, 0.48)],
+    outputRange: [1, 0.985],
   });
 
   return (
-    <Animated.View
-      style={[
-        styles.deskCloudStage,
-        {
-          transform: [
-            { translateX: reachTranslateX },
-            { translateY: Animated.add(Animated.add(breathingTranslateY, lookUpTranslateY), reachTranslateY) },
-            { rotate: reachRotate },
-            { rotate: lookUpRotate },
-            { scale: breathingScale },
-          ],
-        },
-      ]}
-    >
-      <Animated.Image source={cloudImage} style={styles.deskCloudImage} resizeMode="cover" />
-      <View style={[styles.cloudEyeExpressionLayer, { opacity: expression.browOpacity }]}>
-        <View
-          style={[
-            styles.cloudExpressionBrowLeft,
-            {
-              transform: [{ rotate: `${expression.browTilt}deg` }],
-              width: expression.eyeWidth + 3,
-            },
-          ]}
-        />
-        <View
-          style={[
-            styles.cloudExpressionBrowRight,
-            {
-              transform: [{ rotate: `${-expression.browTilt}deg` }],
-              width: expression.eyeWidth + 3,
-            },
-          ]}
-        />
-      </View>
-      <Animated.View style={[styles.cloudBlinkLayer, { opacity: blink }]}>
-        <View
-          style={[
-            styles.cloudBlinkEyeLeft,
-            {
-              top: expression.blinkTop,
-              width: expression.eyeWidth,
-            },
-          ]}
-        />
-        <View
-          style={[
-            styles.cloudBlinkEyeRight,
-            {
-              top: expression.blinkTop,
-              width: expression.eyeWidth,
-            },
-          ]}
-        />
-      </Animated.View>
-      <Animated.View
+    <View style={[styles.cloudBedroomHero, { height: heroHeight }]}>
+      <Animated.Image
+        source={bedroomImage}
+        resizeMode="cover"
         style={[
-          styles.cloudSmileGlow,
+          styles.cloudBedroomImage,
           {
-            opacity: smileOpacity,
-            transform: [{ scale: expression.smileScale }],
+            transform: [{ translateY: roomTranslateY }, { scale: roomScale }],
           },
         ]}
       />
+      <LinearGradient colors={colors.gradient.roomHeroFade} style={styles.cloudBedroomFade} />
+
       <Animated.View
-        style={[
-          styles.cloudWaveHand,
-          {
-            opacity: wave,
-            transform: [{ rotate: waveRotate }],
-          },
-        ]}
+        style={[styles.cloudGreetingCard, { top: heroHeight - 220, transform: [{ scale: greetingScale }] }]}
       >
-        <View style={styles.cloudWaveFingerOne} />
-        <View style={styles.cloudWaveFingerTwo} />
-        <View style={styles.cloudWavePalm} />
+        <View style={styles.cloudGreetingTail} />
+        <Text style={styles.cloudGreetingText}>Hi Andy! 👋</Text>
+        <Text style={styles.cloudGreetingSubtext}>I've been thinking about something interesting...</Text>
       </Animated.View>
-    </Animated.View>
+
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Start today's story from Cloud's desk"
+        disabled={isOpeningStory}
+        onPress={onStartStory}
+        style={styles.heroStorybookTapTarget}
+      >
+        <Animated.View style={[styles.heroStorybookTapGlow, { transform: [{ scale: storybookScale }] }]} />
+      </Pressable>
+    </View>
   );
 }
 
 export function HomeScreen({ navigation }: HomeScreenProps) {
-  const todayWorld = getHomeWisdomWorlds()[0];
-  const cloudDeskImage = getCloudDeskImage();
+  const { height } = useWindowDimensions();
+  const heroHeight = Math.min(500, Math.max(388, Math.round(height * 0.55)));
+  const homeContent = useAsyncResource(async () => {
+    const [worlds, bedroomImage, jarsImage, lockedStorybookImage] = await Promise.all([
+      getHomeWisdomWorlds(),
+      getHomeBedroomImage(),
+      getNeedsWantsJarsImage(),
+      getLockedStorybookImage(),
+    ]);
+
+    return {
+      bedroomImage,
+      jarsImage,
+      lockedStorybookImage,
+      todayWorld: worlds[0],
+    };
+  }, []);
   const presence = useRef(getTodayCloudPresence()).current;
   const storybookPress = useRef(new Animated.Value(0)).current;
-  const cloudReach = useRef(new Animated.Value(0)).current;
   const [isOpeningStory, setIsOpeningStory] = useState(false);
+
+  if (homeContent.error) {
+    throw homeContent.error;
+  }
+
+  if (!homeContent.data?.todayWorld) {
+    return <LoadingState colors={colors.gradient.loading} />;
+  }
+
+  const { bedroomImage, jarsImage, lockedStorybookImage, todayWorld } = homeContent.data;
 
   const startTodayStory = () => {
     if (isOpeningStory) {
@@ -249,125 +169,99 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
     }
 
     setIsOpeningStory(true);
-    Animated.parallel([
-      Animated.sequence([
-        Animated.timing(storybookPress, {
-          duration: 160,
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-        Animated.timing(storybookPress, {
-          duration: 180,
-          toValue: 0,
-          useNativeDriver: true,
-        }),
-      ]),
-      Animated.sequence([
-        Animated.timing(cloudReach, {
-          duration: 280,
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-        Animated.delay(120),
-        Animated.timing(cloudReach, {
-          duration: 180,
-          toValue: 0,
-          useNativeDriver: true,
-        }),
-      ]),
+    Animated.sequence([
+      Animated.timing(storybookPress, {
+        duration: 150,
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.timing(storybookPress, {
+        duration: 170,
+        toValue: 0,
+        useNativeDriver: true,
+      }),
     ]).start(() => {
       navigation.navigate('WisdomJourney', {
-        screen: 'Reading',
+        screen: 'QuestionBeforeWisdom',
         params: { wisdomId: todayWorld.heroWisdomId },
       });
       setIsOpeningStory(false);
     });
   };
 
-  const storybookScale = storybookPress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0.96],
-  });
-  const storybookRotate = storybookPress.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['-8deg', '-5deg'],
-  });
-
   return (
-    <LinearGradient colors={['#FFE6B8', '#F7B56A', '#6F462E']} style={styles.phone}>
-      <View style={styles.cloudHome}>
-        <View style={styles.morningGlow} />
-        <View style={styles.sunBeamOne} />
-        <View style={styles.sunBeamTwo} />
+    <LinearGradient colors={colors.gradient.homeBackground} style={styles.phone}>
+      <ScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        style={styles.cloudHomeScroll}
+        contentContainerStyle={styles.cloudHomeContent}
+      >
+        <CloudRoomScene
+          bedroomImage={bedroomImage}
+          isOpeningStory={isOpeningStory}
+          onStartStory={startTodayStory}
+          storybookProgress={storybookPress}
+          waveEnergy={presence.expression.waveEnergy}
+          heroHeight={heroHeight}
+        />
 
-        <View style={styles.bedroomWall}>
-          <View style={styles.bedroomWindow}>
-            <LinearGradient colors={['#BCE7FF', '#FFE0A8']} style={styles.windowSky}>
-              <View style={styles.windowSun} />
-              <View style={styles.windowHillBack} />
-              <View style={styles.windowHillFront} />
-            </LinearGradient>
-            <View style={styles.windowFrameVertical} />
-            <View style={styles.windowFrameHorizontal} />
-          </View>
-
-          <View style={styles.bookshelf}>
-            <View style={[styles.bookSpine, styles.bookSpineGold]} />
-            <View style={[styles.bookSpine, styles.bookSpineNavy]} />
-            <View style={[styles.bookSpine, styles.bookSpineCream]} />
-            <View style={[styles.bookSpine, styles.bookSpineGreen]} />
-            <View style={styles.shelfBoard} />
-          </View>
-
-          <View style={styles.backpackHook} />
-          <View style={styles.backpack}>
-            <View style={styles.backpackPocket} />
-          </View>
-        </View>
-
-        <View style={styles.cloudGreetingCard}>
-          <View style={styles.cloudGreetingTail} />
-          <Text style={styles.cloudGreetingText}>{presence.greeting.line}</Text>
-          <Text style={styles.cloudGreetingSubtext}>{presence.greeting.subtext}</Text>
-        </View>
-
-        <CloudPresence presence={presence} reachProgress={cloudReach} cloudImage={cloudDeskImage} />
-
-        <View style={styles.woodenDesk}>
-          <View style={styles.deskTop}>
-            <Pressable disabled={isOpeningStory} style={styles.storybookPressable} onPress={startTodayStory}>
-              <Animated.View
-                style={[
-                  styles.storybookAnimatedSurface,
-                  {
-                    transform: [{ rotate: storybookRotate }, { scale: storybookScale }],
-                  },
-                ]}
-              >
-                <LinearGradient colors={['#F8D66D', '#D98A2B']} style={styles.storybookCover}>
-                  <View style={styles.storybookGlow} />
-                  <Text style={styles.storybookEyebrow}>Today's Story</Text>
-                  <Text style={styles.storybookTitle}>Needs vs Wants</Text>
-                  <View style={styles.storybookLine} />
-                  <Text style={styles.storybookHint}>Tap to open</Text>
-                </LinearGradient>
-              </Animated.View>
-            </Pressable>
-
-            <View style={styles.deskLamp}>
-              <View style={styles.lampShade} />
-              <View style={styles.lampStem} />
-              <View style={styles.lampBase} />
+        <View style={styles.cloudHomeCards}>
+          <LinearGradient colors={colors.gradient.homeTodayCard} style={styles.homeTodayCard}>
+            <View style={styles.homeTodayCopy}>
+              <View style={styles.homeStoryPill}>
+                <Ionicons name="star" size={14} color={colors.accent.orange} />
+                <Text style={styles.homeStoryPillText}>TODAY'S STORY</Text>
+              </View>
+              <Text style={styles.homeTodayTitle}>Needs vs Wants</Text>
+              <Text style={styles.homeTodaySubtitle}>Making choices today for a better tomorrow.</Text>
+              <View style={styles.homeTodayMetaRow}>
+                <View style={styles.homeTodayMetaItem}>
+                  <Ionicons name="time-outline" size={22} color={colors.text.brownMuted} />
+                  <View>
+                    <Text style={styles.homeTodayMetaValue}>{todayWorld.heroMinutes} min</Text>
+                    <Text style={styles.homeTodayMetaLabel}>Reading Time</Text>
+                  </View>
+                </View>
+                <View style={styles.homeTodayMetaItem}>
+                  <Ionicons name="bulb-outline" size={24} color={colors.text.brownMuted} />
+                  <View>
+                    <Text style={styles.homeTodayMetaValue}>Builds</Text>
+                    <Text style={styles.homeTodayMetaLabel}>Wise Choices</Text>
+                  </View>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={styles.deskFront}>
-            <View style={styles.deskDrawer} />
-            <View style={styles.deskKnob} />
-          </View>
-        </View>
+            <Image source={jarsImage} resizeMode="contain" style={styles.homeNeedsWantsJars} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Start Story"
+              disabled={isOpeningStory}
+              onPress={startTodayStory}
+              style={styles.startStoryButton}
+            >
+              <Ionicons name="book-outline" size={23} color={colors.accent.goldLight} />
+              <Text style={styles.startStoryText}>Start Story</Text>
+              <Ionicons name="chevron-forward" size={22} color={colors.accent.goldLight} />
+            </Pressable>
+          </LinearGradient>
 
-        <View style={styles.bedroomFloor} />
-      </View>
+          <LinearGradient colors={colors.gradient.homeLockedCard} style={styles.homeLockedCard}>
+            <View style={styles.homeLockedIconWrap}>
+              <Ionicons name="sparkles-outline" size={26} color={colors.text.soft} />
+            </View>
+            <View style={styles.homeLockedCopy}>
+              <Text style={styles.homeLockedEyebrow}>UP NEXT</Text>
+              <Text style={styles.homeLockedTitle}>Saving for Something Big</Text>
+              <Text style={styles.homeLockedBody}>Keep going to unlock tomorrow's wisdom.</Text>
+            </View>
+            <Image source={lockedStorybookImage} resizeMode="contain" style={styles.homeLockedBook} />
+            <Ionicons name="chevron-forward" size={26} color={colors.text.muted} style={styles.homeLockedChevron} />
+          </LinearGradient>
+        </View>
+      </ScrollView>
+
+      <BottomNav />
     </LinearGradient>
   );
 }

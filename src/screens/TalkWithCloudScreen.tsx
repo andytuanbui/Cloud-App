@@ -2,6 +2,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, View } from 'react-native';
 import { JourneyListItem, JourneyPanel } from '../components/JourneyPanel';
 import { JourneyScaffold } from '../components/JourneyScaffold';
+import { LoadingState } from '../components/LoadingState';
+import { useAsyncResource } from '../hooks/useAsyncResource';
 import { getConversation } from '../services/contentService';
 import { getWisdomById, getWorldForWisdom } from '../services/wisdomService';
 import { styles } from '../theme/styles';
@@ -10,9 +12,25 @@ import { WisdomJourneyParamList } from '../types/wisdom';
 type TalkWithCloudScreenProps = NativeStackScreenProps<WisdomJourneyParamList, 'TalkWithCloud'>;
 
 export function TalkWithCloudScreen({ navigation, route }: TalkWithCloudScreenProps) {
-  const wisdom = getWisdomById(route.params.wisdomId);
-  const world = getWorldForWisdom(wisdom.id);
-  const conversation = getConversation(wisdom.conversationId);
+  const content = useAsyncResource(async () => {
+    const wisdom = await getWisdomById(route.params.wisdomId);
+    const [world, conversation] = await Promise.all([
+      getWorldForWisdom(wisdom.id),
+      getConversation(wisdom.conversationId),
+    ]);
+
+    return { conversation, wisdom, world };
+  }, [route.params.wisdomId]);
+
+  if (content.error) {
+    throw content.error;
+  }
+
+  if (!content.data) {
+    return <LoadingState />;
+  }
+
+  const { conversation, wisdom, world } = content.data;
 
   return (
     <JourneyScaffold

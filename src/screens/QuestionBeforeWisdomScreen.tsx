@@ -3,7 +3,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { LoadingState } from '../components/LoadingState';
+import { useAsyncResource } from '../hooks/useAsyncResource';
 import { getWisdomById, getWorldForWisdom } from '../services/wisdomService';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 import { WisdomJourneyParamList } from '../types/wisdom';
 
@@ -24,9 +27,23 @@ const answerOptions = [
 ];
 
 export function QuestionBeforeWisdomScreen({ navigation, route }: QuestionBeforeWisdomScreenProps) {
-  const wisdom = getWisdomById(route.params.wisdomId);
-  const world = getWorldForWisdom(wisdom.id);
+  const content = useAsyncResource(async () => {
+    const wisdom = await getWisdomById(route.params.wisdomId);
+    const world = await getWorldForWisdom(wisdom.id);
+
+    return { wisdom, world };
+  }, [route.params.wisdomId]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+
+  if (content.error) {
+    throw content.error;
+  }
+
+  if (!content.data) {
+    return <LoadingState />;
+  }
+
+  const { wisdom, world } = content.data;
 
   const continueToReading = () => {
     navigation.navigate('Reading', { wisdomId: wisdom.id });
@@ -41,7 +58,7 @@ export function QuestionBeforeWisdomScreen({ navigation, route }: QuestionBefore
       >
         <View style={styles.detailTopBar}>
           <Pressable style={styles.detailRoundButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+            <Ionicons name="chevron-back" size={22} color={colors.text.primary} />
           </Pressable>
           <View style={styles.journeyStepPill}>
             <Text style={styles.journeyStepText}>Before we begin</Text>
@@ -56,14 +73,14 @@ export function QuestionBeforeWisdomScreen({ navigation, route }: QuestionBefore
         >
           <Image source={world.heroImage} style={styles.questionHeroImage} resizeMode="cover" />
           <LinearGradient
-            colors={['rgba(5,9,22,0.86)', 'rgba(5,9,22,0.42)', 'rgba(5,9,22,0)']}
+            colors={colors.gradient.questionFade}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.questionHeroFade}
           />
           <View style={styles.questionHeroCopy}>
             <View style={styles.detailBadge}>
-              <Ionicons name="chatbubble-ellipses-outline" size={14} color="#101827" />
+              <Ionicons name="chatbubble-ellipses-outline" size={14} color={colors.text.inverse} />
               <Text style={styles.detailBadgeText}>Cloud asks</Text>
             </View>
             <Text style={styles.questionCloudLine}>I've been thinking about something...</Text>
@@ -90,7 +107,7 @@ export function QuestionBeforeWisdomScreen({ navigation, route }: QuestionBefore
                   <Ionicons
                     name={isSelected ? 'checkmark-circle' : 'ellipse-outline'}
                     size={22}
-                    color={isSelected ? '#FFD166' : '#AEBBD0'}
+                    color={isSelected ? colors.accent.gold : colors.text.muted}
                   />
                 </Pressable>
               );
@@ -106,9 +123,9 @@ export function QuestionBeforeWisdomScreen({ navigation, route }: QuestionBefore
             </View>
 
             <Pressable onPress={continueToReading}>
-              <LinearGradient colors={['#FFD166', '#FFB347']} style={styles.journeyPrimaryButton}>
+              <LinearGradient colors={colors.gradient.goldCta} style={styles.journeyPrimaryButton}>
                 <Text style={styles.journeyPrimaryText}>Continue to Today's Wisdom</Text>
-                <Ionicons name="chevron-forward" size={21} color="#101827" />
+                <Ionicons name="chevron-forward" size={21} color={colors.text.inverse} />
               </LinearGradient>
             </Pressable>
           </View>

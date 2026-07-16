@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 
 export function JourneyPanel({ title, children }: { title: string; children: React.ReactNode }) {
@@ -24,7 +25,7 @@ export function JourneyListItem({
   return (
     <View style={styles.journeyListItem}>
       <View style={styles.journeyListIcon}>
-        <Ionicons name={icon} size={18} color="#FFD166" />
+        <Ionicons name={icon} size={18} color={colors.accent.gold} />
       </View>
       <View style={styles.journeyListCopy}>
         <Text style={styles.journeyListTitle}>{title}</Text>

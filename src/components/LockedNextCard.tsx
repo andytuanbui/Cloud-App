@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, Pressable, Text, View } from 'react-native';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 import { WisdomWorld } from '../types/wisdom';
 
@@ -10,20 +11,20 @@ export function LockedNextCard({ world, onOpen }: { world: WisdomWorld; onOpen: 
       <LinearGradient colors={world.lockedColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.lockedCard}>
         <Image source={world.lockedImage} style={[styles.lockedArt, styles.lockedIllustrationFade]} resizeMode="cover" />
         <LinearGradient
-          colors={['rgba(7,10,28,0.82)', 'rgba(7,10,28,0.42)', 'rgba(7,10,28,0)']}
+          colors={colors.gradient.lockedFade}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.lockedGradient}
         />
         <View style={styles.lockedCopy}>
           <View style={styles.lockedTop}>
-            <Ionicons name="lock-closed" size={13} color="#E8ECF6" />
+            <Ionicons name="lock-closed" size={13} color={colors.text.bright} />
             <Text style={styles.lockedStatus}>Growing Tomorrow</Text>
           </View>
           <Text style={styles.lockedTitle}>{world.lockedTitle}</Text>
           <Text style={styles.lockedDescription}>{world.lockedDescription}</Text>
           <View style={styles.metaRow}>
-            <Ionicons name="time-outline" size={14} color="#FFFFFF" />
+            <Ionicons name="time-outline" size={14} color={colors.text.primary} />
             <Text style={styles.metaText}>{world.lockedMinutes} min</Text>
           </View>
         </View>

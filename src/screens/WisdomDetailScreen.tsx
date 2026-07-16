@@ -6,23 +6,47 @@ import { ActionButton } from '../components/ActionButton';
 import { BottomNav } from '../components/BottomNav';
 import { DetailSection } from '../components/DetailSection';
 import { EarnItem } from '../components/EarnItem';
+import { LoadingState } from '../components/LoadingState';
 import { RecommendedCard } from '../components/RecommendedCard';
+import { useAsyncResource } from '../hooks/useAsyncResource';
 import {
   getGlobalIdentity,
   getRecommendedWisdomCards,
   getWisdomById,
   getWorldForWisdom,
 } from '../services/wisdomService';
+import { colors } from '../theme';
 import { styles } from '../theme/styles';
 import { RootStackParamList } from '../types/wisdom';
 
 type WisdomDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'WisdomDetail'>;
 
 export function WisdomDetailScreen({ navigation, route }: WisdomDetailScreenProps) {
-  const wisdom = getWisdomById(route.params.wisdomId);
-  const world = getWorldForWisdom(wisdom.id);
-  const globalIdentity = getGlobalIdentity();
-  const recommendedWisdoms = getRecommendedWisdomCards();
+  const content = useAsyncResource(async () => {
+    const wisdom = await getWisdomById(route.params.wisdomId);
+    const [world, globalIdentity, recommendedWisdoms] = await Promise.all([
+      getWorldForWisdom(wisdom.id),
+      getGlobalIdentity(),
+      getRecommendedWisdomCards(),
+    ]);
+
+    return {
+      globalIdentity,
+      recommendedWisdoms,
+      wisdom,
+      world,
+    };
+  }, [route.params.wisdomId]);
+
+  if (content.error) {
+    throw content.error;
+  }
+
+  if (!content.data) {
+    return <LoadingState />;
+  }
+
+  const { globalIdentity, recommendedWisdoms, wisdom, world } = content.data;
   const isHero = wisdom.id === world.heroWisdomId;
   const title = wisdom.title;
   const description = wisdom.subtitle;
@@ -35,29 +59,29 @@ export function WisdomDetailScreen({ navigation, route }: WisdomDetailScreenProp
       <ScrollView style={styles.screen} contentContainerStyle={styles.detailContent} showsVerticalScrollIndicator={false}>
         <View style={styles.detailTopBar}>
           <Pressable style={styles.detailRoundButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+            <Ionicons name="chevron-back" size={22} color={colors.text.primary} />
           </Pressable>
           <Pressable style={styles.favoriteButton}>
-            <Ionicons name="heart-outline" size={22} color="#FFD166" />
+            <Ionicons name="heart-outline" size={22} color={colors.accent.gold} />
           </Pressable>
         </View>
 
         <LinearGradient colors={cardColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.detailHero}>
           <Image source={image} style={styles.detailHeroImage} resizeMode="cover" />
           <LinearGradient
-            colors={['rgba(5,9,22,0.82)', 'rgba(5,9,22,0.35)', 'rgba(5,9,22,0)']}
+            colors={colors.gradient.mediaFade}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.detailHeroGradient}
           />
           <View style={styles.detailHeroCopy}>
             <View style={styles.detailBadge}>
-              <Ionicons name={world.icon} size={14} color="#101827" />
+              <Ionicons name={world.icon} size={14} color={colors.text.inverse} />
               <Text style={styles.detailBadgeText}>{world.label} Wisdom</Text>
             </View>
             <Text style={styles.detailTitle}>{title}</Text>
             <View style={styles.detailMetaRow}>
-              <Ionicons name="time-outline" size={15} color="#FFFFFF" />
+              <Ionicons name="time-outline" size={15} color={colors.text.primary} />
               <Text style={styles.metaText}>{minutes} min</Text>
             </View>
           </View>
