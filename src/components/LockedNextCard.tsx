@@ -18,7 +18,7 @@ export function LockedNextCard({ world, onOpen }: { world: WisdomWorld; onOpen: 
         <View style={styles.lockedCopy}>
           <View style={styles.lockedTop}>
             <Ionicons name="lock-closed" size={13} color="#E8ECF6" />
-            <Text style={styles.lockedStatus}>Unlocks Tomorrow</Text>
+            <Text style={styles.lockedStatus}>Growing Tomorrow</Text>
           </View>
           <Text style={styles.lockedTitle}>{world.lockedTitle}</Text>
           <Text style={styles.lockedDescription}>{world.lockedDescription}</Text>

@@ -17,7 +17,7 @@ export function TodayCard({ world, onOpen }: { world: WisdomWorld; onOpen: () =>
         />
         <View style={styles.todayCopy}>
           <View style={styles.todayPill}>
-            <Text style={styles.todayPillText}>TODAY'S WISDOM</Text>
+            <Text style={styles.todayPillText}>TODAY'S GROWTH</Text>
           </View>
           <Text style={styles.todayTitle}>{world.heroTitle}</Text>
           <Text style={styles.todayDescription}>{world.heroDescription}</Text>
@@ -25,7 +25,7 @@ export function TodayCard({ world, onOpen }: { world: WisdomWorld; onOpen: () =>
             <Ionicons name="time-outline" size={15} color="#FFFFFF" />
             <Text style={styles.metaText}>{world.heroMinutes} min</Text>
             <View style={styles.metaDot} />
-            <Text style={styles.metaText}>Active</Text>
+            <Text style={styles.metaText}>Growing</Text>
           </View>
           <View style={styles.continueButton}>
             <Text style={styles.continueText}>Continue</Text>

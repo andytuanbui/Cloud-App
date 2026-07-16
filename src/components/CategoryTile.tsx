@@ -7,13 +7,13 @@ import { Category } from '../types/wisdom';
 export function CategoryTile({ category, active, onSelect }: { category: Category; active?: boolean; onSelect: () => void }) {
   return (
     <Pressable onPress={onSelect}>
-      <LinearGradient colors={category.colors} style={[styles.categoryTile, active && styles.categoryTileActive]}>
+      <LinearGradient colors={category.color} style={[styles.categoryTile, active && styles.categoryTileActive]}>
         <Image source={category.image} style={styles.categoryArt} resizeMode="cover" />
         <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.48)']} style={styles.categoryFade} />
         <View style={styles.categoryIcon}>
           <Ionicons name={category.icon} size={24} color="#FFFFFF" />
         </View>
-        <Text style={[styles.categoryText, active && styles.categoryTextActive]}>{category.label}</Text>
+        <Text style={[styles.categoryText, active && styles.categoryTextActive]}>{category.shortTitle}</Text>
       </LinearGradient>
     </Pressable>
   );

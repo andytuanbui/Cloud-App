@@ -7,18 +7,26 @@ import { BottomNav } from '../components/BottomNav';
 import { DetailSection } from '../components/DetailSection';
 import { EarnItem } from '../components/EarnItem';
 import { RecommendedCard } from '../components/RecommendedCard';
-import { globalIdentity, recommendedWisdoms, worlds } from '../content/wisdom';
+import {
+  getGlobalIdentity,
+  getRecommendedWisdomCards,
+  getWisdomById,
+  getWorldForWisdom,
+} from '../services/wisdomService';
 import { styles } from '../theme/styles';
 import { RootStackParamList } from '../types/wisdom';
 
 type WisdomDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'WisdomDetail'>;
 
 export function WisdomDetailScreen({ navigation, route }: WisdomDetailScreenProps) {
-  const world = worlds.find((item) => item.key === route.params.worldKey) ?? worlds[0];
-  const isHero = route.params.source === 'hero';
-  const title = isHero ? world.heroTitle.replace('\n', ' ') : world.lockedTitle;
-  const description = isHero ? world.heroDescription : world.lockedDescription;
-  const minutes = isHero ? world.heroMinutes : world.lockedMinutes;
+  const wisdom = getWisdomById(route.params.wisdomId);
+  const world = getWorldForWisdom(wisdom.id);
+  const globalIdentity = getGlobalIdentity();
+  const recommendedWisdoms = getRecommendedWisdomCards();
+  const isHero = wisdom.id === world.heroWisdomId;
+  const title = wisdom.title;
+  const description = wisdom.subtitle;
+  const minutes = wisdom.estimatedMinutes;
   const image = isHero ? world.heroImage : world.lockedImage;
   const cardColors = isHero ? world.heroColors : world.lockedColors;
 
@@ -55,29 +63,66 @@ export function WisdomDetailScreen({ navigation, route }: WisdomDetailScreenProp
           </View>
         </LinearGradient>
 
-        <DetailSection title="What you'll learn">
+        <DetailSection title="How you'll grow">
           <Text style={styles.detailBodyText}>{description}</Text>
           <Text style={styles.detailBodyText}>
-            Cloud will help you notice the choice, name what matters, and pick the wiser next step.
+            Cloud will help you become someone who notices the choice, names what matters, and takes the wiser next step.
           </Text>
         </DetailSection>
 
         <View style={styles.actionGrid}>
-          <ActionButton icon="book-outline" label="Read Myself" highlighted />
-          <ActionButton icon="volume-medium-outline" label="Read to Me" />
-          <ActionButton icon="chatbubble-ellipses-outline" label="Talk with Cloud" />
-          <ActionButton icon="trophy-outline" label="Start Challenge" />
+          <ActionButton
+            icon="book-outline"
+            label="Read Myself"
+            highlighted
+            onPress={() =>
+              navigation.navigate('WisdomJourney', {
+                screen: 'Reading',
+                params: { wisdomId: wisdom.id },
+              })
+            }
+          />
+          <ActionButton
+            icon="volume-medium-outline"
+            label="Read to Me"
+            onPress={() =>
+              navigation.navigate('WisdomJourney', {
+                screen: 'Reading',
+                params: { wisdomId: wisdom.id },
+              })
+            }
+          />
+          <ActionButton
+            icon="chatbubble-ellipses-outline"
+            label="Talk with Cloud"
+            onPress={() =>
+              navigation.navigate('WisdomJourney', {
+                screen: 'TalkWithCloud',
+                params: { wisdomId: wisdom.id },
+              })
+            }
+          />
+          <ActionButton
+            icon="trophy-outline"
+            label="Start Challenge"
+            onPress={() =>
+              navigation.navigate('WisdomJourney', {
+                screen: 'Challenge',
+                params: { wisdomId: wisdom.id },
+              })
+            }
+          />
         </View>
 
-        <DetailSection title="What you'll earn">
+        <DetailSection title="Who you'll become">
           <View style={styles.earnGrid}>
-            <EarnItem icon="sparkles" label="Wisdom Gained" value={title} />
-            <EarnItem icon="map-outline" label="Journey Progress" value={globalIdentity.completed} />
-            <EarnItem icon="star-outline" label="Next Identity" value={globalIdentity.next} />
+            <EarnItem icon="sparkles" label="Wiser at" value={title} />
+            <EarnItem icon="person-circle-outline" label="You are becoming..." value={globalIdentity.current} />
+            <EarnItem icon="star-outline" label="Growing toward" value={globalIdentity.next} />
           </View>
         </DetailSection>
 
-        <DetailSection title="Continue Learning">
+        <DetailSection title="Keep becoming wiser">
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recommendationRow}>
             {recommendedWisdoms.map((wisdom) => (
               <RecommendedCard key={wisdom.title} title={wisdom.title} image={wisdom.image} colors={wisdom.colors} />
