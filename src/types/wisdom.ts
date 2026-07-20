@@ -157,6 +157,10 @@ export type WisdomJourneyParamList = {
 
 export type RootStackParamList = {
   Home: undefined;
+  Library: undefined;
+  Journey: undefined;
+  Cloud: undefined;
+  Profile: undefined;
   WisdomDetail: {
     wisdomId: string;
   };

@@ -1667,6 +1667,165 @@ export const styles = StyleSheet.create({
   navLabelActive: {
     color: colors.accent.gold,
   },
+
+  libraryIntro: {
+    color: colors.text.muted,
+    fontSize: typography.size.body,
+    marginBottom: spacing.s24,
+  },
+  libraryCategoryBlock: {
+    marginBottom: spacing.s24,
+  },
+  libraryCategoryTitle: {
+    color: colors.text.primary,
+    fontSize: typography.size.card,
+    fontWeight: typography.weight.heavy,
+    marginBottom: spacing.s12,
+  },
+  wisdomListItem: {
+    alignItems: 'center',
+    backgroundColor: colors.background.white06,
+    borderColor: colors.border.white12,
+    borderRadius: radius.large,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: spacing.s12,
+    marginBottom: spacing.s12,
+    padding: spacing.s12,
+  },
+  wisdomListThumb: {
+    borderRadius: radius.medium,
+    height: 56,
+    width: 56,
+  },
+  wisdomListCopy: {
+    flex: 1,
+    gap: spacing.xxs,
+  },
+  wisdomListTitle: {
+    color: colors.text.primary,
+    fontSize: typography.size.body,
+    fontWeight: typography.weight.heavy,
+  },
+  wisdomListSubtitle: {
+    color: colors.text.muted,
+    fontSize: typography.size.bodySmall,
+  },
+  wisdomListStatusRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.xs,
+    marginTop: spacing.xxs,
+  },
+  wisdomListStatusText: {
+    color: colors.text.navMuted,
+    fontSize: typography.size.caption,
+    fontWeight: typography.weight.bold,
+  },
+
+  journeyProgressBlock: {
+    marginTop: spacing.s12,
+  },
+  journeyProgressRow: {
+    marginBottom: spacing.s18,
+  },
+  journeyProgressLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: spacing.xs,
+  },
+  journeyProgressTitle: {
+    color: colors.text.primary,
+    fontSize: typography.size.body,
+    fontWeight: typography.weight.heavy,
+  },
+  journeyProgressCount: {
+    color: colors.text.muted,
+    fontSize: typography.size.bodySmall,
+  },
+  journeyProgressTrack: {
+    backgroundColor: colors.background.white09,
+    borderRadius: radius.full,
+    height: 8,
+    overflow: 'hidden',
+  },
+  journeyProgressFill: {
+    backgroundColor: colors.accent.gold,
+    borderRadius: radius.full,
+    height: 8,
+  },
+
+  profileIdentityCard: {
+    alignItems: 'center',
+    backgroundColor: colors.background.white06,
+    borderColor: colors.border.white12,
+    borderRadius: radius.xl,
+    borderWidth: 1,
+    marginBottom: spacing.s24,
+    padding: spacing.s24,
+  },
+  profileIdentityIcon: {
+    marginBottom: spacing.s12,
+  },
+  profileIdentityLabel: {
+    color: colors.text.muted,
+    fontSize: typography.size.bodySmall,
+    marginBottom: spacing.xs,
+  },
+  profileIdentityValue: {
+    color: colors.text.primary,
+    fontSize: typography.size.titleSmall,
+    fontWeight: typography.weight.black,
+  },
+  profileStatRow: {
+    flexDirection: 'row',
+    gap: spacing.s12,
+  },
+  profileStatCard: {
+    alignItems: 'center',
+    backgroundColor: colors.background.white06,
+    borderColor: colors.border.white12,
+    borderRadius: radius.large,
+    borderWidth: 1,
+    flex: 1,
+    padding: spacing.s18,
+  },
+  profileStatValue: {
+    color: colors.accent.gold,
+    fontSize: typography.size.detailTitle,
+    fontWeight: typography.weight.black,
+  },
+  profileStatLabel: {
+    color: colors.text.muted,
+    fontSize: typography.size.caption,
+    marginTop: spacing.xs,
+    textAlign: 'center',
+  },
+
+  cloudComingSoonWrap: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.s24,
+  },
+  cloudComingSoonAvatar: {
+    height: 140,
+    marginBottom: spacing.s24,
+    width: 140,
+  },
+  cloudComingSoonTitle: {
+    color: colors.text.primary,
+    fontSize: typography.size.titleSmall,
+    fontWeight: typography.weight.black,
+    marginBottom: spacing.s12,
+    textAlign: 'center',
+  },
+  cloudComingSoonBody: {
+    color: colors.text.muted,
+    fontSize: typography.size.body,
+    lineHeight: typography.size.body * 1.5,
+    textAlign: 'center',
+  },
 });
 
 

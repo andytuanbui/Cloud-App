@@ -261,7 +261,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
         </View>
       </ScrollView>
 
-      <BottomNav />
+      <BottomNav active="Home" />
     </LinearGradient>
   );
 }
