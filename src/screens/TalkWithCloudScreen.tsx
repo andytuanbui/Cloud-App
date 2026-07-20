@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
 import { JourneyListItem, JourneyPanel } from '../components/JourneyPanel';
 import { JourneyScaffold } from '../components/JourneyScaffold';
 import { LoadingState } from '../components/LoadingState';
@@ -22,6 +23,8 @@ export function TalkWithCloudScreen({ navigation, route }: TalkWithCloudScreenPr
     return { conversation, wisdom, world };
   }, [route.params.wisdomId]);
 
+  const [selectedReplyIndex, setSelectedReplyIndex] = useState<number | null>(null);
+
   if (content.error) {
     throw content.error;
   }
@@ -31,6 +34,7 @@ export function TalkWithCloudScreen({ navigation, route }: TalkWithCloudScreenPr
   }
 
   const { conversation, wisdom, world } = content.data;
+  const hasReplied = selectedReplyIndex !== null;
 
   return (
     <JourneyScaffold
@@ -48,6 +52,32 @@ export function TalkWithCloudScreen({ navigation, route }: TalkWithCloudScreenPr
         <View style={styles.cloudBubble}>
           <Text style={styles.cloudBubbleText}>{conversation.openingQuestion}</Text>
         </View>
+
+        {!hasReplied ? (
+          <View style={styles.conversationReplyList}>
+            {conversation.suggestedReplies.map((reply, index) => (
+              <Pressable
+                key={reply}
+                style={styles.conversationReplyOption}
+                onPress={() => setSelectedReplyIndex(index)}
+              >
+                <Text style={styles.conversationReplyOptionText}>{reply}</Text>
+              </Pressable>
+            ))}
+          </View>
+        ) : (
+          <View style={styles.conversationExchange}>
+            <View style={styles.conversationUserBubble}>
+              <Text style={styles.conversationUserBubbleText}>{conversation.suggestedReplies[selectedReplyIndex]}</Text>
+            </View>
+            <View style={styles.cloudBubble}>
+              <Text style={styles.cloudBubbleText}>{conversation.replyResponses[selectedReplyIndex]}</Text>
+            </View>
+            <Pressable onPress={() => setSelectedReplyIndex(null)}>
+              <Text style={styles.conversationChangeAnswer}>Choose a different answer</Text>
+            </Pressable>
+          </View>
+        )}
       </JourneyPanel>
 
       <JourneyPanel title="Practice becoming wiser">

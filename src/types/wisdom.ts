@@ -93,6 +93,9 @@ export type Conversation = {
   wisdomId: string;
   openingQuestion: string;
   suggestedReplies: string[];
+  // One warm, specific response per suggestedReplies entry, same order.
+  // Cloud reacts to what the child picked - never a single generic line.
+  replyResponses: string[];
 };
 
 export type Reward = {

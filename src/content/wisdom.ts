@@ -628,6 +628,11 @@ export const conversations: Conversation[] = [
       'I would think about whether future me needs it.',
       'I would talk with someone I trust first.',
     ],
+    replyResponses: [
+      "That's a great question to ask. The things that help us grow are usually worth more than the things that just feel exciting for a minute.",
+      'Future you is someone worth listening to. A lot of wise choices are just being kind to the person you are about to become.',
+      "That's real wisdom, not a weakness. Even grown-ups who are good with money still talk things through with people they trust.",
+    ],
   },
   ...wisdoms
     .filter((wisdom) => wisdom.id !== 'needs-vs-wants')
@@ -636,6 +641,11 @@ export const conversations: Conversation[] = [
       wisdomId: wisdom.id,
       openingQuestion: `What kind of person could ${wisdom.title} help you become?`,
       suggestedReplies: ['Someone calmer.', 'Someone kinder.', 'Someone who chooses with care.'],
+      replyResponses: [
+        `Calm is a strength, not a quiet version of doing nothing. Practicing ${wisdom.title} is one way to build it.`,
+        `Kindness gets stronger every time you choose it on purpose - and ${wisdom.title} is good practice for that.`,
+        `Choosing with care means slowing down for one extra second before you act. ${wisdom.title} is built for exactly that.`,
+      ],
     })),
 ];
 

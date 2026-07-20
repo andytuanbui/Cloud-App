@@ -1356,6 +1356,47 @@ export const styles = StyleSheet.create({
     fontWeight: typography.weight.heavy,
     lineHeight: 23,
   },
+  conversationReplyList: {
+    gap: spacing.s10,
+    marginTop: spacing.s16,
+  },
+  conversationReplyOption: {
+    backgroundColor: colors.background.white06,
+    borderColor: colors.border.white14,
+    borderRadius: radius.large,
+    borderWidth: 1,
+    padding: spacing.s14,
+  },
+  conversationReplyOptionText: {
+    color: colors.text.primary,
+    fontSize: typography.size.bodyLarge,
+    fontWeight: typography.weight.bold,
+  },
+  conversationExchange: {
+    gap: spacing.s12,
+    marginTop: spacing.s16,
+  },
+  conversationUserBubble: {
+    alignSelf: 'flex-end',
+    backgroundColor: colors.background.white09,
+    borderColor: colors.border.white14,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    maxWidth: '88%',
+    padding: spacing.s14,
+  },
+  conversationUserBubbleText: {
+    color: colors.text.primary,
+    fontSize: typography.size.body,
+    fontWeight: typography.weight.bold,
+  },
+  conversationChangeAnswer: {
+    color: colors.text.muted,
+    fontSize: typography.size.bodySmall,
+    fontWeight: typography.weight.bold,
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+  },
   journeyPrimaryButton: {
     alignItems: 'center',
     borderRadius: radius.button,
