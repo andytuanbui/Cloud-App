@@ -4,6 +4,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { JourneyScreen } from '../screens/JourneyScreen';
 import { LibraryScreen } from '../screens/LibraryScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { TodayTimelinePrototypeScreen } from '../screens/TodayTimelinePrototypeScreen';
 import { WisdomDetailScreen } from '../screens/WisdomDetailScreen';
 import { RootStackParamList } from '../types/wisdom';
 import { WisdomJourneyNavigator } from './WisdomJourneyNavigator';
@@ -12,7 +13,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="TodayTimelinePrototype" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="TodayTimelinePrototype" component={TodayTimelinePrototypeScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Library" component={LibraryScreen} />
       <Stack.Screen name="Journey" component={JourneyScreen} />

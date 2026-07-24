@@ -160,6 +160,7 @@ export type WisdomJourneyParamList = {
 
 export type RootStackParamList = {
   Home: undefined;
+  TodayTimelinePrototype: undefined;
   Library: undefined;
   Journey: undefined;
   Cloud: undefined;
