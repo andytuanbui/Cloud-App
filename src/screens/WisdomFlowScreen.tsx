@@ -15,6 +15,7 @@ const cloudAvatar = require('../../assets/cloud/cloud-avatar.png');
 
 export function WisdomFlowScreen({ navigation, route }: Props) {
   const wisdom = getWisdomById(route.params.wisdomId);
+  const reviewMode = route.params.review === true;
   const { getProgress, updateProgress, completeStep, isRestoring } = useAppState();
   const progress = getProgress(route.params.wisdomId);
   const step = progress?.currentStep ?? 'opening';
@@ -37,6 +38,23 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
   }, [step]);
 
   if (!wisdom || isRestoring) return <View style={styles.loading}><Text style={styles.body}>Restoring your Wisdom…</Text></View>;
+
+  if (reviewMode) {
+    return (
+      <FlowScaffold step="read" reviewMode onBack={() => navigation.replace('Today')}>
+        <Text style={styles.title}>{wisdom.title}</Text>
+        <Text style={styles.reviewIntro}>Take another look at the ideas you practiced.</Text>
+        {wisdom.readingSections.map((section) => (
+          <View key={section.title} style={styles.readCard}>
+            <Text style={styles.cardTitle}>{section.title}</Text>
+            {section.text.map((line) => <Text key={line} style={styles.body}>{line}</Text>)}
+            {section.examples?.map((example) => <Text key={example} style={styles.bullet}>• {example}</Text>)}
+          </View>
+        ))}
+        <WisdomButton label="Return to Today" onPress={() => navigation.replace('Today')} />
+      </FlowScaffold>
+    );
+  }
 
   const goNext = (next: WisdomStep) => completeStep(wisdom.id, step, next);
   const goBack = previousStep
@@ -265,6 +283,7 @@ const styles = StyleSheet.create({
   input: { backgroundColor: '#FFFFFF', borderColor: '#CEDCD7', borderRadius: 16, borderWidth: 1, color: '#172A43', fontSize: 16, marginBottom: 12, minHeight: 58, padding: 15 },
   responseCard: { alignSelf: 'flex-end', backgroundColor: '#173B68', borderRadius: 18, marginVertical: 12, maxWidth: '88%', padding: 15 },
   responseText: { color: '#FFFFFF', fontSize: 16, lineHeight: 22 },
+  reviewIntro: { color: '#536760', fontSize: 15, lineHeight: 22, marginBottom: 16 },
   feedbackWrong: { backgroundColor: '#FFF1E8', borderRadius: 15, marginTop: 14, padding: 14 },
   feedbackCorrect: { backgroundColor: '#E6F5EE', borderRadius: 15, marginTop: 14, padding: 14 },
   feedbackText: { color: '#334B45', fontSize: 15, fontWeight: '700', lineHeight: 21 },

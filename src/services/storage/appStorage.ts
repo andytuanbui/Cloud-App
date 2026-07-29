@@ -16,3 +16,7 @@ export async function loadAppState(): Promise<PersistedAppState | null> {
 export async function saveAppState(state: PersistedAppState): Promise<void> {
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
+
+export async function clearAppState(): Promise<void> {
+  await AsyncStorage.removeItem(STORAGE_KEY);
+}

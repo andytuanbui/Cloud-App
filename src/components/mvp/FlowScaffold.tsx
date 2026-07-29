@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { PropsWithChildren } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { PropsWithChildren, useEffect, useRef } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { wisdomSteps, WisdomStep } from '../../state/types';
 
 const titles: Record<WisdomStep, string> = {
@@ -16,39 +16,58 @@ const titles: Record<WisdomStep, string> = {
 export function FlowScaffold({
   step,
   onBack,
+  reviewMode,
   children,
-}: PropsWithChildren<{ step: WisdomStep; onBack?: () => void }>) {
+}: PropsWithChildren<{ step: WisdomStep; onBack?: () => void; reviewMode?: boolean }>) {
   const stepIndex = wisdomSteps.indexOf(step);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ animated: false, y: 0 });
+  }, [reviewMode, step]);
+
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
         {onBack ? (
-          <Pressable accessibilityLabel="Go back" onPress={onBack} style={styles.back}>
+          <Pressable accessibilityLabel="Go back" accessibilityRole="button" onPress={onBack} style={styles.back}>
             <Ionicons name="arrow-back" size={24} color="#19304E" />
           </Pressable>
         ) : (
           <View style={styles.back} />
         )}
         <View style={styles.progressWrap}>
-          <Text style={styles.stepText}>Step {stepIndex + 1} of {wisdomSteps.length}</Text>
-          <View style={styles.progress}>
-            {wisdomSteps.map((item, index) => (
-              <View key={item} style={[styles.segment, index <= stepIndex && styles.segmentActive]} />
-            ))}
-          </View>
+          <Text style={styles.stepText}>
+            {reviewMode ? 'Review Wisdom' : `Step ${stepIndex + 1} of ${wisdomSteps.length}`}
+          </Text>
+          {!reviewMode && (
+            <View style={styles.progress}>
+              {wisdomSteps.map((item, index) => (
+                <View key={item} style={[styles.segment, index <= stepIndex && styles.segmentActive]} />
+              ))}
+            </View>
+          )}
         </View>
         <View style={styles.back} />
       </View>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={styles.eyebrow}>{titles[step]}</Text>
-        {children}
-      </ScrollView>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.keyboardArea}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          keyboardDismissMode="interactive"
+          keyboardShouldPersistTaps="handled"
+          ref={scrollRef}
+        >
+          <Text style={styles.eyebrow}>{reviewMode ? 'Review' : titles[step]}</Text>
+          {children}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { backgroundColor: '#F5FAF8', flex: 1 },
+  keyboardArea: { flex: 1 },
   header: { alignItems: 'center', flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 12 },
   back: { alignItems: 'center', height: 44, justifyContent: 'center', width: 44 },
   progressWrap: { flex: 1 },
