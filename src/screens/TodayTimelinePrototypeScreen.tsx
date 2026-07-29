@@ -35,7 +35,7 @@ type DisplayWisdom = TimelineWisdom & {
   label: string;
 };
 
-const cloudHero = require('../../assets/cloud/cloud-hero-wave.png');
+const cloudHomeGarden = require('../../assets/cloud/cloud-home-garden.png');
 const cloudThinking = require('../../assets/cloud/cloud-thinking.png');
 const cloudFriend = require('../../assets/cloud/cloud-helps-friend.png');
 const needsWants = require('../../assets/cloud/needs-wants-jars.png');
@@ -138,7 +138,7 @@ export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
 
     setTimeout(() => {
       setDayIndex((current) => Math.min(current + 1, timelineSeeds.length - 2));
-      scrollRef.current?.scrollTo({ animated: true, y: 214 });
+      scrollRef.current?.scrollTo({ animated: true, y: 0 });
     }, 190);
   };
 
@@ -156,7 +156,6 @@ export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={timelineStyles.content}
-        onContentSizeChange={() => scrollRef.current?.scrollTo({ animated: false, y: 214 })}
       >
         <TopEnvironment />
         <Pressable onPress={() => setIsTomorrowOpen(true)}>
@@ -195,31 +194,13 @@ export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
 function TopEnvironment() {
   return (
     <View style={timelineStyles.hero}>
-      <View style={timelineStyles.heroLight} />
-      <View style={timelineStyles.window}>
-        <LinearGradient colors={['#BFE9FF', '#FFE6B7']} style={timelineStyles.windowSky}>
-          <View style={timelineStyles.sun} />
-          <View style={timelineStyles.hillBack} />
-          <View style={timelineStyles.hillFront} />
-        </LinearGradient>
-      </View>
-      <View style={timelineStyles.shelf}>
-        <View style={timelineStyles.bookTall} />
-        <View style={timelineStyles.bookShort} />
-        <View style={timelineStyles.plantPot}>
-          <Ionicons name="leaf" size={22} color="#4DAA67" />
-        </View>
-      </View>
-      <Image source={cloudHero} resizeMode="contain" style={timelineStyles.heroCloud} />
+      <Image source={cloudHomeGarden} resizeMode="cover" style={timelineStyles.heroSceneImage} />
+      <LinearGradient colors={['rgba(255,255,255,0.7)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0)']} style={timelineStyles.heroSceneWash} />
       <View style={timelineStyles.heroBubble}>
         <Text style={timelineStyles.heroGreeting}>Good morning, Alex.</Text>
-        <Text style={timelineStyles.heroLine}>Cloud is watering the flowers today.</Text>
-      </View>
-      <View style={timelineStyles.desk}>
-        <Ionicons name="flower-outline" size={28} color="#5CA875" />
-        <View style={timelineStyles.storybook}>
-          <Text style={timelineStyles.storybookText}>today</Text>
-        </View>
+        <Text style={timelineStyles.heroLine}>The flowers finally started blooming today.</Text>
+        <Text style={timelineStyles.heroLine}>I'm glad you came by.</Text>
+        <View style={timelineStyles.heroBubbleTail} />
       </View>
     </View>
   );
@@ -343,7 +324,7 @@ const timelineStyles = StyleSheet.create({
   hero: {
     backgroundColor: '#F8FCFB',
     borderRadius: 34,
-    height: 330,
+    height: 374,
     marginBottom: 18,
     overflow: 'hidden',
     position: 'relative',
@@ -351,6 +332,22 @@ const timelineStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 18 },
     shadowOpacity: 0.08,
     shadowRadius: 28,
+  },
+  heroSceneImage: {
+    bottom: 0,
+    height: '100%',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '100%',
+  },
+  heroSceneWash: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
   heroLight: {
     backgroundColor: '#FFF2CD',
@@ -440,16 +437,16 @@ const timelineStyles = StyleSheet.create({
     zIndex: 4,
   },
   heroBubble: {
-    backgroundColor: 'rgba(255,255,255,0.86)',
+    backgroundColor: 'rgba(255,255,255,0.78)',
     borderColor: 'rgba(255,255,255,0.96)',
-    borderRadius: 24,
+    borderRadius: 26,
     borderWidth: 1,
-    paddingHorizontal: 18,
-    paddingVertical: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     position: 'absolute',
-    left: 24,
-    top: 174,
-    width: 186,
+    left: 18,
+    top: 24,
+    width: 188,
     zIndex: 5,
   },
   heroGreeting: {
@@ -463,7 +460,17 @@ const timelineStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     lineHeight: 18,
-    marginTop: 6,
+    marginTop: 5,
+  },
+  heroBubbleTail: {
+    backgroundColor: 'rgba(255,255,255,0.78)',
+    borderBottomRightRadius: 8,
+    bottom: -7,
+    height: 18,
+    position: 'absolute',
+    right: 34,
+    transform: [{ rotate: '45deg' }],
+    width: 18,
   },
   desk: {
     alignItems: 'center',

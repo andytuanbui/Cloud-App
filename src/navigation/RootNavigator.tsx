@@ -1,27 +1,23 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CloudScreen } from '../screens/CloudScreen';
-import { HomeScreen } from '../screens/HomeScreen';
-import { JourneyScreen } from '../screens/JourneyScreen';
+import { FamilyScreen } from '../screens/FamilyScreen';
 import { LibraryScreen } from '../screens/LibraryScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
-import { TodayTimelinePrototypeScreen } from '../screens/TodayTimelinePrototypeScreen';
-import { WisdomDetailScreen } from '../screens/WisdomDetailScreen';
+import { TodayScreen } from '../screens/TodayScreen';
+import { WisdomFlowScreen } from '../screens/WisdomFlowScreen';
 import { RootStackParamList } from '../types/wisdom';
-import { WisdomJourneyNavigator } from './WisdomJourneyNavigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="TodayTimelinePrototype" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="TodayTimelinePrototype" component={TodayTimelinePrototypeScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Navigator initialRouteName="Today" screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
+      <Stack.Screen name="Today" component={TodayScreen} />
+      <Stack.Screen name="WisdomFlow" component={WisdomFlowScreen} />
       <Stack.Screen name="Library" component={LibraryScreen} />
-      <Stack.Screen name="Journey" component={JourneyScreen} />
       <Stack.Screen name="Cloud" component={CloudScreen} />
+      <Stack.Screen name="Family" component={FamilyScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="WisdomDetail" component={WisdomDetailScreen} />
-      <Stack.Screen name="WisdomJourney" component={WisdomJourneyNavigator} />
     </Stack.Navigator>
   );
 }

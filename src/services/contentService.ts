@@ -82,6 +82,14 @@ export async function getCloudAvatar(): Promise<ImageSourcePropType> {
   return resolveLocal(assets.avatar);
 }
 
+export async function getCloudHeroWaveImage(): Promise<ImageSourcePropType> {
+  return resolveLocal(assets.cloudHeroWave);
+}
+
+export async function getCloudThinkingImage(): Promise<ImageSourcePropType> {
+  return resolveLocal(assets.next);
+}
+
 export async function getCloudDeskImage(): Promise<ImageSourcePropType> {
   return resolveLocal(assets.threeJars);
 }

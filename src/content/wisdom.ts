@@ -10,6 +10,7 @@ import {
 } from '../types/wisdom';
 
 export const assets = {
+  cloudHeroWave: require('../../assets/cloud/cloud-hero-wave.png'),
   homeBedroom: require('../../assets/cloud/home-bedroom-scene.png'),
   needsWantsJars: require('../../assets/cloud/needs-wants-jars.png'),
   lockedStorybook: require('../../assets/cloud/locked-storybook.png'),

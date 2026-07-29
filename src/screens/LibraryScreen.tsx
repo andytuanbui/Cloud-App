@@ -1,68 +1,48 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
-import { LoadingState } from '../components/LoadingState';
-import { WisdomListItem } from '../components/WisdomListItem';
-import { useAsyncResource } from '../hooks/useAsyncResource';
-import { getCategories, getWisdomsForCategory } from '../services/contentService';
-import { colors } from '../theme';
-import { styles } from '../theme/styles';
-import { Category, RootStackParamList, Wisdom } from '../types/wisdom';
+import { WisdomButton } from '../components/mvp/WisdomButton';
+import { todayWisdom } from '../content/wisdoms';
+import { useAppState } from '../state/useAppState';
+import { RootStackParamList } from '../types/wisdom';
 
-type LibraryScreenProps = NativeStackScreenProps<RootStackParamList, 'Library'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Library'>;
 
-type CategorySection = {
-  category: Category;
-  wisdoms: Wisdom[];
-};
-
-// Every wisdom stays here once it exists, whatever its status - the library
-// is a growing personal reference, not a one-way progress bar.
-export function LibraryScreen({ navigation }: LibraryScreenProps) {
-  const content = useAsyncResource(async () => {
-    const categories = await getCategories();
-    const sections: CategorySection[] = await Promise.all(
-      categories.map(async (category) => ({
-        category,
-        wisdoms: await getWisdomsForCategory(category.id),
-      })),
-    );
-
-    return sections;
-  }, []);
-
-  if (content.error) {
-    throw content.error;
-  }
-
-  if (!content.data) {
-    return <LoadingState />;
-  }
-
+export function LibraryScreen({ navigation }: Props) {
+  const { getProgress } = useAppState();
+  const progress = getProgress(todayWisdom.id);
   return (
-    <LinearGradient colors={colors.gradient.homeBackground} style={styles.phone}>
-      <ScrollView style={styles.screen} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerRow}>
-          <Text style={styles.sectionTitle}>Library</Text>
-        </View>
-        <Text style={styles.libraryIntro}>Every wisdom you've read stays here, ready whenever you want it again.</Text>
-
-        {content.data.map(({ category, wisdoms }) => (
-          <View key={category.id} style={styles.libraryCategoryBlock}>
-            <Text style={styles.libraryCategoryTitle}>{category.title}</Text>
-            {wisdoms.map((wisdom) => (
-              <WisdomListItem
-                key={wisdom.id}
-                wisdom={wisdom}
-                thumbnail={wisdom.coverImage}
-                onPress={() => navigation.navigate('WisdomDetail', { wisdomId: wisdom.id })}
-              />
-            ))}
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title}>Wisdoms</Text>
+        <Text style={styles.intro}>Return to ideas you have practiced and build your Understanding over time.</Text>
+        <View style={styles.card}>
+          <Image source={todayWisdom.artwork} style={styles.image} />
+          <View style={styles.body}>
+            <Text style={styles.category}>{todayWisdom.category}</Text>
+            <Text style={styles.cardTitle}>{todayWisdom.title}</Text>
+            <Text style={styles.summary}>{todayWisdom.summary}</Text>
+            <WisdomButton
+              label={progress?.completed ? 'View Completion' : progress ? 'Continue Wisdom' : 'Start Wisdom'}
+              onPress={() => navigation.navigate('WisdomFlow', { wisdomId: todayWisdom.id })}
+            />
           </View>
-        ))}
+        </View>
       </ScrollView>
       <BottomNav active="Library" />
-    </LinearGradient>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { backgroundColor: '#F5FAF8', flex: 1 },
+  content: { padding: 20 },
+  title: { color: '#172A43', fontSize: 30, fontWeight: '900', marginTop: 12 },
+  intro: { color: '#596A65', fontSize: 16, lineHeight: 23, marginBottom: 24, marginTop: 8 },
+  card: { backgroundColor: '#FFFFFF', borderRadius: 24, overflow: 'hidden' },
+  image: { height: 190, width: '100%' },
+  body: { padding: 18 },
+  category: { color: '#347665', fontSize: 13, fontWeight: '800' },
+  cardTitle: { color: '#172A43', fontSize: 24, fontWeight: '900', marginTop: 5 },
+  summary: { color: '#586965', fontSize: 15, lineHeight: 22, marginBottom: 18, marginTop: 7 },
+});

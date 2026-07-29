@@ -2,15 +2,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
 import { RootNavigator } from './src/navigation/RootNavigator';
-import { styles } from './src/theme/styles';
+import { AppStateProvider } from './src/state/AppStateProvider';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" />
-        <RootNavigator />
-      </SafeAreaView>
-    </NavigationContainer>
+    <AppStateProvider>
+      <NavigationContainer>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F5FAF8' }}>
+          <StatusBar style="dark" />
+          <RootNavigator />
+        </SafeAreaView>
+      </NavigationContainer>
+    </AppStateProvider>
   );
 }

@@ -83,7 +83,7 @@ export function JourneyScreen({ navigation: _navigation }: JourneyScreenProps) {
           })}
         </View>
       </ScrollView>
-      <BottomNav active="Journey" />
+      <BottomNav />
     </LinearGradient>
   );
 }
