@@ -15,6 +15,8 @@ import {
   View,
 } from 'react-native';
 import { colors } from '../theme';
+import { getProfileGreeting } from '../state/profileValidation';
+import { useAppState } from '../state/useAppState';
 import { RootStackParamList } from '../types/wisdom';
 
 type TimelineProps = NativeStackScreenProps<RootStackParamList, 'TodayTimelinePrototype'>;
@@ -95,6 +97,7 @@ const timelineSeeds: TimelineWisdom[] = [
 ];
 
 export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
+  const { profile } = useAppState();
   const [dayIndex, setDayIndex] = useState(0);
   const [isTomorrowOpen, setIsTomorrowOpen] = useState(false);
   const transition = useRef(new Animated.Value(1)).current;
@@ -157,7 +160,7 @@ export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={timelineStyles.content}
       >
-        <TopEnvironment />
+        <TopEnvironment greeting={getProfileGreeting(profile.name)} />
         <Pressable onPress={() => setIsTomorrowOpen(true)}>
           <TimelineCard isUpcoming wisdom={tomorrowWisdom} />
         </Pressable>
@@ -191,13 +194,13 @@ export function TodayTimelinePrototypeScreen({ navigation }: TimelineProps) {
   );
 }
 
-function TopEnvironment() {
+function TopEnvironment({ greeting }: { greeting: string }) {
   return (
     <View style={timelineStyles.hero}>
       <Image source={cloudHomeGarden} resizeMode="cover" style={timelineStyles.heroSceneImage} />
       <LinearGradient colors={['rgba(255,255,255,0.7)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0)']} style={timelineStyles.heroSceneWash} />
       <View style={timelineStyles.heroBubble}>
-        <Text style={timelineStyles.heroGreeting}>Good morning, Alex.</Text>
+        <Text style={timelineStyles.heroGreeting}>{greeting}</Text>
         <Text style={timelineStyles.heroLine}>The flowers finally started blooming today.</Text>
         <Text style={timelineStyles.heroLine}>I'm glad you came by.</Text>
         <View style={timelineStyles.heroBubbleTail} />

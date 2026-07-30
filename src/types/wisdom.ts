@@ -159,6 +159,7 @@ export type WisdomJourneyParamList = {
 };
 
 export type RootStackParamList = {
+  ProfileSetup: undefined;
   Today: undefined;
   WisdomFlow: { wisdomId: string; review?: boolean };
   Family: undefined;
@@ -168,6 +169,7 @@ export type RootStackParamList = {
   Journey: undefined;
   Cloud: undefined;
   Profile: undefined;
+  EditProfile: undefined;
   WisdomDetail: {
     wisdomId: string;
   };
