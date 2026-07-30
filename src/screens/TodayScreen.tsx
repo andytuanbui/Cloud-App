@@ -3,18 +3,18 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
 import { WisdomButton } from '../components/mvp/WisdomButton';
-import { todayWisdom } from '../content/wisdoms';
 import { useAppState } from '../state/useAppState';
+import { useDailyWisdoms } from '../state/useDailyWisdoms';
 import { RootStackParamList } from '../types/wisdom';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Today'>;
 const cloud = require('../../assets/cloud/cloud-home-garden.png');
 
 export function TodayScreen({ navigation }: Props) {
-  const { profile, getProgress, isRestoring } = useAppState();
-  const progress = getProgress(todayWisdom.id);
-  const started = Boolean(progress && (progress.openingAnswer || progress.completedSteps.length));
-  const completed = Boolean(progress?.completed);
+  const { profile, isRestoring } = useAppState();
+  const { todayWisdom, todayProgress, tomorrowWisdomExists } = useDailyWisdoms();
+  const started = Boolean(todayProgress);
+  const completed = Boolean(todayProgress?.completed);
 
   if (isRestoring) {
     return (
@@ -37,47 +37,70 @@ export function TodayScreen({ navigation }: Props) {
         </View>
 
         <Text style={styles.sectionTitle}>Today’s Wisdom</Text>
-        <View style={styles.card}>
-          <Image source={todayWisdom.artwork} resizeMode="cover" style={styles.cardImage} />
-          <View style={styles.cardBody}>
-            <View style={styles.metaRow}>
-              <Text style={styles.category}>{todayWisdom.category}</Text>
-              <Text style={styles.minutes}>{todayWisdom.estimatedMinutes} min</Text>
-            </View>
-            <Text style={styles.cardTitle}>{todayWisdom.title}</Text>
-            <Text style={styles.summary}>{todayWisdom.summary}</Text>
-            {completed && (
-              <View style={styles.completedPanel}>
-                <View style={styles.completedHeader}>
-                  <Ionicons name="checkmark-circle" size={22} color="#25735F" />
-                  <Text style={styles.completeText}>Completed today</Text>
-                </View>
-                <Text style={styles.completedReinforcement}>You practiced thoughtful money choices.</Text>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => navigation.navigate('WisdomFlow', { wisdomId: todayWisdom.id, review: true })}
-                  style={({ pressed }) => [styles.reviewAction, pressed && styles.reviewActionPressed]}
-                >
-                  <Text style={styles.reviewActionText}>Review Wisdom</Text>
-                  <Ionicons name="arrow-forward" size={17} color="#245F53" />
-                </Pressable>
+        {todayWisdom ? (
+          <View style={styles.card}>
+            <Image source={todayWisdom.artwork} resizeMode="cover" style={styles.cardImage} />
+            <View style={styles.cardBody}>
+              <View style={styles.metaRow}>
+                <Text style={styles.category}>{todayWisdom.category}</Text>
+                <Text style={styles.minutes}>{todayWisdom.estimatedMinutes} min</Text>
               </View>
-            )}
-            {!completed && (
-              <WisdomButton
-                label={started ? 'Continue Wisdom' : 'Start Wisdom'}
-                onPress={() => navigation.navigate('WisdomFlow', { wisdomId: todayWisdom.id })}
-              />
-            )}
+              <Text style={styles.cardTitle}>{todayWisdom.title}</Text>
+              <Text style={styles.summary}>{todayWisdom.summary}</Text>
+              {completed && (
+                <View style={styles.completedPanel}>
+                  <View style={styles.completedHeader}>
+                    <Ionicons name="checkmark-circle" size={22} color="#25735F" />
+                    <Text style={styles.completeText}>Completed today</Text>
+                  </View>
+                  <Text style={styles.completedReinforcement}>{todayWisdom.skillOutcome}.</Text>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() =>
+                      navigation.navigate('WisdomFlow', {
+                        wisdomId: todayWisdom.id,
+                        review: true,
+                      })
+                    }
+                    style={({ pressed }) => [styles.reviewAction, pressed && styles.reviewActionPressed]}
+                  >
+                    <Text style={styles.reviewActionText}>Review Wisdom</Text>
+                    <Ionicons name="arrow-forward" size={17} color="#245F53" />
+                  </Pressable>
+                </View>
+              )}
+              {!completed && (
+                <WisdomButton
+                  label={started ? 'Continue Wisdom' : 'Start Wisdom'}
+                  onPress={() => navigation.navigate('WisdomFlow', { wisdomId: todayWisdom.id })}
+                />
+              )}
+            </View>
           </View>
-        </View>
+        ) : (
+          <View style={[styles.card, styles.caughtUpCard]}>
+            <Image source={require('../../assets/cloud/cloud-reading.png')} style={styles.caughtUpCloud} />
+            <Text style={styles.cardTitle}>You’re all caught up</Text>
+            <Text style={styles.caughtUpText}>
+              You’ve practiced every available Wisdom. More thinking and practice will be added soon.
+            </Text>
+          </View>
+        )}
 
         <Text style={styles.sectionTitle}>Tomorrow</Text>
         <View style={styles.lockedCard}>
           <View style={styles.lockIcon}><Ionicons name="lock-closed" size={20} color="#65736F" /></View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.lockedTitle}>Cloud is preparing this for tomorrow</Text>
-            <Text style={styles.lockedBody}>A new Wisdom will be ready when you return.</Text>
+            <Text style={styles.lockedTitle}>
+              {tomorrowWisdomExists
+                ? 'Cloud is preparing this for tomorrow'
+                : 'More Wisdom is being prepared'}
+            </Text>
+            <Text style={styles.lockedBody}>
+              {tomorrowWisdomExists
+                ? 'A new Wisdom will be ready when you return.'
+                : 'New thinking and practice will be added soon.'}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -117,4 +140,7 @@ const styles = StyleSheet.create({
   lockIcon: { alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 20, height: 40, justifyContent: 'center', width: 40 },
   lockedTitle: { color: '#31433F', fontSize: 15, fontWeight: '800', lineHeight: 19 },
   lockedBody: { color: '#6A7874', fontSize: 13, lineHeight: 18, marginTop: 2 },
+  caughtUpCard: { alignItems: 'center', padding: 22 },
+  caughtUpCloud: { height: 108, marginBottom: 8, width: 108 },
+  caughtUpText: { color: '#52625F', fontSize: 15, lineHeight: 22, marginTop: 7, textAlign: 'center' },
 });

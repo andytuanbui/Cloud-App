@@ -1,20 +1,13 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { AppState as NativeAppState } from 'react-native';
+import { getLocalDateKey, isValidLocalDateKey } from '../services/date/dateService';
 import { clearAppState, loadAppState, saveAppState } from '../services/storage/appStorage';
+import { createDefaultAppState, migrateAppState } from './appStateMigration';
 import { PersistedAppState, WisdomProgress, WisdomStep } from './types';
-
-const defaultState: PersistedAppState = {
-  profile: {
-    id: 'alex',
-    name: 'Alex',
-    age: 10,
-    avatar: 'cloud',
-    currentIdentity: 'Thoughtful Thinker',
-  },
-  wisdomProgress: {},
-};
 
 type AppStateContextValue = PersistedAppState & {
   isRestoring: boolean;
+  currentDateKey: string;
   getProgress: (wisdomId: string) => WisdomProgress | undefined;
   updateProgress: (wisdomId: string, update: Partial<WisdomProgress>) => void;
   completeStep: (wisdomId: string, step: WisdomStep, nextStep: WisdomStep) => void;
@@ -24,6 +17,8 @@ export const AppStateContext = createContext<AppStateContextValue | undefined>(u
 
 declare global {
   var __cloudwiseReset: (() => Promise<void>) | undefined;
+  var __cloudwiseSetDate: ((dateKey: string) => void) | undefined;
+  var __cloudwiseClearDate: (() => void) | undefined;
 }
 
 function newProgress(wisdomId: string): WisdomProgress {
@@ -38,7 +33,17 @@ function newProgress(wisdomId: string): WisdomProgress {
 }
 
 export function AppStateProvider({ children }: PropsWithChildren) {
-  const [state, setState] = useState(defaultState);
+  const queryDateKey =
+    __DEV__ && typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('cloudwiseDate')
+      : null;
+  const initialDateKey =
+    queryDateKey && isValidLocalDateKey(queryDateKey) ? queryDateKey : getLocalDateKey();
+  const [dateOverride, setDateOverride] = useState<string | null>(
+    queryDateKey && isValidLocalDateKey(queryDateKey) ? queryDateKey : null,
+  );
+  const [currentDateKey, setCurrentDateKey] = useState(initialDateKey);
+  const [state, setState] = useState(() => createDefaultAppState(initialDateKey));
   const [isRestoring, setIsRestoring] = useState(true);
 
   useEffect(() => {
@@ -50,18 +55,21 @@ export function AppStateProvider({ children }: PropsWithChildren) {
 
       if (shouldReset) {
         await clearAppState();
-        window.history.replaceState({}, '', window.location.pathname);
-        setState(defaultState);
+        const params = new URLSearchParams(window.location.search);
+        params.delete('resetCloudwise');
+        const search = params.toString();
+        window.history.replaceState({}, '', `${window.location.pathname}${search ? `?${search}` : ''}`);
+        setState(createDefaultAppState(initialDateKey));
       } else {
         const saved = await loadAppState();
-        if (saved) setState({ ...defaultState, ...saved });
+        setState(migrateAppState(saved, initialDateKey));
       }
 
       setIsRestoring(false);
     }
 
     void restore();
-  }, []);
+  }, [initialDateKey]);
 
   useEffect(() => {
     if (!isRestoring) void saveAppState(state);
@@ -72,13 +80,57 @@ export function AppStateProvider({ children }: PropsWithChildren) {
 
     globalThis.__cloudwiseReset = async () => {
       await clearAppState();
-      setState(defaultState);
+      setState(createDefaultAppState(currentDateKey));
+    };
+    globalThis.__cloudwiseSetDate = (dateKey: string) => {
+      if (!isValidLocalDateKey(dateKey)) throw new Error('Use a valid YYYY-MM-DD local date key');
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('cloudwiseDate', dateKey);
+        window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+      }
+      setDateOverride(dateKey);
+      setCurrentDateKey(dateKey);
+    };
+    globalThis.__cloudwiseClearDate = () => {
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('cloudwiseDate');
+        window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+      }
+      setDateOverride(null);
+      setCurrentDateKey(getLocalDateKey());
     };
 
     return () => {
       delete globalThis.__cloudwiseReset;
+      delete globalThis.__cloudwiseSetDate;
+      delete globalThis.__cloudwiseClearDate;
     };
-  }, []);
+  }, [currentDateKey]);
+
+  const refreshDate = useCallback(() => {
+    setCurrentDateKey(dateOverride ?? getLocalDateKey());
+  }, [dateOverride]);
+
+  useEffect(() => {
+    const subscription = NativeAppState.addEventListener('change', (nextState) => {
+      if (nextState === 'active') refreshDate();
+    });
+    return () => subscription.remove();
+  }, [refreshDate]);
+
+  useEffect(() => {
+    if (isRestoring) return;
+    setState((current) =>
+      current.profile.lastOpenedDateKey === currentDateKey
+        ? current
+        : {
+            ...current,
+            profile: { ...current.profile, lastOpenedDateKey: currentDateKey },
+          },
+    );
+  }, [currentDateKey, isRestoring]);
 
   const getProgress = useCallback(
     (wisdomId: string) => state.wisdomProgress[wisdomId],
@@ -116,8 +168,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   }, []);
 
   const value = useMemo(
-    () => ({ ...state, isRestoring, getProgress, updateProgress, completeStep }),
-    [state, isRestoring, getProgress, updateProgress, completeStep],
+    () => ({ ...state, isRestoring, currentDateKey, getProgress, updateProgress, completeStep }),
+    [state, isRestoring, currentDateKey, getProgress, updateProgress, completeStep],
   );
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>;
