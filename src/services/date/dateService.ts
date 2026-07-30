@@ -38,6 +38,7 @@ export function compareLocalDateKeys(left: string, right: string): number {
 
 export function addLocalCalendarDays(dateKey: string, days: number): string {
   if (!isValidLocalDateKey(dateKey)) throw new Error(`Invalid local date key: ${dateKey}`);
+  if (!Number.isInteger(days)) throw new Error(`Calendar day offset must be an integer: ${days}`);
   const { year, month, day } = dateParts(dateKey);
   const localNoon = new Date(year, month - 1, day + days, 12);
   return getLocalDateKey(localNoon);

@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
 import { WisdomButton } from '../components/mvp/WisdomButton';
+import { getProfileGreeting } from '../state/profileValidation';
 import { useAppState } from '../state/useAppState';
 import { useDailyWisdoms } from '../state/useDailyWisdoms';
 import { RootStackParamList } from '../types/wisdom';
@@ -15,6 +16,7 @@ export function TodayScreen({ navigation }: Props) {
   const { todayWisdom, todayProgress, tomorrowWisdomExists } = useDailyWisdoms();
   const started = Boolean(todayProgress);
   const completed = Boolean(todayProgress?.completed);
+  const greeting = getProfileGreeting(profile.name);
 
   if (isRestoring) {
     return (
@@ -31,7 +33,7 @@ export function TodayScreen({ navigation }: Props) {
         <View style={styles.hero}>
           <Image source={cloud} resizeMode="cover" style={styles.heroImage} />
           <View style={styles.greeting}>
-            <Text style={styles.greetingTitle}>Good morning, {profile.name}.</Text>
+            <Text style={styles.greetingTitle}>{greeting}</Text>
             <Text style={styles.greetingText}>Let’s take a calm moment to think together.</Text>
           </View>
         </View>
