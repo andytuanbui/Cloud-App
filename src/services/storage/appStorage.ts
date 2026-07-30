@@ -3,11 +3,11 @@ import type { PersistedAppState } from '../../state/types';
 
 const STORAGE_KEY = '@cloudwise/app-state/v1';
 
-export async function loadAppState(): Promise<PersistedAppState | null> {
+export async function loadAppState(): Promise<unknown | null> {
   const value = await AsyncStorage.getItem(STORAGE_KEY);
   if (!value) return null;
   try {
-    return JSON.parse(value) as PersistedAppState;
+    return JSON.parse(value) as unknown;
   } catch {
     return null;
   }
