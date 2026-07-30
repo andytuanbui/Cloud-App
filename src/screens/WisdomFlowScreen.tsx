@@ -80,7 +80,7 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
       {step === 'read' && (
         <>
-          <Text style={styles.title}>Needs and wants</Text>
+          <Text style={styles.title}>Read and think</Text>
           {wisdom.readingSections.map((section) => (
             <View key={section.title} style={styles.readCard}>
               <Text style={styles.cardTitle}>{section.title}</Text>
