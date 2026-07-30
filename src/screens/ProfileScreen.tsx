@@ -1,74 +1,36 @@
 import { Ionicons } from '@expo/vector-icons';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
-import { LoadingState } from '../components/LoadingState';
-import { useAsyncResource } from '../hooks/useAsyncResource';
-import { getCategories, getWisdomsForCategory } from '../services/contentService';
-import { getCloudAvatar, getGlobalIdentity } from '../services/wisdomService';
-import { colors } from '../theme';
-import { styles } from '../theme/styles';
-import { RootStackParamList } from '../types/wisdom';
+import { useAppState } from '../state/useAppState';
 
-type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
-
-// The app celebrates identity, not scores - so the one number on this screen
-// is "wisdoms practiced," not points, coins, or a streak count.
-export function ProfileScreen({ navigation: _navigation }: ProfileScreenProps) {
-  const content = useAsyncResource(async () => {
-    const [avatar, globalIdentity, categories] = await Promise.all([
-      getCloudAvatar(),
-      getGlobalIdentity(),
-      getCategories(),
-    ]);
-    const wisdomsByCategory = await Promise.all(categories.map((category) => getWisdomsForCategory(category.id)));
-    const allWisdoms = wisdomsByCategory.flat();
-    const completedCount = allWisdoms.filter((wisdom) => wisdom.status === 'completed').length;
-    const worldsStarted = wisdomsByCategory.filter((wisdoms) =>
-      wisdoms.some((wisdom) => wisdom.status === 'completed' || wisdom.status === 'available'),
-    ).length;
-
-    return { avatar, completedCount, globalIdentity, worldsStarted };
-  }, []);
-
-  if (content.error) {
-    throw content.error;
-  }
-
-  if (!content.data) {
-    return <LoadingState />;
-  }
-
-  const { completedCount, globalIdentity, worldsStarted } = content.data;
-
+export function ProfileScreen() {
+  const { profile, wisdomProgress } = useAppState();
+  const completed = Object.values(wisdomProgress).filter((item) => item.completed).length;
   return (
-    <LinearGradient colors={colors.gradient.homeBackground} style={styles.phone}>
-      <ScrollView style={styles.screen} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.headerRow}>
-          <Text style={styles.sectionTitle}>Profile</Text>
+    <View style={styles.screen}>
+      <View style={styles.content}>
+        <View style={styles.avatar}><Ionicons name="person" size={40} color="#245A7A" /></View>
+        <Text style={styles.name}>{profile.name}</Text>
+        <Text style={styles.identity}>{profile.currentIdentity}</Text>
+        <View style={styles.card}>
+          <Text style={styles.value}>{completed}</Text>
+          <Text style={styles.label}>Wisdoms completed</Text>
+          <Text style={styles.note}>Every thoughtful choice is Practice for the next one.</Text>
         </View>
-
-        <View style={styles.profileIdentityCard}>
-          <View style={styles.profileIdentityIcon}>
-            <Ionicons name="person-circle-outline" size={32} color={colors.accent.gold} />
-          </View>
-          <Text style={styles.profileIdentityLabel}>You're becoming</Text>
-          <Text style={styles.profileIdentityValue}>{globalIdentity.current}</Text>
-        </View>
-
-        <View style={styles.profileStatRow}>
-          <View style={styles.profileStatCard}>
-            <Text style={styles.profileStatValue}>{completedCount}</Text>
-            <Text style={styles.profileStatLabel}>Wisdoms practiced</Text>
-          </View>
-          <View style={styles.profileStatCard}>
-            <Text style={styles.profileStatValue}>{worldsStarted}</Text>
-            <Text style={styles.profileStatLabel}>Worlds explored</Text>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
       <BottomNav active="Profile" />
-    </LinearGradient>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { backgroundColor: '#F5FAF8', flex: 1 },
+  content: { alignItems: 'center', flex: 1, padding: 24, paddingTop: 60 },
+  avatar: { alignItems: 'center', backgroundColor: '#DCEEF4', borderRadius: 45, height: 90, justifyContent: 'center', width: 90 },
+  name: { color: '#172A43', fontSize: 28, fontWeight: '900', marginTop: 16 },
+  identity: { color: '#377565', fontSize: 16, fontWeight: '800', marginTop: 4 },
+  card: { alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 22, marginTop: 30, padding: 24, width: '100%' },
+  value: { color: '#173A61', fontSize: 35, fontWeight: '900' },
+  label: { color: '#324B47', fontSize: 16, fontWeight: '800' },
+  note: { color: '#687873', fontSize: 14, lineHeight: 21, marginTop: 16, textAlign: 'center' },
+});

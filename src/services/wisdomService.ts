@@ -3,6 +3,8 @@ import {
   getCategory,
   getCloudAvatar as getContentCloudAvatar,
   getCloudDeskImage as getContentCloudDeskImage,
+  getCloudHeroWaveImage as getContentCloudHeroWaveImage,
+  getCloudThinkingImage as getContentCloudThinkingImage,
   getGlobalIdentity as getContentGlobalIdentity,
   getHomeBedroomImage as getContentHomeBedroomImage,
   getLockedStorybookImage as getContentLockedStorybookImage,
@@ -16,6 +18,14 @@ import { GlobalIdentity, RecommendedWisdomCard, Wisdom, WisdomWorld } from '../t
 
 export async function getCloudAvatar(): Promise<ImageSourcePropType> {
   return getContentCloudAvatar();
+}
+
+export async function getCloudHeroWaveImage(): Promise<ImageSourcePropType> {
+  return getContentCloudHeroWaveImage();
+}
+
+export async function getCloudThinkingImage(): Promise<ImageSourcePropType> {
+  return getContentCloudThinkingImage();
 }
 
 export async function getCloudDeskImage(): Promise<ImageSourcePropType> {

@@ -159,6 +159,9 @@ export type WisdomJourneyParamList = {
 };
 
 export type RootStackParamList = {
+  Today: undefined;
+  WisdomFlow: { wisdomId: string; review?: boolean };
+  Family: undefined;
   Home: undefined;
   TodayTimelinePrototype: undefined;
   Library: undefined;
