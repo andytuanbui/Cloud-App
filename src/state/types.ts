@@ -7,6 +7,9 @@ export type ChildProfile = {
   age: number;
   avatar: string;
   currentIdentity: string;
+  programStartedAt: string;
+  programStartDateKey: string;
+  lastOpenedDateKey: string;
 };
 
 export type WisdomProgress = {
