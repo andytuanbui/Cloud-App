@@ -16,3 +16,12 @@ export const radius = {
   poster: 30,
   full: 999,
 } as const;
+
+export const radii = {
+  small: 10,
+  medium: 16,
+  large: 22,
+  card: 24,
+  hero: 28,
+  round: 999,
+} as const;
