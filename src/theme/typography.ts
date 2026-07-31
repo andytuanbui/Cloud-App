@@ -27,3 +27,56 @@ export const typography = {
     black: '900',
   },
 } as const;
+
+export const typeStyles = {
+  display: {
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+    lineHeight: 38,
+  },
+  screenTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+    lineHeight: 34,
+  },
+  sectionTitle: {
+    fontSize: 21,
+    fontWeight: '700',
+    letterSpacing: -0.1,
+    lineHeight: 27,
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    letterSpacing: -0.1,
+    lineHeight: 26,
+  },
+  body: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+  },
+  supporting: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 21,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.25,
+    lineHeight: 18,
+  },
+  button: {
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 17,
+  },
+} as const;

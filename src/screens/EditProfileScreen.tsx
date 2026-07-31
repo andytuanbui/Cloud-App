@@ -1,23 +1,27 @@
-import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  Pressable,
-  ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
-import { WisdomButton } from '../components/mvp/WisdomButton';
 import { AgeSelector } from '../components/profile/AgeSelector';
 import { ProfileNameField } from '../components/profile/ProfileNameField';
+import {
+  AppText,
+  IconButton,
+  PrimaryButton,
+  Screen,
+  SecondaryButton,
+  SurfaceCard,
+} from '../components/ui';
 import {
   getProfileNameError,
   validateProfileDetails,
 } from '../state/profileValidation';
 import { useAppState } from '../state/useAppState';
+import { appColors, layout, space } from '../theme';
 import { RootStackParamList } from '../types/wisdom';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditProfile'>;
@@ -38,32 +42,33 @@ export function EditProfileScreen({ navigation }: Props) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.screen}
+      style={styles.keyboardArea}
     >
-      <ScrollView
+      <Screen
         contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+        scrollProps={{
+          keyboardDismissMode: Platform.OS === 'ios' ? 'interactive' : 'on-drag',
+          keyboardShouldPersistTaps: 'handled',
+        }}
       >
         <View style={styles.container}>
           <View style={styles.header}>
-            <Pressable
+            <IconButton
               accessibilityLabel="Cancel editing"
-              accessibilityRole="button"
+              icon="close"
               onPress={() => navigation.goBack()}
-              style={({ pressed }) => [styles.back, pressed && styles.pressed]}
-            >
-              <Ionicons name="close" size={23} color="#24405F" />
-            </Pressable>
-            <Text accessibilityRole="header" style={styles.title}>Edit profile</Text>
+            />
+            <AppText accessibilityRole="header" variant="sectionTitle">
+              Edit profile
+            </AppText>
             <View style={styles.headerSpacer} />
           </View>
 
-          <Text style={styles.intro}>
+          <AppText style={styles.intro} tone="secondary" variant="body">
             Update the name Cloud uses and the child’s age.
-          </Text>
+          </AppText>
 
-          <View style={styles.card}>
+          <SurfaceCard elevated style={styles.card}>
             <ProfileNameField
               error={getProfileNameError(name)}
               onChangeText={setName}
@@ -76,52 +81,63 @@ export function EditProfileScreen({ navigation }: Props) {
                 selectedAge={age}
               />
             </View>
-          </View>
+          </SurfaceCard>
 
           <View style={styles.actions}>
-            <WisdomButton
+            <PrimaryButton
               disabled={!validation.valid || unchanged}
               label="Save changes"
               onPress={save}
             />
             <View style={styles.cancel}>
-              <WisdomButton label="Cancel" onPress={() => navigation.goBack()} secondary />
+              <SecondaryButton label="Cancel" onPress={() => navigation.goBack()} />
             </View>
           </View>
         </View>
-      </ScrollView>
+      </Screen>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#F5FAF8', flex: 1 },
-  content: { flexGrow: 1, paddingBottom: 28, paddingHorizontal: 20, paddingTop: 14 },
-  container: { alignSelf: 'center', flex: 1, maxWidth: 500, width: '100%' },
-  header: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
-  back: {
+  keyboardArea: {
+    backgroundColor: appColors.canvas,
+    flex: 1,
+  },
+  content: {
+    flexGrow: 1,
+    paddingBottom: space.xl,
+    paddingTop: space.sm,
+  },
+  container: {
+    alignSelf: 'center',
+    flex: 1,
+    maxWidth: layout.maxContentWidth,
+    width: '100%',
+  },
+  header: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D7E3DF',
-    borderRadius: 22,
-    borderWidth: 1,
-    height: 44,
-    justifyContent: 'center',
-    width: 44,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  pressed: { opacity: 0.7 },
-  title: { color: '#172A43', fontSize: 25, fontWeight: '900' },
-  headerSpacer: { width: 44 },
-  intro: { color: '#596A65', fontSize: 15, lineHeight: 22, marginTop: 22, textAlign: 'center' },
+  headerSpacer: {
+    width: layout.minimumTouchTarget,
+  },
+  intro: {
+    marginTop: space.lg,
+    textAlign: 'center',
+  },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E1EAE7',
-    borderRadius: 22,
-    borderWidth: 1,
-    marginTop: 24,
-    padding: 18,
+    marginTop: space.xl,
+    padding: layout.cardPadding,
   },
-  ageField: { marginTop: 24 },
-  actions: { marginTop: 'auto', paddingTop: 24 },
-  cancel: { marginTop: 10 },
+  ageField: {
+    marginTop: space.xl,
+  },
+  actions: {
+    marginTop: space.xl,
+  },
+  cancel: {
+    marginTop: space.sm,
+  },
 });

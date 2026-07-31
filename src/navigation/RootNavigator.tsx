@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { AppText, Screen, SurfaceCard } from '../components/ui';
 import { CloudScreen } from '../screens/CloudScreen';
 import { EditProfileScreen } from '../screens/EditProfileScreen';
 import { FamilyScreen } from '../screens/FamilyScreen';
@@ -9,6 +10,7 @@ import { ProfileSetupScreen } from '../screens/setup/ProfileSetupScreen';
 import { TodayScreen } from '../screens/TodayScreen';
 import { WisdomFlowScreen } from '../screens/WisdomFlowScreen';
 import { useAppState } from '../state/useAppState';
+import { appColors, layout, radii, space } from '../theme';
 import { RootStackParamList } from '../types/wisdom';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,20 +20,42 @@ export function RootNavigator() {
 
   if (isRestoring) {
     return (
-      <View style={styles.loading}>
-        <Image source={require('../../assets/cloud/cloud-avatar.png')} style={styles.cloud} />
-        <Text style={styles.loadingText}>Getting CloudWise ready…</Text>
-      </View>
+      <Screen contentContainerStyle={styles.stateScreen} scroll={false}>
+        <View style={styles.avatarFrame}>
+          <Image
+            accessibilityIgnoresInvertColors
+            accessible={false}
+            source={require('../../assets/cloud/cloud-avatar.png')}
+            style={styles.cloud}
+          />
+        </View>
+        <AppText accessibilityLiveRegion="polite" style={styles.loadingText} tone="secondary">
+          Getting CloudWise ready…
+        </AppText>
+      </Screen>
     );
   }
 
   if (restoreError) {
     return (
-      <View style={styles.loading}>
-        <Image source={require('../../assets/cloud/cloud-avatar.png')} style={styles.cloud} />
-        <Text accessibilityRole="header" style={styles.errorTitle}>CloudWise needs a moment</Text>
-        <Text style={styles.errorText}>Close and reopen the app to try restoring this profile again.</Text>
-      </View>
+      <Screen contentContainerStyle={styles.stateScreen}>
+        <SurfaceCard elevated style={styles.errorCard} tone="caution">
+          <View style={styles.avatarFrame}>
+            <Image
+              accessibilityIgnoresInvertColors
+              accessible={false}
+              source={require('../../assets/cloud/cloud-avatar.png')}
+              style={styles.cloud}
+            />
+          </View>
+          <AppText accessibilityRole="header" style={styles.errorTitle} variant="cardTitle">
+            CloudWise needs a moment
+          </AppText>
+          <AppText style={styles.errorText} tone="secondary" variant="supporting">
+            Close and reopen the app to try restoring this profile again.
+          </AppText>
+        </SurfaceCard>
+      </Screen>
     );
   }
 
@@ -65,14 +89,43 @@ export function RootNavigator() {
 }
 
 const styles = StyleSheet.create({
-  loading: {
+  stateScreen: {
     alignItems: 'center',
-    backgroundColor: '#F5FAF8',
     flex: 1,
     justifyContent: 'center',
+    paddingBottom: space.xl,
   },
-  cloud: { height: 92, width: 92 },
-  loadingText: { color: '#40534E', fontSize: 16, fontWeight: '700', marginTop: 12 },
-  errorTitle: { color: '#172A43', fontSize: 22, fontWeight: '900', marginTop: 14 },
-  errorText: { color: '#596A65', fontSize: 15, lineHeight: 22, marginTop: 7, maxWidth: 320, textAlign: 'center' },
+  avatarFrame: {
+    alignItems: 'center',
+    backgroundColor: appColors.warmGoldSoft,
+    borderColor: appColors.surface,
+    borderRadius: radii.round,
+    borderWidth: 4,
+    height: 116,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    width: 116,
+  },
+  cloud: {
+    height: 108,
+    width: 108,
+  },
+  loadingText: {
+    marginTop: space.sm,
+    textAlign: 'center',
+  },
+  errorCard: {
+    alignItems: 'center',
+    maxWidth: 380,
+    padding: layout.cardPadding,
+    width: '100%',
+  },
+  errorTitle: {
+    marginTop: space.md,
+    textAlign: 'center',
+  },
+  errorText: {
+    marginTop: space.xs,
+    textAlign: 'center',
+  },
 });

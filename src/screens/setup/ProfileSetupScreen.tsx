@@ -1,21 +1,26 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useRef, useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useState } from 'react';
 import {
   BackHandler,
   Image,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
-  ScrollView,
   StyleSheet,
-  Text,
-  TextInput,
   View,
 } from 'react-native';
 import { AgeSelector } from '../../components/profile/AgeSelector';
 import { ProfileNameField } from '../../components/profile/ProfileNameField';
 import { SetupProgress } from '../../components/profile/SetupProgress';
-import { WisdomButton } from '../../components/mvp/WisdomButton';
+import {
+  AppText,
+  IconButton,
+  PrimaryButton,
+  Screen,
+  SecondaryButton,
+  StatusPanel,
+  SurfaceCard,
+} from '../../components/ui';
 import {
   getProfileNameError,
   isValidProfileAge,
@@ -23,6 +28,7 @@ import {
   validateProfileDetails,
 } from '../../state/profileValidation';
 import { useAppState } from '../../state/useAppState';
+import { appColors, layout, radii, shadows, space } from '../../theme';
 
 type SetupStep = 'welcome' | 'name' | 'age' | 'ready';
 const stepNumber: Record<SetupStep, number> = {
@@ -38,7 +44,6 @@ export function ProfileSetupScreen() {
   const [name, setName] = useState(profile.name);
   const [age, setAge] = useState<number | null>(profile.age);
   const [showNameError, setShowNameError] = useState(false);
-  const nameInput = useRef<TextInput>(null);
   const nameError = showNameError ? getProfileNameError(name) : undefined;
 
   const goBack = () => {
@@ -79,61 +84,71 @@ export function ProfileSetupScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.screen}
+      style={styles.keyboardArea}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+      <Screen
+        contentContainerStyle={styles.screenContent}
+        scrollProps={{
+          keyboardDismissMode: Platform.OS === 'ios' ? 'interactive' : 'on-drag',
+          keyboardShouldPersistTaps: 'handled',
+        }}
       >
         <View style={styles.container}>
           <SetupProgress step={stepNumber[step]} />
 
           {step !== 'welcome' && (
-            <Pressable
-              accessibilityLabel="Go back"
-              accessibilityRole="button"
-              onPress={goBack}
-              style={({ pressed }) => [styles.back, pressed && styles.pressed]}
-            >
-              <Ionicons name="arrow-back" size={22} color="#24405F" />
-            </Pressable>
+            <View style={styles.backRow}>
+              <IconButton accessibilityLabel="Go back" icon="arrow-back" onPress={goBack} />
+            </View>
           )}
 
           {step === 'welcome' && (
             <View style={styles.step}>
-              <Image
-                accessibilityIgnoresInvertColors
-                accessible={false}
-                source={require('../../../assets/cloud/cloud-avatar.png')}
-                style={styles.cloud}
-              />
-              <Text accessibilityRole="header" style={styles.title}>Welcome to CloudWise</Text>
-              <Text style={styles.body}>
+              <LinearGradient
+                colors={[appColors.warmGoldSoft, appColors.primarySoft]}
+                style={styles.hero}
+              >
+                <Image
+                  accessibilityIgnoresInvertColors
+                  accessible={false}
+                  resizeMode="contain"
+                  source={require('../../../assets/cloud/cloud-hero-wave.png')}
+                  style={styles.heroImage}
+                />
+              </LinearGradient>
+              <AppText accessibilityRole="header" style={styles.title} variant="display">
+                Welcome to CloudWise
+              </AppText>
+              <AppText style={styles.body} tone="secondary" variant="body">
                 Cloud helps children practice thoughtful choices, useful habits, and everyday confidence.
-              </Text>
-              <View style={styles.supportCard}>
-                <Ionicons name="people-outline" size={22} color="#357262" />
-                <Text style={styles.supportText}>
-                  A parent or trusted grown-up can help younger children set up this profile.
-                </Text>
+              </AppText>
+              <View style={styles.statusWrap}>
+                <StatusPanel
+                  icon="people-outline"
+                  title="A parent or trusted grown-up can help younger children set up this profile."
+                />
               </View>
               <View style={styles.action}>
-                <WisdomButton label="Set up profile" onPress={() => setStep('name')} />
+                <PrimaryButton label="Set up profile" onPress={() => setStep('name')} />
               </View>
             </View>
           )}
 
           {step === 'name' && (
             <View style={styles.step}>
-              <Text accessibilityLiveRegion="polite" accessibilityRole="header" style={styles.title}>
+              <AppText
+                accessibilityLiveRegion="polite"
+                accessibilityRole="header"
+                style={styles.title}
+                variant="screenTitle"
+              >
                 What should Cloud call you?
-              </Text>
-              <Text style={styles.body}>Use a first name or nickname.</Text>
-              <View style={styles.form}>
+              </AppText>
+              <AppText style={styles.body} tone="secondary" variant="body">
+                Use a first name or nickname.
+              </AppText>
+              <SurfaceCard elevated style={styles.formCard}>
                 <ProfileNameField
-                  ref={nameInput}
-                  autoFocus
                   error={nameError}
                   onChangeText={(value) => {
                     setName(value);
@@ -143,25 +158,27 @@ export function ProfileSetupScreen() {
                   onSubmitEditing={advanceName}
                   value={name}
                 />
-              </View>
+              </SurfaceCard>
               <View style={styles.action}>
-                <WisdomButton
-                  label="Continue"
-                  onPress={advanceName}
-                />
+                <PrimaryButton label="Continue" onPress={advanceName} />
               </View>
             </View>
           )}
 
           {step === 'age' && (
             <View style={styles.step}>
-              <Text accessibilityLiveRegion="polite" accessibilityRole="header" style={styles.title}>
+              <AppText
+                accessibilityLiveRegion="polite"
+                accessibilityRole="header"
+                style={styles.title}
+                variant="screenTitle"
+              >
                 How old are you?
-              </Text>
-              <Text style={styles.body}>
+              </AppText>
+              <AppText style={styles.body} tone="secondary" variant="body">
                 This helps CloudWise keep future explanations suitable for you.
-              </Text>
-              <View style={styles.form}>
+              </AppText>
+              <SurfaceCard elevated style={styles.formCard}>
                 <AgeSelector
                   selectedAge={age}
                   onSelect={(selectedAge) => {
@@ -169,9 +186,9 @@ export function ProfileSetupScreen() {
                     updateProfileDraft({ age: selectedAge });
                   }}
                 />
-              </View>
+              </SurfaceCard>
               <View style={styles.action}>
-                <WisdomButton
+                <PrimaryButton
                   disabled={!isValidProfileAge(age)}
                   label="Continue"
                   onPress={() => setStep('ready')}
@@ -183,39 +200,40 @@ export function ProfileSetupScreen() {
           {step === 'ready' && (
             <View style={styles.step}>
               <View style={styles.readyIcon}>
-                <Ionicons name="checkmark" size={34} color="#FFFFFF" />
+                <Ionicons name="checkmark" size={34} color={appColors.onPrimary} />
               </View>
-              <Text accessibilityLiveRegion="polite" accessibilityRole="header" style={styles.title}>
+              <AppText
+                accessibilityLiveRegion="polite"
+                accessibilityRole="header"
+                style={styles.title}
+                variant="screenTitle"
+              >
                 Your profile is ready
-              </Text>
-              <Text style={styles.body}>
+              </AppText>
+              <AppText style={styles.body} tone="secondary" variant="body">
                 {normalizeProfileName(name)}, your first Wisdom is waiting.
-              </Text>
-              <View style={styles.summaryCard}>
+              </AppText>
+              <SurfaceCard elevated style={styles.summaryCard}>
                 <SummaryRow label="Name" value={normalizeProfileName(name)} />
                 <View style={styles.divider} />
                 <SummaryRow label="Age" value={age === null ? 'Not selected' : String(age)} />
-              </View>
-              <View style={styles.privacy}>
-                <Ionicons name="lock-closed-outline" size={19} color="#4A6961" />
-                <Text style={styles.privacyText}>
-                  Your profile and progress are stored on this device for now.
-                </Text>
+              </SurfaceCard>
+              <View style={styles.privacyWrap}>
+                <StatusPanel
+                  icon="lock-closed-outline"
+                  title="Your profile and progress are stored on this device for now."
+                />
               </View>
               <View style={styles.action}>
-                <WisdomButton label="Open CloudWise" onPress={openCloudWise} />
+                <PrimaryButton label="Open CloudWise" onPress={openCloudWise} />
                 <View style={styles.secondaryAction}>
-                  <WisdomButton
-                    label="Change details"
-                    onPress={() => setStep('name')}
-                    secondary
-                  />
+                  <SecondaryButton label="Change details" onPress={() => setStep('name')} />
                 </View>
               </View>
             </View>
           )}
         </View>
-      </ScrollView>
+      </Screen>
     </KeyboardAvoidingView>
   );
 }
@@ -223,78 +241,118 @@ export function ProfileSetupScreen() {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <View style={styles.summaryRow}>
-      <Text style={styles.summaryLabel}>{label}</Text>
-      <Text style={styles.summaryValue}>{value}</Text>
+      <AppText tone="muted" variant="label">
+        {label}
+      </AppText>
+      <AppText style={styles.summaryValue} variant="body">
+        {value}
+      </AppText>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#F5FAF8', flex: 1 },
-  scrollContent: { flexGrow: 1, paddingBottom: 28, paddingHorizontal: 20, paddingTop: 18 },
-  container: { alignSelf: 'center', flex: 1, maxWidth: 500, width: '100%' },
-  step: { alignItems: 'center', flex: 1 },
-  back: {
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#D7E3DF',
-    borderRadius: 22,
-    borderWidth: 1,
-    height: 44,
-    justifyContent: 'center',
-    marginBottom: 16,
-    width: 44,
+  keyboardArea: {
+    backgroundColor: appColors.canvas,
+    flex: 1,
   },
-  pressed: { opacity: 0.7 },
-  cloud: { height: 148, marginBottom: 14, width: 148 },
-  title: { color: '#172A43', fontSize: 29, fontWeight: '900', lineHeight: 35, textAlign: 'center' },
-  body: { color: '#546762', fontSize: 16, lineHeight: 24, marginTop: 10, maxWidth: 420, textAlign: 'center' },
-  supportCard: {
-    alignItems: 'center',
-    backgroundColor: '#E9F5F1',
-    borderRadius: 18,
-    flexDirection: 'row',
-    gap: 11,
-    marginTop: 24,
-    padding: 16,
+  screenContent: {
+    flexGrow: 1,
+    paddingBottom: space.xl,
+    paddingTop: space.md,
+  },
+  container: {
+    alignSelf: 'center',
+    flex: 1,
+    maxWidth: layout.maxContentWidth,
     width: '100%',
   },
-  supportText: { color: '#36564E', flex: 1, fontSize: 14, lineHeight: 21 },
-  form: { marginTop: 28, width: '100%' },
-  action: { marginTop: 'auto', paddingTop: 28, width: '100%' },
-  secondaryAction: { marginTop: 10 },
+  step: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  backRow: {
+    alignSelf: 'stretch',
+    marginBottom: space.md,
+  },
+  hero: {
+    alignItems: 'center',
+    borderRadius: radii.hero,
+    height: 190,
+    justifyContent: 'flex-end',
+    marginBottom: space.lg,
+    maxWidth: 420,
+    overflow: 'hidden',
+    width: '100%',
+    ...shadows.card,
+  },
+  heroImage: {
+    bottom: -68,
+    height: 270,
+    position: 'absolute',
+    width: 180,
+  },
+  title: {
+    maxWidth: 440,
+    textAlign: 'center',
+  },
+  body: {
+    marginTop: space.sm,
+    maxWidth: 440,
+    textAlign: 'center',
+  },
+  statusWrap: {
+    marginTop: space.xl,
+    width: '100%',
+  },
+  formCard: {
+    marginTop: space.xl,
+    padding: layout.cardPadding,
+    width: '100%',
+  },
+  action: {
+    marginTop: space.xl,
+    width: '100%',
+  },
+  secondaryAction: {
+    marginTop: space.sm,
+  },
   readyIcon: {
     alignItems: 'center',
-    backgroundColor: '#347564',
-    borderRadius: 35,
-    height: 70,
+    backgroundColor: appColors.primary,
+    borderColor: appColors.warmGoldSoft,
+    borderRadius: radii.round,
+    borderWidth: 5,
+    height: 74,
     justifyContent: 'center',
-    marginBottom: 16,
-    width: 70,
+    marginBottom: space.md,
+    width: 74,
+    ...shadows.subtle,
   },
   summaryCard: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E0EAE7',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginTop: 24,
-    paddingHorizontal: 18,
+    marginTop: space.xl,
+    paddingHorizontal: layout.cardPadding,
     width: '100%',
   },
-  summaryRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', minHeight: 58 },
-  summaryLabel: { color: '#657570', fontSize: 14, fontWeight: '700' },
-  summaryValue: { color: '#172A43', flexShrink: 1, fontSize: 16, fontWeight: '900', textAlign: 'right' },
-  divider: { backgroundColor: '#E5ECEA', height: 1 },
-  privacy: {
-    alignItems: 'flex-start',
-    backgroundColor: '#EDF4F2',
-    borderRadius: 16,
+  summaryRow: {
+    alignItems: 'center',
+    columnGap: space.md,
     flexDirection: 'row',
-    gap: 9,
-    marginTop: 16,
-    padding: 14,
+    justifyContent: 'space-between',
+    minHeight: 60,
+    paddingVertical: space.xs,
+  },
+  summaryValue: {
+    flexShrink: 1,
+    fontWeight: '700',
+    textAlign: 'right',
+  },
+  divider: {
+    backgroundColor: appColors.border,
+    height: 1,
+  },
+  privacyWrap: {
+    marginTop: space.md,
     width: '100%',
   },
-  privacyText: { color: '#4A625C', flex: 1, fontSize: 13, lineHeight: 19 },
 });

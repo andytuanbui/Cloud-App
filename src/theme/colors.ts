@@ -152,3 +152,46 @@ export const colors = {
     ],
   },
 } as const;
+
+/**
+ * Production CloudWise palette.
+ *
+ * `colors` above is retained for the unreachable legacy prototypes. New and
+ * current production UI should use these semantic roles so visual decisions do
+ * not leak into individual screens.
+ */
+export const appColors = {
+  canvas: '#F6F2E8',
+  canvasSoft: '#F0F4EF',
+  surface: '#FFFDF8',
+  surfaceElevated: '#FFFFFF',
+  surfaceSoft: '#E8F2ED',
+  surfaceMuted: '#E2E9E5',
+  textPrimary: '#172C3A',
+  textSecondary: '#425B5B',
+  textMuted: '#5F716D',
+  border: '#D6E1DA',
+  borderStrong: '#B9CBC2',
+  primary: '#285F54',
+  primaryPressed: '#1D4A42',
+  primarySoft: '#DCEDE6',
+  wisdomGreen: '#33745E',
+  wisdomGreenSoft: '#E1F0E9',
+  warmGold: '#93651E',
+  warmGoldSoft: '#F4E7C8',
+  success: '#2F7058',
+  successSoft: '#E0F0E8',
+  caution: '#846126',
+  cautionSoft: '#F6ECD5',
+  error: '#8A4B45',
+  errorSoft: '#F6E7E4',
+  overlay: 'rgba(18, 39, 43, 0.46)',
+  focus: '#3E7587',
+  onPrimary: '#FFFDF8',
+  onDark: '#FFFFFF',
+  navBackground: 'rgba(255, 253, 248, 0.98)',
+  surfaceOverlay: 'rgba(255, 253, 248, 0.94)',
+  surfaceOverlaySoft: 'rgba(255, 253, 248, 0.86)',
+  shadow: '#29423D',
+  transparent: 'transparent',
+} as const;

@@ -1,5 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { MAX_PROFILE_AGE, MIN_PROFILE_AGE } from '../../state/profileValidation';
+import { appColors, layout, radii, shadows, space } from '../../theme';
+import { AppText } from '../ui';
 
 const ages = Array.from(
   { length: MAX_PROFILE_AGE - MIN_PROFILE_AGE + 1 },
@@ -17,60 +20,105 @@ export function AgeSelector({
 }) {
   return (
     <View style={styles.field}>
-      <Text style={styles.label}>Age</Text>
+      <AppText style={styles.label} variant="label">
+        Age
+      </AppText>
       <View accessibilityLabel="Choose age" accessibilityRole="radiogroup" style={styles.grid}>
-        {ages.map((age) => {
-          const selected = selectedAge === age;
-          return (
-            <Pressable
-              accessibilityLabel={`Age ${age}`}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected, selected }}
-              key={age}
-              onPress={() => onSelect(age)}
-              style={({ pressed }) => [
-                styles.option,
-                selected && styles.optionSelected,
-                pressed && styles.optionPressed,
-              ]}
-            >
-              <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{age}</Text>
-            </Pressable>
-          );
-        })}
+        {ages.map((age) => (
+          <AgeOption
+            age={age}
+            key={age}
+            onSelect={onSelect}
+            selected={selectedAge === age}
+          />
+        ))}
       </View>
       {error && (
-        <Text accessibilityLiveRegion="polite" style={styles.error}>
+        <AppText
+          accessibilityLiveRegion="polite"
+          style={styles.error}
+          tone="error"
+          variant="caption"
+        >
           {error}
-        </Text>
+        </AppText>
       )}
     </View>
   );
 }
 
+function AgeOption({
+  age,
+  onSelect,
+  selected,
+}: {
+  age: number;
+  onSelect: (age: number) => void;
+  selected: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <Pressable
+      accessibilityLabel={`Age ${age}`}
+      accessibilityRole="radio"
+      accessibilityState={{ checked: selected }}
+      onBlur={() => setFocused(false)}
+      onFocus={() => setFocused(true)}
+      onPress={() => onSelect(age)}
+      style={({ pressed }) => [
+        styles.option,
+        selected && styles.optionSelected,
+        focused && styles.optionFocused,
+        pressed && styles.optionPressed,
+      ]}
+    >
+      <AppText
+        style={styles.optionText}
+        tone={selected ? 'inverse' : 'primary'}
+        variant="body"
+      >
+        {age}
+      </AppText>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   field: { width: '100%' },
-  label: { color: '#253B55', fontSize: 14, fontWeight: '800', marginBottom: 8 },
+  label: {
+    marginBottom: space.xs,
+  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 9,
+    gap: space.sm,
   },
   option: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#C9D8D3',
-    borderRadius: 15,
-    borderWidth: 1,
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.borderStrong,
+    borderRadius: radii.medium,
+    borderWidth: 2,
     flexBasis: '21%',
     flexGrow: 1,
     justifyContent: 'center',
-    minHeight: 52,
-    minWidth: 58,
+    minHeight: 54,
+    minWidth: layout.minimumTouchTarget,
   },
-  optionSelected: { backgroundColor: '#173A61', borderColor: '#173A61' },
+  optionSelected: {
+    backgroundColor: appColors.primary,
+    borderColor: appColors.primary,
+  },
+  optionFocused: {
+    borderColor: appColors.focus,
+    ...shadows.focus,
+  },
   optionPressed: { opacity: 0.78 },
-  optionText: { color: '#263D58', fontSize: 17, fontWeight: '800' },
-  optionTextSelected: { color: '#FFFFFF' },
-  error: { color: '#914141', fontSize: 13, fontWeight: '700', lineHeight: 18, marginTop: 8 },
+  optionText: {
+    fontWeight: '700',
+  },
+  error: {
+    marginTop: space.xs,
+  },
 });
