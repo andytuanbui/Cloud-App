@@ -1,24 +1,95 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image, StyleSheet, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
+import { AppText, Screen, SurfaceCard } from '../components/ui';
+import { appColors, layout, radii, shadows, space } from '../theme';
 
 export function FamilyScreen() {
   return (
-    <View style={styles.screen}>
-      <View style={styles.content}>
-        <View style={styles.icon}><Ionicons name="people" size={42} color="#695A8C" /></View>
-        <Text style={styles.title}>Family</Text>
-        <Text style={styles.body}>A quiet place for families to support Habits, Confidence, and Growth is coming later.</Text>
+    <Screen
+      bottomNavigation={<BottomNav active="Family" />}
+      contentContainerStyle={styles.content}
+    >
+      <View style={styles.hero}>
+        <Image
+          accessibilityIgnoresInvertColors
+          accessible={false}
+          resizeMode="cover"
+          source={require('../../assets/cloud/cloud-neighborhood-home.png')}
+          style={styles.heroImage}
+        />
+        <LinearGradient
+          colors={[appColors.transparent, appColors.overlay]}
+          style={styles.heroFade}
+        />
+        <View style={styles.icon}>
+          <Ionicons color={appColors.primary} name="people" size={26} />
+        </View>
       </View>
-      <BottomNav active="Family" />
-    </View>
+
+      <SurfaceCard elevated style={styles.copyCard}>
+        <AppText accessibilityRole="header" style={styles.title} variant="cardTitle">
+          Family
+        </AppText>
+        <AppText style={styles.body} tone="secondary" variant="body">
+          A quiet place for families to support Habits, Confidence, and Growth is coming later.
+        </AppText>
+      </SurfaceCard>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#F5FAF8', flex: 1 },
-  content: { alignItems: 'center', flex: 1, justifyContent: 'center', padding: 32 },
-  icon: { alignItems: 'center', backgroundColor: '#EEE8F8', borderRadius: 45, height: 90, justifyContent: 'center', width: 90 },
-  title: { color: '#172A43', fontSize: 28, fontWeight: '900', marginTop: 18 },
-  body: { color: '#596A65', fontSize: 16, lineHeight: 24, marginTop: 10, textAlign: 'center' },
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: space.xl,
+  },
+  hero: {
+    alignSelf: 'center',
+    borderRadius: radii.hero,
+    height: 280,
+    maxWidth: 440,
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+    ...shadows.card,
+  },
+  heroImage: {
+    ...StyleSheet.absoluteFillObject,
+    height: '100%',
+    width: '100%',
+  },
+  heroFade: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  icon: {
+    alignItems: 'center',
+    backgroundColor: appColors.warmGoldSoft,
+    borderColor: appColors.surfaceOverlay,
+    borderRadius: radii.round,
+    borderWidth: 3,
+    bottom: space.md,
+    height: 52,
+    justifyContent: 'center',
+    left: space.md,
+    position: 'absolute',
+    width: 52,
+  },
+  copyCard: {
+    alignSelf: 'center',
+    marginTop: -space.lg,
+    maxWidth: 440,
+    padding: layout.cardPadding,
+    width: '92%',
+    zIndex: 1,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  body: {
+    marginTop: space.xs,
+    textAlign: 'center',
+  },
 });

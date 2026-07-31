@@ -1,23 +1,76 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image, StyleSheet } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
+import { AppText, Screen, SurfaceCard } from '../components/ui';
+import { appColors, layout, radii, shadows, space } from '../theme';
 
 export function CloudScreen() {
   return (
-    <View style={styles.screen}>
-      <View style={styles.content}>
-        <Image source={require('../../assets/cloud/cloud-avatar.png')} style={styles.cloud} />
-        <Text style={styles.title}>Cloud is here to listen</Text>
-        <Text style={styles.body}>You can talk with Cloud inside today’s Wisdom. More guided conversations will be added later.</Text>
-      </View>
-      <BottomNav active="Cloud" />
-    </View>
+    <Screen
+      bottomNavigation={<BottomNav active="Cloud" />}
+      contentContainerStyle={styles.content}
+    >
+      <LinearGradient
+        colors={[appColors.warmGoldSoft, appColors.primarySoft]}
+        style={styles.hero}
+      >
+        <Image
+          accessibilityIgnoresInvertColors
+          accessible={false}
+          resizeMode="contain"
+          source={require('../../assets/cloud/cloud-hero-wave.png')}
+          style={styles.cloud}
+        />
+      </LinearGradient>
+
+      <SurfaceCard elevated style={styles.copyCard}>
+        <AppText accessibilityRole="header" style={styles.title} variant="cardTitle">
+          Cloud is here to listen
+        </AppText>
+        <AppText style={styles.body} tone="secondary" variant="body">
+          You can talk with Cloud inside today’s Wisdom. More guided conversations will be added later.
+        </AppText>
+      </SurfaceCard>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#F5FAF8', flex: 1 },
-  content: { alignItems: 'center', flex: 1, justifyContent: 'center', padding: 32 },
-  cloud: { height: 150, width: 150 },
-  title: { color: '#172A43', fontSize: 27, fontWeight: '900', marginTop: 12, textAlign: 'center' },
-  body: { color: '#596A65', fontSize: 16, lineHeight: 24, marginTop: 10, textAlign: 'center' },
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: space.xl,
+  },
+  hero: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: radii.hero,
+    height: 300,
+    justifyContent: 'flex-end',
+    maxWidth: 440,
+    overflow: 'hidden',
+    width: '100%',
+    ...shadows.card,
+  },
+  cloud: {
+    bottom: -88,
+    height: 390,
+    position: 'absolute',
+    width: 260,
+  },
+  copyCard: {
+    alignSelf: 'center',
+    marginTop: -space.lg,
+    maxWidth: 440,
+    padding: layout.cardPadding,
+    width: '92%',
+    zIndex: 1,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  body: {
+    marginTop: space.xs,
+    textAlign: 'center',
+  },
 });

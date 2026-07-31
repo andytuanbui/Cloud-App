@@ -1,7 +1,15 @@
-import { Ionicons } from '@expo/vector-icons';
 import { PropsWithChildren, useEffect, useRef } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { wisdomSteps, WisdomStep } from '../../state/types';
+import { appColors, layout, space } from '../../theme';
+import { AppText, IconButton, ProgressSteps } from '../ui';
 
 const titles: Record<WisdomStep, string> = {
   opening: 'Opening Question',
@@ -27,54 +35,107 @@ export function FlowScaffold({
   }, [reviewMode, step]);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header}>
-        {onBack ? (
-          <Pressable accessibilityLabel="Go back" accessibilityRole="button" onPress={onBack} style={styles.back}>
-            <Ionicons name="arrow-back" size={24} color="#19304E" />
-          </Pressable>
-        ) : (
-          <View style={styles.back} />
-        )}
-        <View style={styles.progressWrap}>
-          <Text style={styles.stepText}>
-            {reviewMode ? 'Review Wisdom' : `Step ${stepIndex + 1} of ${wisdomSteps.length}`}
-          </Text>
-          {!reviewMode && (
-            <View style={styles.progress}>
-              {wisdomSteps.map((item, index) => (
-                <View key={item} style={[styles.segment, index <= stepIndex && styles.segmentActive]} />
-              ))}
-            </View>
-          )}
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.screen}>
+      <View style={styles.headerShell}>
+        <View style={styles.header}>
+          <View style={styles.headerSlot}>
+            {onBack ? (
+              <IconButton accessibilityLabel="Go back" icon="arrow-back" onPress={onBack} />
+            ) : null}
+          </View>
+          <View style={styles.progressWrap}>
+            {reviewMode ? (
+              <AppText
+                accessibilityLiveRegion="polite"
+                style={styles.reviewLabel}
+                tone="brand"
+                variant="caption"
+              >
+                Review Wisdom
+              </AppText>
+            ) : (
+              <ProgressSteps
+                current={stepIndex + 1}
+                label={`Step ${stepIndex + 1} of ${wisdomSteps.length}`}
+                total={wisdomSteps.length}
+              />
+            )}
+          </View>
+          <View style={styles.headerSlot} />
         </View>
-        <View style={styles.back} />
       </View>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.keyboardArea}>
         <ScrollView
           contentContainerStyle={styles.content}
+          contentInsetAdjustmentBehavior="automatic"
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           ref={scrollRef}
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.eyebrow}>{reviewMode ? 'Review' : titles[step]}</Text>
-          {children}
+          <View style={styles.contentInner}>
+            <AppText
+              accessibilityLiveRegion="polite"
+              style={styles.eyebrow}
+              tone="brand"
+              variant="label"
+            >
+              {reviewMode ? 'Review' : titles[step]}
+            </AppText>
+            {children}
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#F5FAF8', flex: 1 },
-  keyboardArea: { flex: 1 },
-  header: { alignItems: 'center', flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 12 },
-  back: { alignItems: 'center', height: 44, justifyContent: 'center', width: 44 },
-  progressWrap: { flex: 1 },
-  stepText: { color: '#64736F', fontSize: 12, fontWeight: '700', marginBottom: 7, textAlign: 'center' },
-  progress: { flexDirection: 'row', gap: 5 },
-  segment: { backgroundColor: '#DCE6E2', borderRadius: 4, flex: 1, height: 5 },
-  segmentActive: { backgroundColor: '#3D8C78' },
-  content: { paddingBottom: 40, paddingHorizontal: 22 },
-  eyebrow: { color: '#3D786A', fontSize: 13, fontWeight: '800', letterSpacing: 1, marginBottom: 12, textTransform: 'uppercase' },
+  screen: {
+    backgroundColor: appColors.canvas,
+    flex: 1,
+  },
+  headerShell: {
+    backgroundColor: appColors.surfaceOverlay,
+    borderBottomColor: appColors.border,
+    borderBottomWidth: 1,
+  },
+  header: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    maxWidth: layout.readingMaxWidth,
+    paddingHorizontal: layout.pagePadding,
+    paddingVertical: space.sm,
+    width: '100%',
+  },
+  headerSlot: {
+    height: layout.minimumTouchTarget,
+    width: layout.minimumTouchTarget,
+  },
+  progressWrap: {
+    flex: 1,
+    marginHorizontal: space.sm,
+  },
+  reviewLabel: {
+    textAlign: 'center',
+  },
+  keyboardArea: {
+    flex: 1,
+  },
+  content: {
+    flexGrow: 1,
+    paddingBottom: space.huge,
+    paddingHorizontal: layout.pagePadding,
+    paddingTop: space.lg,
+  },
+  contentInner: {
+    alignSelf: 'center',
+    maxWidth: layout.readingMaxWidth,
+    width: '100%',
+  },
+  eyebrow: {
+    marginBottom: space.sm,
+    textTransform: 'uppercase',
+  },
 });

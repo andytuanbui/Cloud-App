@@ -1,16 +1,27 @@
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 import { ChoiceList } from '../components/mvp/ChoiceList';
 import { FlowScaffold } from '../components/mvp/FlowScaffold';
 import { WisdomButton } from '../components/mvp/WisdomButton';
+import { AppText, StatusPanel, SurfaceCard } from '../components/ui';
 import { getWisdomById } from '../content/wisdoms';
 import { useAppState } from '../state/useAppState';
 import { wisdomSteps, WisdomStep } from '../state/types';
+import {
+  appColors,
+  radii,
+  shadows,
+  space,
+  spacing,
+  typeStyles,
+  typography,
+} from '../theme';
 import { RootStackParamList } from '../types/wisdom';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WisdomFlow'>;
+type Wisdom = NonNullable<ReturnType<typeof getWisdomById>>;
 const cloudAvatar = require('../../assets/cloud/cloud-avatar.png');
 
 export function WisdomFlowScreen({ navigation, route }: Props) {
@@ -37,21 +48,27 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
     return index > 0 && step !== 'completion' ? wisdomSteps[index - 1] : undefined;
   }, [step]);
 
-  if (!wisdom || isRestoring) return <View style={styles.loading}><Text style={styles.body}>Restoring your Wisdom…</Text></View>;
+  if (!wisdom || isRestoring) {
+    return (
+      <View style={styles.loading}>
+        <AppText tone="secondary" variant="body">
+          Restoring your Wisdom…
+        </AppText>
+      </View>
+    );
+  }
 
   if (reviewMode) {
     return (
       <FlowScaffold step="read" reviewMode onBack={() => navigation.replace('Today')}>
-        <Text style={styles.title}>{wisdom.title}</Text>
-        <Text style={styles.reviewIntro}>Take another look at the ideas you practiced.</Text>
-        {wisdom.readingSections.map((section) => (
-          <View key={section.title} style={styles.readCard}>
-            <Text style={styles.cardTitle}>{section.title}</Text>
-            {section.text.map((line) => <Text key={line} style={styles.body}>{line}</Text>)}
-            {section.examples?.map((example) => <Text key={example} style={styles.bullet}>• {example}</Text>)}
-          </View>
-        ))}
-        <WisdomButton label="Return to Today" onPress={() => navigation.replace('Today')} />
+        <StageHeading
+          supporting="Take another look at the ideas you practiced."
+          title={wisdom.title}
+        />
+        <ReadingSections wisdom={wisdom} />
+        <View style={styles.action}>
+          <WisdomButton label="Return to Today" onPress={() => navigation.replace('Today')} />
+        </View>
       </FlowScaffold>
     );
   }
@@ -66,9 +83,12 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
       {step === 'opening' && (
         <>
           <CloudIntro />
-          <Text style={styles.title}>{wisdom.openingQuestion.question}</Text>
-          <Text style={styles.body}>Choose the answer that feels right to you.</Text>
+          <StageHeading
+            supporting="Choose the answer that feels right to you."
+            title={wisdom.openingQuestion.question}
+          />
           <ChoiceList
+            accessibilityLabel="Opening question choices"
             choices={wisdom.openingQuestion.options}
             selectedId={progress?.openingAnswer}
             onSelect={(openingAnswer) => updateProgress(wisdom.id, { openingAnswer })}
@@ -80,15 +100,11 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
       {step === 'read' && (
         <>
-          <Text style={styles.title}>Read and think</Text>
-          {wisdom.readingSections.map((section) => (
-            <View key={section.title} style={styles.readCard}>
-              <Text style={styles.cardTitle}>{section.title}</Text>
-              {section.text.map((line) => <Text key={line} style={styles.body}>{line}</Text>)}
-              {section.examples?.map((example) => <Text key={example} style={styles.bullet}>• {example}</Text>)}
-            </View>
-          ))}
-          <WisdomButton label="Talk with Cloud" onPress={() => goNext('talk')} />
+          <StageHeading title="Read and think" />
+          <ReadingSections wisdom={wisdom} />
+          <View style={styles.action}>
+            <WisdomButton label="Talk with Cloud" onPress={() => goNext('talk')} />
+          </View>
         </>
       )}
 
@@ -106,9 +122,12 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
       {step === 'reflect' && (
         <>
           <CloudIntro />
-          <Text style={styles.prompt}>{wisdom.reflection.prompt}</Text>
-          <Text style={styles.title}>{wisdom.reflection.question}</Text>
+          <AppText style={styles.prompt} tone="brand" variant="label">
+            {wisdom.reflection.prompt}
+          </AppText>
+          <StageHeading title={wisdom.reflection.question} />
           <ChoiceList
+            accessibilityLabel="Reflection choices"
             choices={wisdom.reflection.options}
             selectedId={progress?.reflectionAnswer}
             onSelect={(reflectionAnswer) => updateProgress(wisdom.id, { reflectionAnswer })}
@@ -120,12 +139,24 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
       {step === 'practice' && (
         <>
-          <Text style={styles.title}>{wisdom.practice.title}</Text>
-          <Text style={styles.body}>{wisdom.practice.text}</Text>
-          <View style={styles.thinkCard}>
-            {wisdom.practice.questions.map((question) => <Text key={question} style={styles.thinkQuestion}>{question}</Text>)}
-          </View>
+          <StageHeading supporting={wisdom.practice.text} title={wisdom.practice.title} />
+          <SurfaceCard style={styles.thinkCard} tone="gold">
+            {wisdom.practice.questions.map((question) => (
+              <View key={question} style={styles.thinkQuestionRow}>
+                <Ionicons
+                  accessible={false}
+                  color={appColors.warmGold}
+                  name="sparkles"
+                  size={spacing.s18}
+                />
+                <AppText style={styles.thinkQuestion} variant="body">
+                  {question}
+                </AppText>
+              </View>
+            ))}
+          </SurfaceCard>
           <ChoiceList
+            accessibilityLabel="Practice choices"
             choices={wisdom.practice.options}
             selectedId={progress?.practiceStatus}
             onSelect={(practiceStatus) => updateProgress(wisdom.id, { practiceStatus })}
@@ -139,19 +170,35 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
         const question = wisdom.quiz[questionIndex];
         return (
           <>
-            <Text style={styles.prompt}>Question {questionIndex + 1} of {wisdom.quiz.length}</Text>
-            <Text style={styles.title}>{question.question}</Text>
+            <AppText style={styles.prompt} tone="brand" variant="label">
+              Question {questionIndex + 1} of {wisdom.quiz.length}
+            </AppText>
+            <StageHeading title={question.question} />
             <ChoiceList
+              accessibilityLabel={`Answers for question ${questionIndex + 1}`}
               choices={question.answers}
               selectedId={quizChoice}
               disabled={quizFeedback === 'correct'}
+              selectionTone={quizFeedback ?? 'default'}
               onSelect={(answer) => {
                 setQuizChoice(answer);
                 setQuizFeedback(answer === question.correctAnswerId ? 'correct' : 'wrong');
               }}
             />
-            {quizFeedback === 'wrong' && <View style={styles.feedbackWrong}><Text style={styles.feedbackText}>Not quite. Take another look and try again.</Text></View>}
-            {quizFeedback === 'correct' && <View style={styles.feedbackCorrect}><Text style={styles.feedbackText}>{question.feedback}</Text></View>}
+            {quizFeedback === 'wrong' && (
+              <LiveFeedback
+                icon="refresh-circle"
+                message="Not quite. Take another look and try again."
+                tone="caution"
+              />
+            )}
+            {quizFeedback === 'correct' && (
+              <LiveFeedback
+                icon="checkmark-circle"
+                message={question.feedback}
+                tone="success"
+              />
+            )}
             <View style={styles.action}>
               <WisdomButton
                 disabled={quizFeedback !== 'correct'}
@@ -178,17 +225,38 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
       {step === 'completion' && (
         <View style={styles.completion}>
-          <Image source={cloudAvatar} style={styles.completionCloud} />
-          <View style={styles.check}><Ionicons name="checkmark" size={34} color="#FFFFFF" /></View>
-          <Text style={[styles.title, styles.center]}>{wisdom.completion.title}</Text>
-          <Text style={[styles.body, styles.center]}>{wisdom.completion.message}</Text>
+          <CloudIntro large />
+          <View accessible={false} style={styles.check}>
+            <Ionicons
+              accessible={false}
+              color={appColors.onPrimary}
+              name="checkmark"
+              size={space.xxl}
+            />
+          </View>
+          <AppText
+            accessibilityRole="header"
+            style={styles.completionTitle}
+            variant="screenTitle"
+          >
+            {wisdom.completion.title}
+          </AppText>
+          <AppText style={styles.completionBody} tone="secondary" variant="body">
+            {wisdom.completion.message}
+          </AppText>
           <CloudMessage text={wisdom.completion.cloudMessage} />
-          <View style={styles.summaryCard}>
+          <SurfaceCard elevated style={styles.summaryCard}>
             <SummaryRow label="Wisdom" value={wisdom.title} />
             <SummaryRow label="Skill practiced" value={wisdom.skillOutcome} />
-            <SummaryRow label="Date completed" value={new Date(progress?.completedAt ?? Date.now()).toLocaleDateString()} />
+            <SummaryRow
+              label="Date completed"
+              last
+              value={new Date(progress?.completedAt ?? Date.now()).toLocaleDateString()}
+            />
+          </SurfaceCard>
+          <View style={styles.action}>
+            <WisdomButton label="Return to Today" onPress={() => navigation.replace('Today')} />
           </View>
-          <WisdomButton label="Return to Today" onPress={() => navigation.replace('Today')} />
         </View>
       )}
     </FlowScaffold>
@@ -203,9 +271,10 @@ function ConversationStep({
   draft: string;
   setDraft: (value: string) => void;
   onComplete: () => void;
-  wisdom: NonNullable<ReturnType<typeof getWisdomById>>;
+  wisdom: Wisdom;
 }) {
   const [showResponse, setShowResponse] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
   const index = Math.min(showResponse ? responses.length - 1 : responses.length, wisdom.cloudConversation.length - 1);
   const prompt = wisdom.cloudConversation[index];
   const submit = (response: string) => {
@@ -217,8 +286,10 @@ function ConversationStep({
   return (
     <>
       <CloudIntro />
-      <Text style={styles.prompt}>Question {index + 1} of {wisdom.cloudConversation.length}</Text>
-      <Text style={styles.title}>{prompt.question}</Text>
+      <AppText style={styles.prompt} tone="brand" variant="label">
+        Question {index + 1} of {wisdom.cloudConversation.length}
+      </AppText>
+      <StageHeading title={prompt.question} />
       {!showResponse && (
         <>
           <View style={styles.chips}>
@@ -227,12 +298,16 @@ function ConversationStep({
             ))}
           </View>
           <TextInput
+            accessibilityHint="Enter up to 120 characters"
             accessibilityLabel="Type a short response"
             maxLength={120}
+            onBlur={() => setInputFocused(false)}
             onChangeText={setDraft}
+            onFocus={() => setInputFocused(true)}
             placeholder="Or type a short response…"
-            placeholderTextColor="#7D8A86"
-            style={styles.input}
+            placeholderTextColor={appColors.textMuted}
+            selectionColor={appColors.primary}
+            style={[styles.input, inputFocused && styles.inputFocused]}
             value={draft}
           />
           <WisdomButton disabled={!draft.trim()} label="Share with Cloud" onPress={() => submit(draft)} />
@@ -240,7 +315,15 @@ function ConversationStep({
       )}
       {showResponse && (
         <>
-          <View style={styles.responseCard}><Text style={styles.responseText}>{responses[index]}</Text></View>
+          <View
+            accessibilityLabel={`Your response: ${responses[index]}`}
+            accessible
+            style={styles.responseCard}
+          >
+            <AppText tone="inverse" variant="body">
+              {responses[index]}
+            </AppText>
+          </View>
           <CloudMessage text={prompt.cloudResponse} />
           <WisdomButton
             label={index === wisdom.cloudConversation.length - 1 ? 'Continue' : 'Next Question'}
@@ -255,44 +338,300 @@ function ConversationStep({
   );
 }
 
-function CloudIntro() {
-  return <Image source={cloudAvatar} resizeMode="contain" style={styles.cloud} />;
+function StageHeading({
+  supporting,
+  title,
+}: {
+  supporting?: string;
+  title: string;
+}) {
+  return (
+    <View style={styles.stageHeading}>
+      <AppText accessibilityRole="header" variant="screenTitle">
+        {title}
+      </AppText>
+      {supporting ? (
+        <AppText style={styles.stageSupporting} tone="secondary" variant="body">
+          {supporting}
+        </AppText>
+      ) : null}
+    </View>
+  );
 }
+
+function ReadingSections({ wisdom }: { wisdom: Wisdom }) {
+  return (
+    <>
+      {wisdom.readingSections.map((section) => (
+        <SurfaceCard elevated key={section.title} style={styles.readCard}>
+          <AppText accessibilityRole="header" style={styles.cardTitle} variant="cardTitle">
+            {section.title}
+          </AppText>
+          {section.text.map((line) => (
+            <AppText key={line} style={styles.readBody} tone="secondary" variant="body">
+              {line}
+            </AppText>
+          ))}
+          {section.examples?.map((example) => (
+            <AppText key={example} style={styles.bullet} tone="secondary" variant="body">
+              • {example}
+            </AppText>
+          ))}
+        </SurfaceCard>
+      ))}
+    </>
+  );
+}
+
+function CloudIntro({ large = false }: { large?: boolean }) {
+  return (
+    <View
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={styles.cloudStage}
+    >
+      <View style={[styles.cloudFrame, large && styles.cloudFrameLarge]}>
+        <Image
+          accessible={false}
+          resizeMode="contain"
+          source={cloudAvatar}
+          style={styles.cloud}
+        />
+      </View>
+    </View>
+  );
+}
+
 function CloudMessage({ text }: { text: string }) {
-  return <View style={styles.cloudMessage}><Ionicons name="cloud" size={22} color="#397968" /><Text style={styles.cloudText}>“{text}”</Text></View>;
+  return (
+    <View
+      accessibilityLabel={`Cloud says: ${text}`}
+      accessibilityLiveRegion="polite"
+      accessible
+      style={styles.cloudMessageWrap}
+    >
+      <SurfaceCard style={styles.cloudMessage} tone="soft">
+        <View accessible={false} style={styles.cloudIcon}>
+          <Ionicons
+            accessible={false}
+            color={appColors.primary}
+            name="cloud"
+            size={spacing.s22}
+          />
+        </View>
+        <AppText style={styles.cloudText} tone="brand" variant="supporting">
+          “{text}”
+        </AppText>
+      </SurfaceCard>
+    </View>
+  );
 }
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return <View style={styles.summaryRow}><Text style={styles.summaryLabel}>{label}</Text><Text style={styles.summaryValue}>{value}</Text></View>;
+
+function LiveFeedback({
+  icon,
+  message,
+  tone,
+}: {
+  icon: keyof typeof Ionicons.glyphMap;
+  message: string;
+  tone: 'success' | 'caution';
+}) {
+  return (
+    <View
+      accessibilityLabel={message}
+      accessibilityLiveRegion="polite"
+      accessible
+      style={styles.feedback}
+    >
+      <StatusPanel icon={icon} title={message} tone={tone} />
+    </View>
+  );
+}
+
+function SummaryRow({
+  label,
+  last = false,
+  value,
+}: {
+  label: string;
+  last?: boolean;
+  value: string;
+}) {
+  return (
+    <View
+      accessibilityLabel={`${label}: ${value}`}
+      accessible
+      style={[styles.summaryRow, last && styles.summaryRowLast]}
+    >
+      <AppText style={styles.summaryLabel} tone="muted" variant="caption">
+        {label}
+      </AppText>
+      <AppText style={styles.summaryValue} variant="supporting">
+        {value}
+      </AppText>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  loading: { alignItems: 'center', backgroundColor: '#F5FAF8', flex: 1, justifyContent: 'center' },
-  cloud: { alignSelf: 'center', height: 96, marginBottom: 8, width: 96 },
-  title: { color: '#152A44', fontSize: 27, fontWeight: '900', lineHeight: 34, marginBottom: 12 },
-  body: { color: '#4F615C', fontSize: 16, lineHeight: 24, marginBottom: 13 },
-  prompt: { color: '#397565', fontSize: 14, fontWeight: '800', marginBottom: 8 },
-  action: { marginTop: 20 },
-  cloudMessage: { alignItems: 'flex-start', backgroundColor: '#E7F5F0', borderRadius: 18, flexDirection: 'row', gap: 10, marginVertical: 18, padding: 16 },
-  cloudText: { color: '#28564B', flex: 1, fontSize: 15, fontWeight: '700', lineHeight: 22 },
-  readCard: { backgroundColor: '#FFFFFF', borderRadius: 20, marginBottom: 14, padding: 18 },
-  cardTitle: { color: '#17314E', fontSize: 20, fontWeight: '900', marginBottom: 9 },
-  bullet: { color: '#40534E', fontSize: 16, lineHeight: 24, marginBottom: 3 },
-  thinkCard: { backgroundColor: '#FFF6DD', borderRadius: 18, marginBottom: 18, padding: 17 },
-  thinkQuestion: { color: '#564820', fontSize: 16, fontWeight: '700', lineHeight: 25 },
-  chips: { gap: 9, marginBottom: 14 },
-  input: { backgroundColor: '#FFFFFF', borderColor: '#CEDCD7', borderRadius: 16, borderWidth: 1, color: '#172A43', fontSize: 16, marginBottom: 12, minHeight: 58, padding: 15 },
-  responseCard: { alignSelf: 'flex-end', backgroundColor: '#173B68', borderRadius: 18, marginVertical: 12, maxWidth: '88%', padding: 15 },
-  responseText: { color: '#FFFFFF', fontSize: 16, lineHeight: 22 },
-  reviewIntro: { color: '#536760', fontSize: 15, lineHeight: 22, marginBottom: 16 },
-  feedbackWrong: { backgroundColor: '#FFF1E8', borderRadius: 15, marginTop: 14, padding: 14 },
-  feedbackCorrect: { backgroundColor: '#E6F5EE', borderRadius: 15, marginTop: 14, padding: 14 },
-  feedbackText: { color: '#334B45', fontSize: 15, fontWeight: '700', lineHeight: 21 },
-  completion: { paddingTop: 6 },
-  completionCloud: { alignSelf: 'center', height: 120, width: 120 },
-  check: { alignItems: 'center', alignSelf: 'center', backgroundColor: '#3B8B75', borderRadius: 28, height: 56, justifyContent: 'center', marginBottom: 18, width: 56 },
-  center: { textAlign: 'center' },
-  summaryCard: { backgroundColor: '#FFFFFF', borderRadius: 20, marginBottom: 22, padding: 18 },
-  summaryRow: { borderBottomColor: '#E7EEEB', borderBottomWidth: 1, paddingVertical: 10 },
-  summaryLabel: { color: '#71807C', fontSize: 12, fontWeight: '800', textTransform: 'uppercase' },
-  summaryValue: { color: '#20364E', fontSize: 15, fontWeight: '700', marginTop: 4 },
+  loading: {
+    alignItems: 'center',
+    backgroundColor: appColors.canvas,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  stageHeading: {
+    marginBottom: space.lg,
+  },
+  stageSupporting: {
+    marginTop: space.xs,
+  },
+  prompt: {
+    marginBottom: space.xs,
+  },
+  action: {
+    marginTop: space.xl,
+  },
+  cloudStage: {
+    alignItems: 'center',
+    marginBottom: space.lg,
+  },
+  cloudFrame: {
+    ...shadows.card,
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.border,
+    borderRadius: radii.hero,
+    borderWidth: 1,
+    height: spacing.s92,
+    overflow: 'hidden',
+    padding: space.xxs,
+    width: spacing.s92,
+  },
+  cloudFrameLarge: {
+    height: spacing.s116,
+    width: spacing.s116,
+  },
+  cloud: {
+    borderRadius: radii.large,
+    height: '100%',
+    width: '100%',
+  },
+  cloudMessageWrap: {
+    marginVertical: space.lg,
+  },
+  cloudMessage: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    padding: space.md,
+  },
+  cloudIcon: {
+    alignItems: 'center',
+    backgroundColor: appColors.surfaceOverlaySoft,
+    borderRadius: radii.round,
+    height: spacing.s42,
+    justifyContent: 'center',
+    marginRight: space.sm,
+    width: spacing.s42,
+  },
+  cloudText: {
+    flex: 1,
+    fontWeight: typography.weight.bold,
+  },
+  readCard: {
+    marginBottom: space.md,
+    padding: space.lg,
+  },
+  cardTitle: {
+    marginBottom: space.sm,
+  },
+  readBody: {
+    marginBottom: space.sm,
+  },
+  bullet: {
+    marginBottom: space.xxs,
+  },
+  thinkCard: {
+    gap: space.sm,
+    marginBottom: space.lg,
+    padding: space.lg,
+  },
+  thinkQuestionRow: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  thinkQuestion: {
+    flex: 1,
+    fontWeight: typography.weight.bold,
+    marginLeft: space.sm,
+  },
+  chips: {
+    gap: space.sm,
+    marginBottom: space.md,
+  },
+  input: {
+    ...typeStyles.body,
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.borderStrong,
+    borderRadius: radii.medium,
+    borderWidth: spacing.xxs,
+    color: appColors.textPrimary,
+    marginBottom: space.sm,
+    minHeight: spacing.s58,
+    padding: space.md,
+  },
+  inputFocused: {
+    ...shadows.focus,
+    borderColor: appColors.focus,
+  },
+  responseCard: {
+    ...shadows.subtle,
+    alignSelf: 'flex-end',
+    backgroundColor: appColors.primary,
+    borderRadius: radii.large,
+    marginVertical: space.sm,
+    maxWidth: '88%',
+    padding: space.md,
+  },
+  feedback: {
+    marginTop: space.md,
+  },
+  completion: {
+    paddingTop: space.xs,
+  },
+  check: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: appColors.success,
+    borderRadius: radii.round,
+    height: spacing.s58,
+    justifyContent: 'center',
+    marginBottom: space.lg,
+    marginTop: -space.sm,
+    width: spacing.s58,
+  },
+  completionTitle: {
+    textAlign: 'center',
+  },
+  completionBody: {
+    marginTop: space.sm,
+    textAlign: 'center',
+  },
+  summaryCard: {
+    padding: space.lg,
+  },
+  summaryRow: {
+    borderBottomColor: appColors.border,
+    borderBottomWidth: 1,
+    paddingVertical: space.sm,
+  },
+  summaryRowLast: {
+    borderBottomWidth: 0,
+  },
+  summaryLabel: {
+    textTransform: 'uppercase',
+  },
+  summaryValue: {
+    fontWeight: typography.weight.bold,
+    marginTop: space.xxs,
+  },
 });
