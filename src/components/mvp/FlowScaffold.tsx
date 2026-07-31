@@ -23,10 +23,16 @@ const titles: Record<WisdomStep, string> = {
 
 export function FlowScaffold({
   step,
+  wisdomTitle,
   onBack,
   reviewMode,
   children,
-}: PropsWithChildren<{ step: WisdomStep; onBack?: () => void; reviewMode?: boolean }>) {
+}: PropsWithChildren<{
+  step: WisdomStep;
+  wisdomTitle: string;
+  onBack?: () => void;
+  reviewMode?: boolean;
+}>) {
   const stepIndex = wisdomSteps.indexOf(step);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -43,20 +49,24 @@ export function FlowScaffold({
               <IconButton accessibilityLabel="Go back" icon="arrow-back" onPress={onBack} />
             ) : null}
           </View>
-          <View style={styles.progressWrap}>
+          <View accessibilityLiveRegion="polite" style={styles.progressWrap}>
+            <AppText
+              accessibilityRole="header"
+              numberOfLines={1}
+              style={styles.wisdomContext}
+              tone="secondary"
+              variant="caption"
+            >
+              {wisdomTitle}
+            </AppText>
             {reviewMode ? (
-              <AppText
-                accessibilityLiveRegion="polite"
-                style={styles.reviewLabel}
-                tone="brand"
-                variant="caption"
-              >
-                Review Wisdom
+              <AppText style={styles.reviewStatus} tone="brand" variant="label">
+                Review mode · {titles[step]}
               </AppText>
             ) : (
               <ProgressSteps
                 current={stepIndex + 1}
-                label={`Step ${stepIndex + 1} of ${wisdomSteps.length}`}
+                label={`${titles[step]} · Step ${stepIndex + 1} of ${wisdomSteps.length}`}
                 total={wisdomSteps.length}
               />
             )}
@@ -74,14 +84,6 @@ export function FlowScaffold({
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.contentInner}>
-            <AppText
-              accessibilityLiveRegion="polite"
-              style={styles.eyebrow}
-              tone="brand"
-              variant="label"
-            >
-              {reviewMode ? 'Review' : titles[step]}
-            </AppText>
             {children}
           </View>
         </ScrollView>
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     maxWidth: layout.readingMaxWidth,
     paddingHorizontal: layout.pagePadding,
-    paddingVertical: space.sm,
+    paddingVertical: space.xs,
     width: '100%',
   },
   headerSlot: {
@@ -117,7 +119,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: space.sm,
   },
-  reviewLabel: {
+  wisdomContext: {
+    marginBottom: space.xxs,
+    textAlign: 'center',
+  },
+  reviewStatus: {
+    minHeight: space.sm,
     textAlign: 'center',
   },
   keyboardArea: {
@@ -125,17 +132,13 @@ const styles = StyleSheet.create({
   },
   content: {
     flexGrow: 1,
-    paddingBottom: space.huge,
+    paddingBottom: space.xxl,
     paddingHorizontal: layout.pagePadding,
-    paddingTop: space.lg,
+    paddingTop: space.md,
   },
   contentInner: {
     alignSelf: 'center',
     maxWidth: layout.readingMaxWidth,
     width: '100%',
-  },
-  eyebrow: {
-    marginBottom: space.sm,
-    textTransform: 'uppercase',
   },
 });

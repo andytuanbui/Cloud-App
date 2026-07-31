@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   optionPressed: { opacity: 0.78 },
   optionText: {
-    fontWeight: '800',
+    fontWeight: '700',
   },
   error: {
     marginTop: space.xs,

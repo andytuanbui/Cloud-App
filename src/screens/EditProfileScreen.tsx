@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
     marginTop: space.xl,
   },
   actions: {
-    marginTop: 'auto',
-    paddingTop: space.xl,
+    marginTop: space.xl,
   },
   cancel: {
     marginTop: space.sm,

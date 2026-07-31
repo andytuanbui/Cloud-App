@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image, StyleSheet, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
-import { AppText, Screen, SecondaryButton, SurfaceCard } from '../components/ui';
+import { AppText, Screen, SurfaceCard, TextButton } from '../components/ui';
 import { useAppState } from '../state/useAppState';
 import { appColors, layout, radii, space } from '../theme';
 import { RootStackParamList } from '../types/wisdom';
@@ -18,9 +18,17 @@ export function ProfileScreen({ navigation }: Props) {
       bottomNavigation={<BottomNav active="Profile" />}
       contentContainerStyle={styles.content}
     >
-      <AppText accessibilityRole="header" variant="screenTitle">
-        Profile
-      </AppText>
+      <View style={styles.heading}>
+        <AppText accessibilityRole="header" variant="screenTitle">
+          Profile
+        </AppText>
+        <TextButton
+          icon="create-outline"
+          label="Edit"
+          onPress={() => navigation.navigate('EditProfile')}
+          style={styles.editButton}
+        />
+      </View>
 
       <SurfaceCard elevated style={styles.profileHeader}>
         <View style={styles.avatarHalo}>
@@ -33,58 +41,87 @@ export function ProfileScreen({ navigation }: Props) {
             />
           </View>
         </View>
-        <AppText style={styles.name} variant="cardTitle">
-          {profile.name}
-        </AppText>
-        <View style={styles.identityPill}>
-          <Ionicons color={appColors.warmGold} name="sparkles" size={16} />
-          <AppText tone="brand" variant="label">
-            {profile.currentIdentity}
+        <View style={styles.heroCopy}>
+          <AppText style={styles.name} variant="cardTitle">
+            {profile.name}
           </AppText>
+          <AppText style={styles.identityLabel} tone="muted" variant="caption">
+            Current Identity
+          </AppText>
+          <View style={styles.identity}>
+            <Ionicons color={appColors.warmGold} name="sparkles" size={16} />
+            <AppText tone="brand" variant="label">
+              {profile.currentIdentity}
+            </AppText>
+          </View>
         </View>
       </SurfaceCard>
 
-      <SurfaceCard elevated style={styles.card}>
-        <ProfileRow label="Name" value={profile.name} />
-        <View style={styles.divider} />
-        <ProfileRow label="Age" value={profile.age === null ? 'Not set' : String(profile.age)} />
-        <View style={styles.divider} />
-        <ProfileRow label="Current Identity" value={profile.currentIdentity} />
-        <View style={styles.divider} />
-        <ProfileRow label="Wisdoms completed" value={String(completed)} />
-      </SurfaceCard>
+      <View style={styles.stats}>
+        <SurfaceCard style={styles.statCard} tone="soft">
+          <View style={styles.statIcon}>
+            <Ionicons
+              color={appColors.primary}
+              name="calendar-outline"
+              size={19}
+            />
+          </View>
+          <AppText tone="muted" variant="caption">
+            Age
+          </AppText>
+          <AppText style={styles.statValue} variant="sectionTitle">
+            {profile.age === null ? 'Not set' : profile.age}
+          </AppText>
+        </SurfaceCard>
 
-      <View style={styles.action}>
-        <SecondaryButton
-          icon="create-outline"
-          label="Edit profile"
-          onPress={() => navigation.navigate('EditProfile')}
-        />
+        <SurfaceCard style={styles.statCard} tone="soft">
+          <View style={styles.statIcon}>
+            <Ionicons
+              color={appColors.primary}
+              name="checkmark-circle-outline"
+              size={20}
+            />
+          </View>
+          <AppText tone="muted" variant="caption">
+            Wisdoms completed
+          </AppText>
+          <AppText style={styles.statValue} variant="sectionTitle">
+            {completed}
+          </AppText>
+        </SurfaceCard>
+      </View>
+
+      <View style={styles.growth}>
+        <View style={styles.growthIcon}>
+          <Ionicons color={appColors.wisdomGreen} name="leaf-outline" size={21} />
+        </View>
+        <View style={styles.growthCopy}>
+          <AppText variant="label">Growth</AppText>
+          <AppText tone="secondary" variant="supporting">
+            Every Wisdom you practice helps your thinking grow.
+          </AppText>
+        </View>
       </View>
     </Screen>
   );
 }
 
-function ProfileRow({ label, value }: { label: string; value: string }) {
-  return (
-    <View style={styles.row}>
-      <AppText style={styles.label} tone="muted" variant="label">
-        {label}
-      </AppText>
-      <AppText style={styles.value} variant="supporting">
-        {value}
-      </AppText>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: space.xl,
+    paddingBottom: space.lg,
+  },
+  heading: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  editButton: {
+    paddingHorizontal: space.sm,
   },
   profileHeader: {
     alignItems: 'center',
     backgroundColor: appColors.warmGoldSoft,
+    flexDirection: 'row',
     marginTop: space.lg,
     overflow: 'hidden',
     padding: layout.cardPadding,
@@ -93,9 +130,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: appColors.surfaceOverlaySoft,
     borderRadius: radii.round,
-    height: 116,
+    flexShrink: 0,
+    height: 104,
     justifyContent: 'center',
-    width: 116,
+    width: 104,
   },
   avatar: {
     alignItems: 'center',
@@ -103,57 +141,68 @@ const styles = StyleSheet.create({
     borderColor: appColors.surface,
     borderRadius: radii.round,
     borderWidth: 4,
-    height: 100,
+    height: 90,
     justifyContent: 'center',
     overflow: 'hidden',
-    width: 100,
+    width: 90,
   },
   avatarImage: {
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 90,
+  },
+  heroCopy: {
+    flex: 1,
+    marginLeft: space.md,
   },
   name: {
-    marginTop: space.sm,
-    textAlign: 'center',
+    flexShrink: 1,
   },
-  identityPill: {
+  identityLabel: {
+    marginTop: space.xs,
+  },
+  identity: {
     alignItems: 'center',
-    backgroundColor: appColors.surfaceOverlay,
-    borderColor: appColors.border,
-    borderRadius: radii.round,
-    borderWidth: 1,
     columnGap: space.xs,
     flexDirection: 'row',
-    marginTop: space.xs,
-    paddingHorizontal: space.md,
-    paddingVertical: space.xs,
+    marginTop: space.xxs,
   },
-  card: {
-    marginTop: space.lg,
-    paddingHorizontal: layout.cardPadding,
-  },
-  row: {
-    alignItems: 'center',
-    columnGap: space.md,
+  stats: {
+    columnGap: space.sm,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    minHeight: 60,
-    paddingVertical: space.sm,
+    marginTop: space.md,
   },
-  label: {
-    flexBasis: 128,
-    flexGrow: 1,
+  statCard: {
+    flex: 1,
+    minHeight: 132,
+    padding: space.md,
   },
-  value: {
-    flexShrink: 1,
-    fontWeight: '800',
-    textAlign: 'right',
+  statIcon: {
+    alignItems: 'center',
+    backgroundColor: appColors.surfaceOverlay,
+    borderRadius: radii.round,
+    height: 36,
+    justifyContent: 'center',
+    marginBottom: space.sm,
+    width: 36,
   },
-  divider: {
-    backgroundColor: appColors.border,
-    height: 1,
+  statValue: {
+    marginTop: space.xxs,
   },
-  action: {
+  growth: {
+    alignItems: 'center',
+    flexDirection: 'row',
     marginTop: space.lg,
+  },
+  growthIcon: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGreenSoft,
+    borderRadius: radii.round,
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  growthCopy: {
+    flex: 1,
+    marginLeft: space.sm,
   },
 });

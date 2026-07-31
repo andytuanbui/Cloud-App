@@ -116,7 +116,7 @@ export function ProfileSetupScreen() {
                   style={styles.heroImage}
                 />
               </LinearGradient>
-              <AppText accessibilityRole="header" style={styles.title} variant="screenTitle">
+              <AppText accessibilityRole="header" style={styles.title} variant="display">
                 Welcome to CloudWise
               </AppText>
               <AppText style={styles.body} tone="secondary" variant="body">
@@ -269,7 +269,6 @@ const styles = StyleSheet.create({
   },
   step: {
     alignItems: 'center',
-    flex: 1,
     width: '100%',
   },
   backRow: {
@@ -312,8 +311,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   action: {
-    marginTop: 'auto',
-    paddingTop: space.xl,
+    marginTop: space.xl,
     width: '100%',
   },
   secondaryAction: {
@@ -346,7 +344,7 @@ const styles = StyleSheet.create({
   },
   summaryValue: {
     flexShrink: 1,
-    fontWeight: '800',
+    fontWeight: '700',
     textAlign: 'right',
   },
   divider: {

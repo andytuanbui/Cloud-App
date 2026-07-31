@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { appColors, layout, shadows, space, typeStyles } from '../../theme';
+import { appColors, layout, radii, shadows, space, typeStyles } from '../../theme';
 
 export type BottomNavigationItem<Route extends string> = {
   label: string;
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     borderColor: appColors.transparent,
-    borderRadius: 12,
+    borderRadius: radii.medium,
     borderWidth: 2,
     flex: 1,
     justifyContent: 'center',
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
   },
   iconWrap: {
     alignItems: 'center',
-    borderRadius: 16,
-    height: 30,
+    borderRadius: radii.small,
+    height: 28,
     justifyContent: 'center',
-    width: 38,
+    width: 36,
   },
   iconWrapActive: {
     backgroundColor: appColors.primarySoft,
@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
   },
   labelActive: {
     color: appColors.primary,
-    fontWeight: '900',
+    fontWeight: '700',
   },
 });

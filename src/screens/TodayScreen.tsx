@@ -21,7 +21,7 @@ import { RootStackParamList } from '../types/wisdom';
 type Props = NativeStackScreenProps<RootStackParamList, 'Today'>;
 
 const loadingCloud = require('../../assets/cloud/cloud-avatar.png');
-const caughtUpCloud = require('../../assets/cloud/cloud-reading.png');
+const caughtUpCloud = require('../../assets/cloud/cloud-avatar.png');
 
 export function TodayScreen({ navigation }: Props) {
   const { profile, isRestoring } = useAppState();
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
   },
   caughtUpCard: {
     alignItems: 'center',
-    marginBottom: space.xl,
-    padding: space.xl,
+    marginBottom: space.lg,
+    padding: space.lg,
   },
   caughtUpArt: {
     borderRadius: radii.round,
-    height: 126,
+    height: 104,
     overflow: 'hidden',
-    width: 126,
+    width: 104,
   },
   caughtUpCloud: {
     height: '100%',

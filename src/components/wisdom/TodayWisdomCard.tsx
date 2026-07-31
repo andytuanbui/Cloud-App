@@ -46,10 +46,10 @@ export function TodayWisdomCard({
             </View>
           </View>
 
-          <AppText style={styles.title} variant="screenTitle">
+          <AppText style={styles.title} variant="cardTitle">
             {wisdom.title}
           </AppText>
-          <AppText style={styles.summary} tone="secondary">
+          <AppText style={styles.summary} tone="secondary" variant="supporting">
             {wisdom.summary}
           </AppText>
 
@@ -94,14 +94,14 @@ export function TodayWisdomCard({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: space.xl,
+    marginBottom: space.lg,
   },
   clip: {
     borderRadius: radii.card,
     overflow: 'hidden',
   },
   body: {
-    padding: space.lg,
+    padding: space.md,
   },
   metaRow: {
     alignItems: 'center',
@@ -115,18 +115,18 @@ const styles = StyleSheet.create({
     gap: space.xxs,
   },
   title: {
-    marginTop: space.sm,
-  },
-  summary: {
     marginTop: space.xs,
   },
+  summary: {
+    marginTop: space.xxs,
+  },
   action: {
-    marginTop: space.lg,
+    marginTop: space.sm,
   },
   completedPanel: {
     backgroundColor: appColors.successSoft,
     borderRadius: radii.medium,
-    marginTop: space.lg,
+    marginTop: space.sm,
     paddingHorizontal: space.md,
     paddingTop: space.md,
   },

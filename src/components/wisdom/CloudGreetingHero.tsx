@@ -34,15 +34,15 @@ export function CloudGreetingHero({
 const styles = StyleSheet.create({
   shadow: {
     borderRadius: radii.hero,
-    marginBottom: space.xl,
+    marginBottom: space.lg,
     ...shadows.card,
   },
   hero: {
     borderRadius: radii.hero,
     justifyContent: 'flex-end',
-    minHeight: 220,
+    minHeight: 152,
     overflow: 'hidden',
-    padding: space.md,
+    padding: space.sm,
     position: 'relative',
   },
   image: {
@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
     borderColor: appColors.surfaceElevated,
     borderRadius: radii.medium,
     borderWidth: 1,
-    maxWidth: 310,
-    paddingHorizontal: space.md,
-    paddingVertical: space.sm,
-    width: '82%',
+    maxWidth: 300,
+    paddingHorizontal: space.sm,
+    paddingVertical: space.xs,
+    width: '78%',
   },
   body: {
     marginTop: space.xxs,

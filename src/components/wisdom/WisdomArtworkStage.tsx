@@ -8,6 +8,8 @@ const artworkBackgrounds: Record<string, string> = {
   'three-ways-to-use-money': appColors.canvasSoft,
 };
 
+const moneyScene = require('../../../assets/cloud/cloud-neighborhood-home.png');
+
 export function WisdomArtworkStage({
   mode = 'feature',
   wisdom,
@@ -15,21 +17,32 @@ export function WisdomArtworkStage({
   mode?: 'feature' | 'compact';
   wisdom: WisdomContent;
 }) {
+  const compact = mode === 'compact';
+  const needsLabelFreeCrop = wisdom.id === 'needs-vs-wants';
+  const pauseCaptionFreeCrop = wisdom.id === 'pause-before-you-answer';
+  const source =
+    wisdom.id === 'three-ways-to-use-money' ? moneyScene : wisdom.artwork;
+
   return (
     <View
       accessible={false}
       style={[
         styles.stage,
-        mode === 'compact' && styles.compactStage,
+        compact && styles.compactStage,
         { backgroundColor: artworkBackgrounds[wisdom.id] ?? appColors.surfaceSoft },
       ]}
     >
-      <View style={[styles.orb, mode === 'compact' && styles.compactOrb]} />
       <Image
         accessible={false}
-        resizeMode="contain"
-        source={wisdom.artwork}
-        style={[styles.image, mode === 'compact' && styles.compactImage]}
+        resizeMode="cover"
+        source={source}
+        style={[
+          styles.coverImage,
+          needsLabelFreeCrop && styles.needsFeatureCrop,
+          needsLabelFreeCrop && compact && styles.needsCompactCrop,
+          pauseCaptionFreeCrop && styles.pauseFeatureCrop,
+          pauseCaptionFreeCrop && compact && styles.pauseCompactCrop,
+        ]}
       />
     </View>
   );
@@ -38,7 +51,7 @@ export function WisdomArtworkStage({
 const styles = StyleSheet.create({
   stage: {
     alignItems: 'center',
-    height: 208,
+    height: 132,
     justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
@@ -47,30 +60,31 @@ const styles = StyleSheet.create({
   compactStage: {
     borderRadius: radii.medium,
     flexShrink: 0,
-    height: 142,
-    width: 104,
+    height: 84,
+    width: 80,
   },
-  orb: {
-    backgroundColor: appColors.surfaceOverlaySoft,
-    borderRadius: radii.round,
-    height: 176,
+  coverImage: {
+    left: 0,
+    height: '100%',
     position: 'absolute',
-    right: -20,
-    top: 18,
-    width: 176,
+    top: 0,
+    width: '100%',
   },
-  compactOrb: {
-    height: 94,
-    right: -28,
-    top: 24,
-    width: 94,
+  needsFeatureCrop: {
+    height: '178%',
+    width: '100%',
   },
-  image: {
-    height: '94%',
-    width: '94%',
+  needsCompactCrop: {
+    left: -25,
+    width: '279%',
   },
-  compactImage: {
-    height: '92%',
-    width: '92%',
+  pauseFeatureCrop: {
+    height: '232%',
+    width: '100%',
+  },
+  pauseCompactCrop: {
+    height: '105%',
+    left: 0,
+    width: '100%',
   },
 });

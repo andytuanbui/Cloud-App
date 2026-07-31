@@ -194,15 +194,42 @@ Each stage reuses the same heading, choice, card, message, and action language.
 
 ## Cloud Artwork Principles
 
-- Use the existing Cloud character and scene artwork; do not mix the legacy
-  `assets/lumi/` identity into production.
-- Protect Cloud’s face and gesture from text overlays or aggressive cropping.
-- Use one major illustration per screen or moment.
-- Treat brand-sheet crops and images with embedded captions as reference assets,
-  not general-purpose heroes.
-- Keep text on a dedicated high-contrast surface when placed over a scene.
+Production artwork has three strict roles:
+
+| Role | Approved use | Presentation rules |
+| --- | --- | --- |
+| Cloud character art | Welcome, Today greeting, Cloud messages, Profile, and completion moments | Use the consistent polished 3D Cloud appearance. Protect the face, expression, and gesture; do not place copy over them. |
+| Wisdom scene art | Wisdom covers and lesson moments that benefit from story context | Use a cohesive 3D story-scene treatment. Crop around the relevant people or action and keep every face intact. No embedded labels or captions may be visible. |
+| Object art | A lesson cover where one clear object communicates the idea better than a scene | Use a clean isolated object with consistent warm lighting and a quiet semantic background. Do not add decorative circles or unrelated geometry. |
+
+The following rules apply to every production image:
+
+- Use the existing Cloud asset family; do not mix the legacy `assets/lumi/`
+  identity into production.
+- Use one major illustration per screen or moment, and do not repeat the same
+  scene in adjacent hero and card roles.
+- Assets with embedded captions, labels, contact-sheet borders, or brand-sheet
+  framing are reference sources only. A deliberate overflow-hidden crop is
+  acceptable only when it excludes all embedded text and framing at every
+  supported viewport.
+- Use `cover` for a scene only after checking that the focal faces and action
+  survive the crop. Use a contained object treatment when cover would cut off
+  the lesson object.
+- Today and Wisdoms use the same crop for a Wisdom at feature and compact sizes,
+  adjusted only to keep the focal subject intact. Decorative geometry must
+  never look like missing artwork.
+- Keep interface copy in a dedicated high-contrast surface rather than baking
+  it into artwork.
 - Decorative images are hidden from assistive technology when nearby text
   already communicates the meaning.
+
+Current Wisdom cover assignments are:
+
+- Needs vs Wants: object art, using a label-free upper-jar crop;
+- Pause Before You Answer: story-scene art, using a caption-free friendship
+  crop that keeps both faces;
+- Three Ways to Use Money: the clean neighborhood story scene, with the child
+  kept as the focal subject.
 
 ## Accessibility
 

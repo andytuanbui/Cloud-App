@@ -60,7 +60,12 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
   if (reviewMode) {
     return (
-      <FlowScaffold step="read" reviewMode onBack={() => navigation.replace('Today')}>
+      <FlowScaffold
+        onBack={() => navigation.replace('Today')}
+        reviewMode
+        step="read"
+        wisdomTitle={wisdom.title}
+      >
         <StageHeading
           supporting="Take another look at the ideas you practiced."
           title={wisdom.title}
@@ -79,10 +84,14 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
     : () => navigation.goBack();
 
   return (
-    <FlowScaffold step={step} onBack={step === 'completion' ? undefined : goBack}>
+    <FlowScaffold
+      onBack={step === 'completion' ? undefined : goBack}
+      step={step}
+      wisdomTitle={wisdom.title}
+    >
       {step === 'opening' && (
         <>
-          <CloudIntro />
+          <OpeningCloudPrompt />
           <StageHeading
             supporting="Choose the answer that feels right to you."
             title={wisdom.openingQuestion.question}
@@ -100,7 +109,7 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
 
       {step === 'read' && (
         <>
-          <StageHeading title="Read and think" />
+          <StageHeading supporting={wisdom.summary} title="Read and think" />
           <ReadingSections wisdom={wisdom} />
           <View style={styles.action}>
             <WisdomButton label="Talk with Cloud" onPress={() => goNext('talk')} />
@@ -310,7 +319,13 @@ function ConversationStep({
             style={[styles.input, inputFocused && styles.inputFocused]}
             value={draft}
           />
-          <WisdomButton disabled={!draft.trim()} label="Share with Cloud" onPress={() => submit(draft)} />
+          <View style={styles.action}>
+            <WisdomButton
+              disabled={!draft.trim()}
+              label="Share with Cloud"
+              onPress={() => submit(draft)}
+            />
+          </View>
         </>
       )}
       {showResponse && (
@@ -325,13 +340,15 @@ function ConversationStep({
             </AppText>
           </View>
           <CloudMessage text={prompt.cloudResponse} />
-          <WisdomButton
-            label={index === wisdom.cloudConversation.length - 1 ? 'Continue' : 'Next Question'}
-            onPress={() => {
-              if (index === wisdom.cloudConversation.length - 1) onComplete();
-              else setShowResponse(false);
-            }}
-          />
+          <View style={styles.action}>
+            <WisdomButton
+              label={index === wisdom.cloudConversation.length - 1 ? 'Continue' : 'Next Question'}
+              onPress={() => {
+                if (index === wisdom.cloudConversation.length - 1) onComplete();
+                else setShowResponse(false);
+              }}
+            />
+          </View>
         </>
       )}
     </>
@@ -347,7 +364,7 @@ function StageHeading({
 }) {
   return (
     <View style={styles.stageHeading}>
-      <AppText accessibilityRole="header" variant="screenTitle">
+      <AppText accessibilityRole="header" variant="sectionTitle">
         {title}
       </AppText>
       {supporting ? (
@@ -363,23 +380,80 @@ function ReadingSections({ wisdom }: { wisdom: Wisdom }) {
   return (
     <>
       {wisdom.readingSections.map((section) => (
-        <SurfaceCard elevated key={section.title} style={styles.readCard}>
-          <AppText accessibilityRole="header" style={styles.cardTitle} variant="cardTitle">
-            {section.title}
-          </AppText>
+        <SurfaceCard key={section.title} style={styles.readCard}>
+          <View style={styles.readTitleRow}>
+            <View accessible={false} style={styles.readIcon}>
+              <Ionicons
+                accessible={false}
+                color={appColors.primary}
+                name="book-outline"
+                size={spacing.s18}
+              />
+            </View>
+            <AppText
+              accessibilityRole="header"
+              style={styles.cardTitle}
+              variant="sectionTitle"
+            >
+              {section.title}
+            </AppText>
+          </View>
           {section.text.map((line) => (
             <AppText key={line} style={styles.readBody} tone="secondary" variant="body">
               {line}
             </AppText>
           ))}
-          {section.examples?.map((example) => (
-            <AppText key={example} style={styles.bullet} tone="secondary" variant="body">
-              • {example}
-            </AppText>
-          ))}
+          {section.examples?.length ? (
+            <View
+              accessibilityLabel={`Examples: ${section.examples.join(', ')}`}
+              accessible
+              style={styles.examplesCallout}
+            >
+              <View style={styles.examplesLabelRow}>
+                <Ionicons
+                  accessible={false}
+                  color={appColors.wisdomGreen}
+                  name="sparkles-outline"
+                  size={spacing.s15}
+                />
+                <AppText style={styles.examplesLabel} tone="brand" variant="label">
+                  Examples
+                </AppText>
+              </View>
+              <AppText style={styles.examplesText} tone="secondary" variant="supporting">
+                {section.examples.join('  ·  ')}
+              </AppText>
+            </View>
+          ) : null}
         </SurfaceCard>
       ))}
     </>
+  );
+}
+
+function OpeningCloudPrompt() {
+  return (
+    <View
+      accessibilityLabel="A question from Cloud"
+      accessible
+      style={styles.openingCloudPrompt}
+    >
+      <View
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={styles.openingCloudFrame}
+      >
+        <Image
+          accessible={false}
+          resizeMode="contain"
+          source={cloudAvatar}
+          style={styles.cloud}
+        />
+      </View>
+      <AppText tone="brand" variant="label">
+        A question from Cloud
+      </AppText>
+    </View>
   );
 }
 
@@ -481,7 +555,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stageHeading: {
-    marginBottom: space.lg,
+    marginBottom: space.md,
   },
   stageSupporting: {
     marginTop: space.xs,
@@ -490,11 +564,32 @@ const styles = StyleSheet.create({
     marginBottom: space.xs,
   },
   action: {
-    marginTop: space.xl,
+    marginTop: space.lg,
+  },
+  openingCloudPrompt: {
+    alignItems: 'center',
+    backgroundColor: appColors.surfaceSoft,
+    borderColor: appColors.border,
+    borderRadius: radii.large,
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginBottom: space.md,
+    padding: space.xs,
+  },
+  openingCloudFrame: {
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.border,
+    borderRadius: radii.medium,
+    borderWidth: 1,
+    height: spacing.s48,
+    marginRight: space.sm,
+    overflow: 'hidden',
+    padding: spacing.xxs,
+    width: spacing.s48,
   },
   cloudStage: {
     alignItems: 'center',
-    marginBottom: space.lg,
+    marginBottom: space.md,
   },
   cloudFrame: {
     ...shadows.card,
@@ -517,7 +612,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cloudMessageWrap: {
-    marginVertical: space.lg,
+    marginTop: space.md,
   },
   cloudMessage: {
     alignItems: 'flex-start',
@@ -535,25 +630,53 @@ const styles = StyleSheet.create({
   },
   cloudText: {
     flex: 1,
-    fontWeight: typography.weight.bold,
   },
   readCard: {
-    marginBottom: space.md,
-    padding: space.lg,
+    marginBottom: space.sm,
+    padding: space.md,
+  },
+  readTitleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: space.sm,
+  },
+  readIcon: {
+    alignItems: 'center',
+    backgroundColor: appColors.primarySoft,
+    borderRadius: radii.small,
+    height: spacing.s34,
+    justifyContent: 'center',
+    marginRight: space.sm,
+    width: spacing.s34,
   },
   cardTitle: {
-    marginBottom: space.sm,
+    flex: 1,
   },
   readBody: {
     marginBottom: space.sm,
   },
-  bullet: {
-    marginBottom: space.xxs,
+  examplesCallout: {
+    backgroundColor: appColors.wisdomGreenSoft,
+    borderColor: appColors.border,
+    borderRadius: radii.medium,
+    borderWidth: 1,
+    marginTop: space.xxs,
+    padding: space.sm,
+  },
+  examplesLabelRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  examplesLabel: {
+    marginLeft: space.xs,
+  },
+  examplesText: {
+    marginTop: space.xs,
   },
   thinkCard: {
     gap: space.sm,
-    marginBottom: space.lg,
-    padding: space.lg,
+    marginBottom: space.md,
+    padding: space.md,
   },
   thinkQuestionRow: {
     alignItems: 'flex-start',
@@ -617,6 +740,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   summaryCard: {
+    marginTop: space.md,
     padding: space.lg,
   },
   summaryRow: {

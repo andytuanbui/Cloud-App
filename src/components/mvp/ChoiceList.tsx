@@ -8,7 +8,6 @@ import {
   shadows,
   space,
   spacing,
-  typography,
 } from '../../theme';
 import { AppText } from '../ui';
 
@@ -126,7 +125,7 @@ function ChoiceItem({
 
 const styles = StyleSheet.create({
   list: {
-    gap: space.sm,
+    gap: space.xs,
   },
   choice: {
     alignItems: 'center',
@@ -135,10 +134,9 @@ const styles = StyleSheet.create({
     borderRadius: radii.medium,
     borderWidth: spacing.xxs,
     flexDirection: 'row',
-    minHeight: spacing.s62,
+    minHeight: spacing.s52,
     paddingHorizontal: space.md,
-    paddingVertical: space.sm,
-    ...shadows.subtle,
+    paddingVertical: space.xs,
   },
   selected: {
     backgroundColor: appColors.primarySoft,
@@ -193,6 +191,5 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
-    fontWeight: typography.weight.bold,
   },
 });

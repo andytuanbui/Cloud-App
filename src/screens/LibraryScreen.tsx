@@ -67,13 +67,13 @@ export function LibraryScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   intro: {
-    marginBottom: space.xl,
+    marginBottom: space.lg,
     marginTop: space.xs,
   },
   section: {
-    marginBottom: space.xl,
+    marginBottom: space.lg,
   },
   cards: {
-    gap: space.md,
+    gap: space.sm,
   },
 });
