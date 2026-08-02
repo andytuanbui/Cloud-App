@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { space } from '../../../theme';
+import { appColors, radii, shadows, space } from '../../../theme';
 import { AppText, SecondaryButton, TextButton } from '../../ui';
 
 export type NarrationStatus = 'unavailable' | 'idle' | 'speaking' | 'paused';
@@ -97,17 +97,27 @@ function noOp() {}
 
 const styles = StyleSheet.create({
   wrap: {
+    backgroundColor: appColors.surfaceOverlaySoft,
+    borderColor: appColors.border,
+    borderRadius: radii.large,
+    borderWidth: 1,
     marginTop: space.md,
+    padding: space.xs,
+    ...shadows.subtle,
   },
   controls: {
+    alignItems: 'stretch',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: space.xs,
   },
   control: {
+    flexBasis: 128,
     flexGrow: 1,
   },
   status: {
     marginTop: space.xs,
+    paddingHorizontal: space.xs,
+    textAlign: 'center',
   },
 });

@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { appColors, layout, radii, space, spacing } from '../../../theme';
+import { appColors, layout, radii, shadows, space, spacing } from '../../../theme';
 import { AppText, IconButton, ProgressSteps } from '../../ui';
 
 export const guidedWisdomStages = [
@@ -72,28 +72,30 @@ export function GuidedWisdomScaffold({
             ) : null}
           </View>
           <View accessibilityLiveRegion="polite" style={styles.progressWrap}>
-            <AppText
-              accessibilityRole="header"
-              numberOfLines={1}
-              style={styles.wisdomTitle}
-              tone="secondary"
-              variant="caption"
-            >
-              {wisdomTitle}
-            </AppText>
-            {learned ? (
-              <View accessibilityLabel="This Wisdom is learned" style={styles.learnedBadge}>
-                <Ionicons
-                  accessible={false}
-                  color={appColors.wisdomGreen}
-                  name="checkmark-circle"
-                  size={spacing.s15}
-                />
-                <AppText style={styles.learnedLabel} tone="brand" variant="label">
-                  Learned
-                </AppText>
-              </View>
-            ) : null}
+            <View style={styles.metaRow}>
+              <AppText
+                accessibilityRole="header"
+                numberOfLines={1}
+                style={styles.wisdomTitle}
+                tone="secondary"
+                variant="caption"
+              >
+                {wisdomTitle}
+              </AppText>
+              {learned ? (
+                <View accessibilityLabel="This Wisdom is learned" style={styles.learnedBadge}>
+                  <Ionicons
+                    accessible={false}
+                    color={appColors.wisdomGreen}
+                    name="checkmark-circle"
+                    size={spacing.s15}
+                  />
+                  <AppText style={styles.learnedLabel} tone="brand" variant="label">
+                    Learned
+                  </AppText>
+                </View>
+              ) : null}
+            </View>
             <ProgressSteps
               current={stageIndex + 1}
               label={
@@ -112,6 +114,8 @@ export function GuidedWisdomScaffold({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboardArea}
       >
+        <View style={styles.canvasGlowTop} />
+        <View style={styles.canvasGlowBottom} />
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           contentInsetAdjustmentBehavior="automatic"
@@ -131,11 +135,15 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: appColors.canvas,
     flex: 1,
+    overflow: 'hidden',
+    width: '100%',
   },
   headerShell: {
     backgroundColor: appColors.surfaceOverlay,
     borderBottomColor: appColors.border,
     borderBottomWidth: 1,
+    ...shadows.subtle,
+    zIndex: 1,
   },
   header: {
     alignItems: 'center',
@@ -152,10 +160,18 @@ const styles = StyleSheet.create({
   },
   progressWrap: {
     flex: 1,
-    marginHorizontal: space.sm,
+    marginHorizontal: space.xs,
+    minWidth: 0,
+  },
+  metaRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: space.xxs,
   },
   wisdomTitle: {
-    marginBottom: space.xxs,
+    flexShrink: 1,
+    minWidth: 0,
     textAlign: 'center',
   },
   learnedBadge: {
@@ -166,7 +182,8 @@ const styles = StyleSheet.create({
     borderRadius: radii.round,
     borderWidth: 1,
     flexDirection: 'row',
-    marginBottom: space.xxs,
+    flexShrink: 0,
+    marginLeft: space.xs,
     paddingHorizontal: space.xs,
     paddingVertical: space.xxs,
   },
@@ -175,16 +192,40 @@ const styles = StyleSheet.create({
   },
   keyboardArea: {
     flex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  canvasGlowTop: {
+    backgroundColor: appColors.primarySoft,
+    borderRadius: radii.round,
+    height: 190,
+    opacity: 0.48,
+    pointerEvents: 'none',
+    position: 'absolute',
+    right: -110,
+    top: -92,
+    width: 190,
+  },
+  canvasGlowBottom: {
+    backgroundColor: appColors.warmGoldSoft,
+    borderRadius: radii.round,
+    bottom: -120,
+    height: 220,
+    left: -132,
+    opacity: 0.42,
+    pointerEvents: 'none',
+    position: 'absolute',
+    width: 220,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: space.xxl,
-    paddingHorizontal: layout.pagePadding,
-    paddingTop: space.md,
+    paddingBottom: space.xxxl,
+    paddingTop: space.lg,
   },
   contentInner: {
     alignSelf: 'center',
     maxWidth: layout.readingMaxWidth,
+    paddingHorizontal: layout.pagePadding,
     width: '100%',
   },
 });

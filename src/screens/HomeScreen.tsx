@@ -85,7 +85,7 @@ function CloudWorldScene({
       <Image source={worldImage} resizeMode="cover" style={homeStyles.worldImage} />
       <LinearGradient colors={['rgba(255,255,255,0)', 'rgba(255,253,248,0.1)', homeColors.background]} style={homeStyles.worldFade} />
       <SpeechBubble />
-      <View pointerEvents="none" style={homeStyles.motionLayerRoot}>
+      <View style={homeStyles.motionLayerRoot}>
         {futureMotionLayers.map((layer) => (
           <View key={layer} accessibilityLabel={`Future animation layer: ${layer}`} style={homeStyles.motionLayerAnchor} />
         ))}
@@ -239,6 +239,7 @@ const homeStyles = StyleSheet.create({
   motionLayerRoot: {
     bottom: 0,
     left: 0,
+    pointerEvents: 'none',
     position: 'absolute',
     right: 0,
     top: 0,

@@ -1,10 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import {
   isWisdomLearned,
   type ScheduledWisdom,
 } from '../../state/useDailyWisdoms';
-import { appColors, layout, space } from '../../theme';
+import {
+  appColors,
+  layout,
+  radii,
+  shadows,
+  space,
+  spacing,
+} from '../../theme';
 import {
   AppText,
   PrimaryButton,
@@ -23,11 +31,31 @@ export function LibraryWisdomCard({
 }) {
   const learned = isWisdomLearned(item.progress);
   const started = Boolean(item.progress);
+  const [focused, setFocused] = useState(false);
 
   const card = (
-    <SurfaceCard style={styles.card}>
+    <SurfaceCard
+      elevated={learned}
+      style={[
+        styles.card,
+        learned && styles.learnedCard,
+        learned && focused && styles.learnedCardFocused,
+      ]}
+    >
       <View style={styles.topRow}>
-        <WisdomArtworkStage mode="compact" wisdom={item.wisdom} />
+        <View style={styles.artworkWrap}>
+          <WisdomArtworkStage mode="compact" wisdom={item.wisdom} />
+          {learned ? (
+            <View accessible={false} style={styles.artworkCheck}>
+              <Ionicons
+                accessible={false}
+                color={appColors.onPrimary}
+                name="checkmark"
+                size={spacing.s15}
+              />
+            </View>
+          ) : null}
+        </View>
         <View style={styles.copy}>
           <View style={styles.metaRow}>
             <AppText tone="brand" variant="label">
@@ -54,7 +82,7 @@ export function LibraryWisdomCard({
         {item.wisdom.summary}
       </AppText>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, learned && styles.learnedFooter]}>
         {learned ? (
           <View style={styles.completionRow}>
             <Ionicons
@@ -73,12 +101,14 @@ export function LibraryWisdomCard({
         {learned ? (
           <View style={styles.learnedAction}>
             <AppText tone="brand" variant="label">Review Wisdom</AppText>
-            <Ionicons
-              accessible={false}
-              color={appColors.primary}
-              name="arrow-forward"
-              size={18}
-            />
+            <View accessible={false} style={styles.reviewIcon}>
+              <Ionicons
+                accessible={false}
+                color={appColors.onPrimary}
+                name="arrow-forward"
+                size={17}
+              />
+            </View>
           </View>
         ) : (
           <PrimaryButton
@@ -98,8 +128,13 @@ export function LibraryWisdomCard({
       accessibilityHint="Opens a fresh review at the Welcome screen"
       accessibilityLabel={`Review ${item.wisdom.title}`}
       accessibilityRole="button"
+      onBlur={() => setFocused(false)}
+      onFocus={() => setFocused(true)}
       onPress={onOpen}
-      style={({ pressed }) => pressed && styles.cardPressed}
+      style={({ pressed }) => [
+        styles.learnedPressable,
+        pressed && styles.cardPressed,
+      ]}
     >
       {card}
     </Pressable>
@@ -110,13 +145,42 @@ const styles = StyleSheet.create({
   card: {
     padding: space.sm,
   },
+  learnedCard: {
+    borderColor: appColors.borderStrong,
+    borderWidth: 2,
+  },
+  learnedCardFocused: {
+    borderColor: appColors.focus,
+    ...shadows.focus,
+  },
+  learnedPressable: {
+    borderRadius: radii.card,
+  },
   cardPressed: {
-    opacity: 0.86,
+    opacity: 0.9,
+    transform: [{ scale: 0.992 }],
   },
   topRow: {
     alignItems: 'flex-start',
     flexDirection: 'row',
     gap: space.sm,
+  },
+  artworkWrap: {
+    flexShrink: 0,
+    position: 'relative',
+  },
+  artworkCheck: {
+    alignItems: 'center',
+    backgroundColor: appColors.success,
+    borderColor: appColors.surfaceElevated,
+    borderRadius: radii.round,
+    borderWidth: 2,
+    bottom: -space.xxs,
+    height: spacing.s28,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: -space.xxs,
+    width: spacing.s28,
   },
   copy: {
     flex: 1,
@@ -148,6 +212,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: space.sm,
   },
+  learnedFooter: {
+    backgroundColor: appColors.successSoft,
+    borderColor: appColors.border,
+    borderRadius: radii.medium,
+    borderWidth: 1,
+    paddingHorizontal: space.sm,
+    paddingVertical: space.xs,
+  },
   completionRow: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -163,6 +235,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: space.xs,
     minHeight: layout.minimumTouchTarget,
-    paddingHorizontal: space.sm,
+    paddingLeft: space.sm,
+  },
+  reviewIcon: {
+    alignItems: 'center',
+    backgroundColor: appColors.primary,
+    borderRadius: radii.round,
+    height: spacing.s34,
+    justifyContent: 'center',
+    width: spacing.s34,
   },
 });

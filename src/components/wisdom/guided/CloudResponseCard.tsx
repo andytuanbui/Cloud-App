@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native';
-import { appColors, radii, space, spacing } from '../../../theme';
+import { appColors, radii, shadows, space, spacing } from '../../../theme';
 import { AppText, SurfaceCard } from '../../ui';
 
 const cloudAvatar = require('../../../../assets/cloud/cloud-avatar.png');
@@ -30,7 +30,7 @@ export function CloudResponseCard({
           <AppText tone="brand" variant="label">
             Cloud
           </AppText>
-          <AppText style={styles.text} tone="secondary" variant="body">
+          <AppText style={styles.text} variant="body">
             {text}
           </AppText>
         </View>
@@ -41,7 +41,11 @@ export function CloudResponseCard({
 
 const styles = StyleSheet.create({
   card: {
+    borderColor: appColors.borderStrong,
+    borderLeftColor: appColors.primary,
+    borderLeftWidth: space.xxs,
     padding: space.md,
+    ...shadows.subtle,
   },
   row: {
     alignItems: 'flex-start',
@@ -56,6 +60,7 @@ const styles = StyleSheet.create({
     marginRight: space.sm,
     overflow: 'hidden',
     width: spacing.s58,
+    ...shadows.subtle,
   },
   avatar: {
     height: '100%',
@@ -63,9 +68,10 @@ const styles = StyleSheet.create({
   },
   copy: {
     flex: 1,
-    paddingTop: space.xxs,
+    minWidth: 0,
+    paddingTop: space.xs,
   },
   text: {
-    marginTop: space.xxs,
+    marginTop: space.xs,
   },
 });

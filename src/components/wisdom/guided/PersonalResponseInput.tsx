@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { appColors, radii, shadows, space, spacing } from '../../../theme';
+import { appColors, radii, shadows, space, spacing, typeStyles, typography } from '../../../theme';
 import { AppText, PrimaryButton } from '../../ui';
 
 export const PERSONAL_RESPONSE_MAX_LENGTH = 120;
@@ -39,6 +39,7 @@ export function PersonalResponseInput({
   value: string;
 }) {
   const [focused, setFocused] = useState(false);
+  const [focusedSuggestionId, setFocusedSuggestionId] = useState<string>();
   const trimmedValue = value.trim();
   const safeMaxLength = Math.max(1, Math.floor(maxLength));
   const canSubmit = Boolean(trimmedValue || selectedSuggestionId);
@@ -58,10 +59,13 @@ export function PersonalResponseInput({
               accessibilityState={{ checked: selected, disabled }}
               disabled={disabled}
               key={suggestion.id}
+              onBlur={() => setFocusedSuggestionId(undefined)}
+              onFocus={() => setFocusedSuggestionId(suggestion.id)}
               onPress={() => onSelectSuggestion(suggestion)}
               style={({ pressed }) => [
                 styles.suggestion,
                 selected && styles.suggestionSelected,
+                focusedSuggestionId === suggestion.id && styles.suggestionFocused,
                 pressed && !disabled && styles.suggestionPressed,
                 disabled && styles.disabled,
               ]}
@@ -69,7 +73,7 @@ export function PersonalResponseInput({
               <Ionicons
                 accessible={false}
                 color={selected ? appColors.onPrimary : appColors.primary}
-                name={selected ? 'chatbubble' : 'chatbubble-outline'}
+                name={selected ? 'checkmark-circle' : 'chatbubble-outline'}
                 size={spacing.s20}
               />
               <AppText
@@ -79,14 +83,6 @@ export function PersonalResponseInput({
               >
                 {suggestion.label}
               </AppText>
-              {selected ? (
-                <Ionicons
-                  accessible={false}
-                  color={appColors.onPrimary}
-                  name="checkmark-circle"
-                  size={spacing.s20}
-                />
-              ) : null}
             </Pressable>
           );
         })}
@@ -129,19 +125,24 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   suggestions: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: space.xs,
     marginTop: space.xs,
   },
   suggestion: {
     alignItems: 'center',
+    alignSelf: 'flex-start',
     backgroundColor: appColors.surfaceElevated,
     borderColor: appColors.borderStrong,
-    borderRadius: radii.large,
+    borderRadius: radii.round,
     borderWidth: 1,
     flexDirection: 'row',
+    maxWidth: '100%',
     minHeight: spacing.s48,
-    paddingHorizontal: space.md,
-    paddingVertical: space.sm,
+    paddingHorizontal: space.sm,
+    paddingVertical: space.xs,
   },
   suggestionSelected: {
     backgroundColor: appColors.primary,
@@ -150,18 +151,24 @@ const styles = StyleSheet.create({
   suggestionPressed: {
     backgroundColor: appColors.primarySoft,
   },
+  suggestionFocused: {
+    borderColor: appColors.focus,
+    ...shadows.focus,
+  },
   suggestionText: {
-    flex: 1,
-    fontWeight: '700',
-    marginHorizontal: space.sm,
+    flexShrink: 1,
+    fontWeight: typography.weight.bold,
+    marginLeft: space.xs,
+    minWidth: 0,
   },
   inputLabel: {
     marginTop: space.lg,
   },
   input: {
+    ...typeStyles.body,
     backgroundColor: appColors.surfaceElevated,
     borderColor: appColors.borderStrong,
-    borderRadius: radii.medium,
+    borderRadius: radii.large,
     borderWidth: 2,
     color: appColors.textPrimary,
     marginTop: space.xs,
@@ -177,9 +184,10 @@ const styles = StyleSheet.create({
   },
   count: {
     alignSelf: 'flex-end',
+    marginRight: space.xs,
     marginTop: space.xxs,
   },
   submit: {
-    marginTop: space.sm,
+    marginTop: space.md,
   },
 });

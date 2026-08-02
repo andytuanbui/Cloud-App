@@ -29,7 +29,7 @@ export function MoneyAmountStepper({
   const canIncrease = !disabled && safeAmount + MONEY_AMOUNT_STEP <= safeMaximum;
 
   return (
-    <SurfaceCard style={styles.card}>
+    <SurfaceCard elevated style={styles.card}>
       <View style={styles.heading}>
         {icon ? (
           <View accessible={false} style={styles.categoryIcon}>
@@ -67,7 +67,7 @@ export function MoneyAmountStepper({
           style={styles.button}
         />
         <View accessibilityLiveRegion="polite" style={styles.amount}>
-          <AppText variant="cardTitle">{safeAmount} kr</AppText>
+          <AppText tone="inverse" variant="cardTitle">{safeAmount} kr</AppText>
         </View>
         <SecondaryButton
           accessibilityLabel={`Add ${MONEY_AMOUNT_STEP} kr to ${label}`}
@@ -83,46 +83,54 @@ export function MoneyAmountStepper({
 
 const styles = StyleSheet.create({
   card: {
+    borderColor: appColors.borderStrong,
     padding: space.md,
   },
   heading: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: space.sm,
+    marginBottom: space.md,
   },
   categoryIcon: {
     alignItems: 'center',
     backgroundColor: appColors.primarySoft,
-    borderRadius: radii.medium,
-    height: spacing.s42,
+    borderColor: appColors.border,
+    borderRadius: radii.large,
+    borderWidth: 1,
+    height: spacing.s48,
     justifyContent: 'center',
     marginRight: space.sm,
-    width: spacing.s42,
+    width: spacing.s48,
   },
   headingCopy: {
     flex: 1,
+    minWidth: 0,
   },
   objectName: {
     marginTop: space.xxs,
   },
   controls: {
     alignItems: 'center',
+    backgroundColor: appColors.canvasSoft,
+    borderRadius: radii.large,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: space.xs,
+    gap: space.xxs,
+    padding: space.xxs,
   },
   button: {
-    flexGrow: 1,
+    flex: 1,
+    minWidth: spacing.s58,
+    paddingHorizontal: space.xs,
   },
   amount: {
     alignItems: 'center',
-    backgroundColor: appColors.primarySoft,
-    borderColor: appColors.border,
-    borderRadius: radii.medium,
+    backgroundColor: appColors.primary,
+    borderColor: appColors.primary,
+    borderRadius: radii.large,
     borderWidth: 1,
     justifyContent: 'center',
-    minHeight: spacing.s58,
-    minWidth: spacing.s92,
+    minHeight: spacing.s62,
+    minWidth: spacing.s76,
     paddingHorizontal: space.sm,
   },
 });

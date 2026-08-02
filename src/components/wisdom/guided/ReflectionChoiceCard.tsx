@@ -1,6 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { appColors, layout, radii, shadows, space, spacing } from '../../../theme';
+import { appColors, radii, shadows, space, spacing, typography } from '../../../theme';
 import { AppText } from '../../ui';
 
 export function ReflectionChoiceCard({
@@ -38,10 +39,21 @@ export function ReflectionChoiceCard({
       ]}
     >
       <View style={[styles.indicator, selected && styles.indicatorSelected]}>
-        {selected ? <View style={styles.indicatorDot} /> : null}
+        <Ionicons
+          accessible={false}
+          color={selected ? appColors.onPrimary : appColors.primary}
+          name={selected ? 'checkmark' : 'chatbubble-outline'}
+          size={spacing.s18}
+        />
       </View>
       <View style={styles.copy}>
-        <AppText variant="body">{label}</AppText>
+        <AppText
+          style={styles.label}
+          tone={selected ? 'brand' : 'primary'}
+          variant="body"
+        >
+          {label}
+        </AppText>
         {supportingText ? (
           <AppText style={styles.supporting} tone="secondary" variant="supporting">
             {supportingText}
@@ -57,12 +69,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: appColors.surfaceElevated,
     borderColor: appColors.border,
-    borderRadius: radii.medium,
-    borderWidth: 2,
+    borderRadius: radii.large,
+    borderWidth: 1,
     flexDirection: 'row',
-    minHeight: spacing.s58,
-    paddingHorizontal: space.md,
+    minWidth: 0,
+    minHeight: spacing.s62,
+    paddingHorizontal: space.xs,
     paddingVertical: space.sm,
+    ...shadows.subtle,
   },
   selected: {
     backgroundColor: appColors.primarySoft,
@@ -81,26 +95,25 @@ const styles = StyleSheet.create({
   },
   indicator: {
     alignItems: 'center',
-    borderColor: appColors.borderStrong,
+    backgroundColor: appColors.primarySoft,
+    borderColor: appColors.border,
     borderRadius: radii.round,
-    borderWidth: 2,
-    height: layout.minimumTouchTarget / 2,
+    borderWidth: 1,
+    height: spacing.s30,
     justifyContent: 'center',
-    marginRight: space.sm,
-    width: layout.minimumTouchTarget / 2,
+    marginRight: space.xs,
+    width: spacing.s30,
   },
   indicatorSelected: {
     backgroundColor: appColors.primary,
     borderColor: appColors.primary,
   },
-  indicatorDot: {
-    backgroundColor: appColors.onPrimary,
-    borderRadius: radii.round,
-    height: space.xs,
-    width: space.xs,
-  },
   copy: {
     flex: 1,
+    minWidth: 0,
+  },
+  label: {
+    fontWeight: typography.weight.bold,
   },
   supporting: {
     marginTop: space.xxs,
