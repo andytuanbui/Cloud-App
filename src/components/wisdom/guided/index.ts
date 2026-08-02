@@ -17,3 +17,12 @@ export {
 } from './PersonalResponseInput';
 export type { PersonalResponseSuggestion } from './PersonalResponseInput';
 export { MONEY_AMOUNT_STEP, MoneyAmountStepper } from './MoneyAmountStepper';
+export {
+  LearnedBadge,
+  StageHeading,
+  WisdomDestinationTile,
+  WisdomHeroCanvas,
+  WisdomObjectBadge,
+  wisdomNightGradient,
+  wisdomWarmGradient,
+} from './WisdomCanvas';

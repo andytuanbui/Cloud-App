@@ -58,11 +58,20 @@ export function MoneyAmountStepper({
               tone === 'give' && styles.giveIcon,
             ]}
           >
+            <View
+              accessible={false}
+              style={[
+                styles.categoryGlow,
+                tone === 'spend' && styles.categoryGlowSpend,
+                tone === 'save' && styles.categoryGlowSave,
+                tone === 'give' && styles.categoryGlowGive,
+              ]}
+            />
             <Ionicons
               accessible={false}
               color={tone === 'spend' ? appColors.warmGold : appColors.primary}
               name={icon}
-              size={spacing.s24}
+              size={spacing.s34}
             />
           </View>
         ) : null}
@@ -154,14 +163,27 @@ const styles = StyleSheet.create({
   categoryIcon: {
     alignItems: 'center',
     backgroundColor: appColors.primarySoft,
-    borderColor: appColors.border,
+    borderColor: appColors.borderStrong,
     borderRadius: radii.large,
     borderWidth: 1,
-    height: spacing.s58,
+    height: spacing.s68,
     justifyContent: 'center',
     marginRight: space.sm,
-    width: spacing.s58,
+    overflow: 'hidden',
+    position: 'relative',
+    width: spacing.s68,
+    ...shadows.subtle,
   },
+  categoryGlow: {
+    borderRadius: radii.round,
+    height: spacing.s52,
+    opacity: 0.55,
+    position: 'absolute',
+    width: spacing.s52,
+  },
+  categoryGlowSpend: { backgroundColor: appColors.wisdomGoldGlow },
+  categoryGlowSave: { backgroundColor: appColors.primarySoft },
+  categoryGlowGive: { backgroundColor: appColors.warmGoldSoft },
   spendIcon: {
     backgroundColor: appColors.warmGoldSoft,
   },
@@ -176,6 +198,8 @@ const styles = StyleSheet.create({
     marginTop: space.xxs,
   },
   amountText: {
+    color: appColors.primary,
+    fontSize: typography.size.titleSmall,
     fontWeight: typography.weight.heavy,
     marginLeft: space.xs,
   },
@@ -183,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: space.sm,
-    marginLeft: spacing.s58 + space.sm,
+    marginLeft: spacing.s68 + space.sm,
     marginTop: space.sm,
   },
   stepButton: {

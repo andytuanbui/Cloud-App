@@ -82,7 +82,7 @@ export function GuidedWisdomScaffold({
               >
                 {wisdomTitle}
               </AppText>
-              {learned ? (
+              {learned && !isComplete ? (
                 <View accessibilityLabel="This Wisdom is learned" style={styles.learnedBadge}>
                   <Ionicons
                     accessible={false}
