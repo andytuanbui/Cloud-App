@@ -12,6 +12,7 @@ export type PersonalResponseSuggestion = {
 };
 
 export function PersonalResponseInput({
+  compact = false,
   disabled = false,
   inputLabel = 'Or write your own',
   maxLength = PERSONAL_RESPONSE_MAX_LENGTH,
@@ -25,6 +26,7 @@ export function PersonalResponseInput({
   suggestions,
   value,
 }: {
+  compact?: boolean;
   disabled?: boolean;
   inputLabel?: string;
   maxLength?: number;
@@ -45,7 +47,7 @@ export function PersonalResponseInput({
   const canSubmit = Boolean(trimmedValue || selectedSuggestionId);
 
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, compact && styles.compactWrap]}>
       <AppText tone="secondary" variant="label">
         {suggestionsLabel}
       </AppText>
@@ -88,7 +90,7 @@ export function PersonalResponseInput({
         })}
       </View>
 
-      <AppText style={styles.inputLabel} tone="secondary" variant="label">
+      <AppText style={[styles.inputLabel, compact && styles.compactInputLabel]} tone="secondary" variant="label">
         {inputLabel}
       </AppText>
       <TextInput
@@ -103,7 +105,12 @@ export function PersonalResponseInput({
         placeholder={placeholder}
         placeholderTextColor={appColors.textMuted}
         selectionColor={appColors.primary}
-        style={[styles.input, focused && styles.inputFocused, disabled && styles.disabled]}
+        style={[
+          styles.input,
+          compact && styles.compactInput,
+          focused && styles.inputFocused,
+          disabled && styles.disabled,
+        ]}
         textAlignVertical="top"
         value={value}
       />
@@ -123,6 +130,9 @@ export function PersonalResponseInput({
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
+  },
+  compactWrap: {
+    marginTop: -space.xs,
   },
   suggestions: {
     alignItems: 'flex-start',
@@ -164,6 +174,9 @@ const styles = StyleSheet.create({
   inputLabel: {
     marginTop: space.lg,
   },
+  compactInputLabel: {
+    marginTop: space.md,
+  },
   input: {
     ...typeStyles.body,
     backgroundColor: appColors.surfaceElevated,
@@ -174,6 +187,10 @@ const styles = StyleSheet.create({
     marginTop: space.xs,
     minHeight: spacing.s92,
     padding: space.md,
+  },
+  compactInput: {
+    minHeight: spacing.s62,
+    paddingVertical: space.sm,
   },
   inputFocused: {
     borderColor: appColors.focus,

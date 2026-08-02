@@ -26,7 +26,9 @@ export function StorySceneCard({
     <SurfaceCard elevated style={styles.card}>
       <View
         accessibilityLabel={hasDistinctIllustrationLabel ? illustrationAccessibilityLabel : undefined}
+        accessibilityElementsHidden={!hasDistinctIllustrationLabel}
         accessible={hasDistinctIllustrationLabel}
+        importantForAccessibility={hasDistinctIllustrationLabel ? 'auto' : 'no-hide-descendants'}
         style={[styles.illustration, illustrationContainerStyle]}
       >
         {illustration}
@@ -34,7 +36,7 @@ export function StorySceneCard({
       <View style={styles.body}>
         <View style={styles.sceneMeta}>
           <View style={styles.sceneBadge}>
-            <AppText tone="brand" variant="label">
+            <AppText tone="inverse" variant="label">
               Scene {sceneNumber} of {sceneCount}
             </AppText>
           </View>
@@ -70,6 +72,7 @@ export function StorySceneCard({
 const styles = StyleSheet.create({
   card: {
     borderColor: appColors.borderStrong,
+    borderWidth: 1,
     overflow: 'hidden',
   },
   illustration: {
@@ -78,13 +81,19 @@ const styles = StyleSheet.create({
     borderBottomColor: appColors.border,
     borderBottomWidth: 1,
     justifyContent: 'center',
-    minHeight: spacing.s116 + spacing.s58,
+    minHeight: spacing.s116 + spacing.s116 + spacing.s42,
     overflow: 'hidden',
     width: '100%',
   },
   body: {
-    backgroundColor: appColors.surface,
+    backgroundColor: appColors.wisdomCream,
+    borderColor: appColors.border,
+    borderRadius: radii.large,
+    borderWidth: 1,
+    marginHorizontal: space.sm,
+    marginTop: -space.xl,
     padding: space.lg,
+    position: 'relative',
   },
   sceneMeta: {
     alignItems: 'center',
@@ -92,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sceneBadge: {
-    backgroundColor: appColors.primarySoft,
+    backgroundColor: appColors.primary,
     borderRadius: radii.round,
     paddingHorizontal: space.sm,
     paddingVertical: space.xxs,
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
     width: spacing.md,
   },
   sceneDotActive: {
-    backgroundColor: appColors.primary,
+    backgroundColor: appColors.wisdomGoldBright,
     width: spacing.s14,
   },
   sceneText: {

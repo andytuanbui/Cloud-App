@@ -11,6 +11,7 @@ import {
   SurfaceCard,
 } from '../ui';
 import { WisdomArtworkStage } from './WisdomArtworkStage';
+import { MoneyWisdomIdentityCard } from './MoneyWisdomIdentityCard';
 
 export function TodayWisdomCard({
   onOpen,
@@ -26,6 +27,25 @@ export function TodayWisdomCard({
   const learned = isWisdomLearned(progress);
   const started = Boolean(progress);
   const [focused, setFocused] = useState(false);
+
+  if (learned && wisdom.id === 'three-ways-to-use-money') {
+    return (
+      <Pressable
+        accessibilityHint="Opens a fresh review at the Welcome screen"
+        accessibilityLabel={`Review ${wisdom.title}`}
+        accessibilityRole="button"
+        onBlur={() => setFocused(false)}
+        onFocus={() => setFocused(true)}
+        onPress={onReview}
+        style={({ pressed }) => [
+          styles.moneyIdentityWrap,
+          pressed && styles.cardPressed,
+        ]}
+      >
+        <MoneyWisdomIdentityCard focused={focused} wisdom={wisdom} />
+      </Pressable>
+    );
+  }
 
   const card = (
     <SurfaceCard
@@ -151,6 +171,10 @@ const styles = StyleSheet.create({
   },
   learnedPressable: {
     borderRadius: radii.card,
+  },
+  moneyIdentityWrap: {
+    borderRadius: radii.card,
+    marginBottom: space.lg,
   },
   cardPressed: {
     opacity: 0.9,

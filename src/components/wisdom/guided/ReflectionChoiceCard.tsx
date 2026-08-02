@@ -7,6 +7,7 @@ import { AppText } from '../../ui';
 export function ReflectionChoiceCard({
   accessibilityLabel,
   disabled = false,
+  icon = 'chatbubble-outline',
   label,
   onPress,
   selected,
@@ -14,6 +15,7 @@ export function ReflectionChoiceCard({
 }: {
   accessibilityLabel?: string;
   disabled?: boolean;
+  icon?: keyof typeof Ionicons.glyphMap;
   label: string;
   onPress: () => void;
   selected: boolean;
@@ -41,21 +43,21 @@ export function ReflectionChoiceCard({
       <View style={[styles.indicator, selected && styles.indicatorSelected]}>
         <Ionicons
           accessible={false}
-          color={selected ? appColors.onPrimary : appColors.primary}
-          name={selected ? 'checkmark' : 'chatbubble-outline'}
+          color={selected ? appColors.wisdomNightDeep : appColors.primary}
+          name={selected ? 'checkmark' : icon}
           size={spacing.s18}
         />
       </View>
       <View style={styles.copy}>
         <AppText
           style={styles.label}
-          tone={selected ? 'brand' : 'primary'}
+          tone={selected ? 'inverse' : 'primary'}
           variant="body"
         >
           {label}
         </AppText>
         {supportingText ? (
-          <AppText style={styles.supporting} tone="secondary" variant="supporting">
+          <AppText style={styles.supporting} tone={selected ? 'inverse' : 'secondary'} variant="supporting">
             {supportingText}
           </AppText>
         ) : null}
@@ -79,8 +81,9 @@ const styles = StyleSheet.create({
     ...shadows.subtle,
   },
   selected: {
-    backgroundColor: appColors.primarySoft,
+    backgroundColor: appColors.primary,
     borderColor: appColors.primary,
+    ...shadows.card,
   },
   focused: {
     borderColor: appColors.focus,
@@ -105,8 +108,8 @@ const styles = StyleSheet.create({
     width: spacing.s30,
   },
   indicatorSelected: {
-    backgroundColor: appColors.primary,
-    borderColor: appColors.primary,
+    backgroundColor: appColors.wisdomGoldBright,
+    borderColor: appColors.wisdomGoldBright,
   },
   copy: {
     flex: 1,

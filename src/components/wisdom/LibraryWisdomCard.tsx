@@ -19,6 +19,7 @@ import {
   SurfaceCard,
 } from '../ui';
 import { WisdomArtworkStage } from './WisdomArtworkStage';
+import { MoneyWisdomIdentityCard } from './MoneyWisdomIdentityCard';
 
 export function LibraryWisdomCard({
   completionLabel,
@@ -32,6 +33,30 @@ export function LibraryWisdomCard({
   const learned = isWisdomLearned(item.progress);
   const started = Boolean(item.progress);
   const [focused, setFocused] = useState(false);
+
+  if (learned && item.wisdom.id === 'three-ways-to-use-money') {
+    return (
+      <Pressable
+        accessibilityHint="Opens a fresh review at the Welcome screen"
+        accessibilityLabel={`Review ${item.wisdom.title}`}
+        accessibilityRole="button"
+        onBlur={() => setFocused(false)}
+        onFocus={() => setFocused(true)}
+        onPress={onOpen}
+        style={({ pressed }) => [
+          styles.learnedPressable,
+          pressed && styles.cardPressed,
+        ]}
+      >
+        <MoneyWisdomIdentityCard
+          completionLabel={completionLabel}
+          focused={focused}
+          mode="compact"
+          wisdom={item.wisdom}
+        />
+      </Pressable>
+    );
+  }
 
   const card = (
     <SurfaceCard
