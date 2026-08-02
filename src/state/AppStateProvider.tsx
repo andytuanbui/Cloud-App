@@ -9,7 +9,17 @@ import {
   updateProfileState,
 } from './profileState';
 import { validateProfileDetails } from './profileValidation';
-import { PersistedAppState, ProfileDetails, WisdomProgress, WisdomStep } from './types';
+import {
+  createDefaultGuidedWisdomSession,
+  GuidedPersonalResponse,
+  GuidedTakeaway,
+  GuidedWisdomSession,
+  GuidedWisdomSessionUpdate,
+  PersistedAppState,
+  ProfileDetails,
+  WisdomProgress,
+  WisdomStep,
+} from './types';
 
 type AppStateContextValue = PersistedAppState & {
   isRestoring: boolean;
@@ -22,6 +32,9 @@ type AppStateContextValue = PersistedAppState & {
   getProgress: (wisdomId: string) => WisdomProgress | undefined;
   updateProgress: (wisdomId: string, update: Partial<WisdomProgress>) => void;
   completeStep: (wisdomId: string, step: WisdomStep, nextStep: WisdomStep) => void;
+  updateGuidedSession: (wisdomId: string, update: GuidedWisdomSessionUpdate) => void;
+  startGuidedWisdomReview: (wisdomId: string) => void;
+  completeGuidedWisdom: (wisdomId: string) => void;
 };
 
 export const AppStateContext = createContext<AppStateContextValue | undefined>(undefined);
@@ -39,8 +52,55 @@ function newProgress(wisdomId: string): WisdomProgress {
     completedSteps: [],
     conversationResponses: [],
     quizProgress: { questionIndex: 0, completedAnswerIds: [] },
+    isCompleted: false,
+    completionCount: 0,
     completed: false,
   };
+}
+
+function hasPermanentCompletion(progress: WisdomProgress): boolean {
+  return (
+    progress.isCompleted === true ||
+    progress.completed === true ||
+    progress.completionCount > 0
+  );
+}
+
+function permanentCompletionCount(progress: WisdomProgress): number {
+  const savedCount = Number.isInteger(progress.completionCount)
+    ? Math.max(0, progress.completionCount)
+    : 0;
+  return hasPermanentCompletion(progress) ? Math.max(1, savedCount) : 0;
+}
+
+function hydrateGuidedSession(
+  session?: GuidedWisdomSession,
+): GuidedWisdomSession {
+  const defaults = createDefaultGuidedWisdomSession();
+  return {
+    ...defaults,
+    ...(session ? definedProperties(session) : {}),
+    version: defaults.version,
+  };
+}
+
+function definedProperties<T extends object>(value: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(value).filter(([, entry]) => entry !== undefined),
+  ) as Partial<T>;
+}
+
+function mergeGuidedResponse<T extends GuidedPersonalResponse | GuidedTakeaway>(
+  current: T | undefined,
+  update: Partial<T> | null | undefined,
+): T | undefined {
+  if (update === null) return undefined;
+  if (!update) return current;
+
+  const next = { ...current, ...update };
+  return typeof next.source === 'string' && typeof next.text === 'string'
+    ? (next as T)
+    : current;
 }
 
 export function AppStateProvider({ children }: PropsWithChildren) {
@@ -204,11 +264,31 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   const updateProgress = useCallback((wisdomId: string, update: Partial<WisdomProgress>) => {
     setState((current) => {
       const existing = current.wisdomProgress[wisdomId] ?? newProgress(wisdomId);
+      const wasCompleted = hasPermanentCompletion(existing);
+      const requestsCompletion =
+        update.isCompleted === true || update.completed === true;
+      const isCompleted = wasCompleted || requestsCompletion;
+      const completedAt = isCompleted
+        ? existing.completedAt ?? update.completedAt ?? new Date().toISOString()
+        : undefined;
+      const next: WisdomProgress = {
+        ...existing,
+        ...update,
+        isCompleted,
+        completed: isCompleted,
+        completionCount: isCompleted
+          ? wasCompleted
+            ? permanentCompletionCount(existing)
+            : 1
+          : 0,
+        completedAt,
+      };
+
       return {
         ...current,
         wisdomProgress: {
           ...current.wisdomProgress,
-          [wisdomId]: { ...existing, ...update },
+          [wisdomId]: next,
         },
       };
     });
@@ -231,6 +311,108 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     });
   }, []);
 
+  const updateGuidedSession = useCallback(
+    (wisdomId: string, update: GuidedWisdomSessionUpdate) => {
+      setState((current) => {
+        const existing = current.wisdomProgress[wisdomId] ?? newProgress(wisdomId);
+        const session = hydrateGuidedSession(existing.guidedSession);
+        const { personalResponse, selectedTakeaway, ...flatUpdate } = update;
+        const guidedSession: GuidedWisdomSession = {
+          ...session,
+          ...definedProperties(flatUpdate),
+          version: session.version,
+          personalResponse: mergeGuidedResponse(
+            session.personalResponse,
+            personalResponse,
+          ),
+          selectedTakeaway: mergeGuidedResponse(
+            session.selectedTakeaway,
+            selectedTakeaway,
+          ),
+          completed: session.completed,
+        };
+
+        return {
+          ...current,
+          wisdomProgress: {
+            ...current.wisdomProgress,
+            [wisdomId]: { ...existing, guidedSession },
+          },
+        };
+      });
+    },
+    [],
+  );
+
+  const startGuidedWisdomReview = useCallback((wisdomId: string) => {
+    setState((current) => {
+      const existing = current.wisdomProgress[wisdomId];
+      if (!existing || !hasPermanentCompletion(existing)) return current;
+
+      const previousSession = existing.guidedSession
+        ? hydrateGuidedSession(existing.guidedSession)
+        : undefined;
+      const lastCompletedGuidedSession =
+        existing.lastCompletedGuidedSession ??
+        (previousSession?.completed ? previousSession : undefined);
+
+      return {
+        ...current,
+        wisdomProgress: {
+          ...current.wisdomProgress,
+          [wisdomId]: {
+            ...existing,
+            guidedSession: createDefaultGuidedWisdomSession(),
+            lastCompletedGuidedSession,
+            isCompleted: true,
+            completed: true,
+            completionCount: permanentCompletionCount(existing),
+          },
+        },
+      };
+    });
+  }, []);
+
+  const completeGuidedWisdom = useCallback((wisdomId: string) => {
+    setState((current) => {
+      const existing = current.wisdomProgress[wisdomId];
+      if (!existing || existing.guidedSession?.completed) {
+        return current;
+      }
+
+      const session = hydrateGuidedSession(existing.guidedSession);
+      if (session.currentStage !== 'practice') return current;
+
+      const wasCompleted = hasPermanentCompletion(existing);
+      const finishedAt = new Date().toISOString();
+      const completedSession: GuidedWisdomSession = {
+        ...session,
+        currentStage: 'completion',
+        completed: true,
+      };
+      return {
+        ...current,
+        wisdomProgress: {
+          ...current.wisdomProgress,
+          [wisdomId]: {
+            ...existing,
+            currentStep: wasCompleted ? existing.currentStep : 'completion',
+            completedSteps: wasCompleted
+              ? existing.completedSteps
+              : Array.from(new Set([...existing.completedSteps, 'practice'])),
+            guidedSession: completedSession,
+            lastCompletedGuidedSession: completedSession,
+            isCompleted: true,
+            completed: true,
+            completedAt: existing.completedAt ?? finishedAt,
+            completionCount: permanentCompletionCount(existing) + 1,
+            lastReviewedAt: wasCompleted ? finishedAt : existing.lastReviewedAt,
+          },
+        },
+      };
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       ...state,
@@ -244,6 +426,9 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       getProgress,
       updateProgress,
       completeStep,
+      updateGuidedSession,
+      startGuidedWisdomReview,
+      completeGuidedWisdom,
     }),
     [
       state,
@@ -257,6 +442,9 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       getProgress,
       updateProgress,
       completeStep,
+      updateGuidedSession,
+      startGuidedWisdomReview,
+      completeGuidedWisdom,
     ],
   );
 

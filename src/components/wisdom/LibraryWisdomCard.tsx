@@ -1,11 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, View } from 'react-native';
-import type { ScheduledWisdom } from '../../state/useDailyWisdoms';
+import { Pressable, StyleSheet, View } from 'react-native';
+import {
+  isWisdomLearned,
+  type ScheduledWisdom,
+} from '../../state/useDailyWisdoms';
 import { appColors, layout, space } from '../../theme';
 import {
   AppText,
   PrimaryButton,
-  SecondaryButton,
   SurfaceCard,
 } from '../ui';
 import { WisdomArtworkStage } from './WisdomArtworkStage';
@@ -19,11 +21,10 @@ export function LibraryWisdomCard({
   item: ScheduledWisdom;
   onOpen: () => void;
 }) {
-  const completed = Boolean(item.progress?.completed);
+  const learned = isWisdomLearned(item.progress);
   const started = Boolean(item.progress);
-  const ActionButton = completed ? SecondaryButton : PrimaryButton;
 
-  return (
+  const card = (
     <SurfaceCard style={styles.card}>
       <View style={styles.topRow}>
         <WisdomArtworkStage mode="compact" wisdom={item.wisdom} />
@@ -54,7 +55,7 @@ export function LibraryWisdomCard({
       </AppText>
 
       <View style={styles.footer}>
-        {completed ? (
+        {learned ? (
           <View style={styles.completionRow}>
             <Ionicons
               color={appColors.success}
@@ -62,32 +63,55 @@ export function LibraryWisdomCard({
               size={17}
             />
             <AppText tone="brand" variant="caption">
-              {completionLabel ?? 'Completed'}
+              {completionLabel ?? 'Learned'}
             </AppText>
           </View>
         ) : (
           <View />
         )}
 
-        <ActionButton
-          label={
-            completed
-              ? 'Review Wisdom'
-              : started
-                ? 'Continue Wisdom'
-                : 'Start Wisdom'
-          }
-          onPress={onOpen}
-          style={styles.action}
-        />
+        {learned ? (
+          <View style={styles.learnedAction}>
+            <AppText tone="brand" variant="label">Review Wisdom</AppText>
+            <Ionicons
+              accessible={false}
+              color={appColors.primary}
+              name="arrow-forward"
+              size={18}
+            />
+          </View>
+        ) : (
+          <PrimaryButton
+            label={started ? 'Continue Wisdom' : 'Start Wisdom'}
+            onPress={onOpen}
+            style={styles.action}
+          />
+        )}
       </View>
     </SurfaceCard>
+  );
+
+  if (!learned) return card;
+
+  return (
+    <Pressable
+      accessibilityHint="Opens a fresh review at the Welcome screen"
+      accessibilityLabel={`Review ${item.wisdom.title}`}
+      accessibilityRole="button"
+      onPress={onOpen}
+      style={({ pressed }) => pressed && styles.cardPressed}
+    >
+      {card}
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     padding: space.sm,
+  },
+  cardPressed: {
+    opacity: 0.86,
   },
   topRow: {
     alignItems: 'flex-start',
@@ -133,5 +157,12 @@ const styles = StyleSheet.create({
   action: {
     minHeight: layout.minimumTouchTarget,
     paddingHorizontal: space.md,
+  },
+  learnedAction: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: space.xs,
+    minHeight: layout.minimumTouchTarget,
+    paddingHorizontal: space.sm,
   },
 });

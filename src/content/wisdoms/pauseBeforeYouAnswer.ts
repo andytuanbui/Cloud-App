@@ -2,6 +2,7 @@ import { WisdomContent } from './types';
 
 export const pauseBeforeYouAnswer: WisdomContent = {
   id: 'pause-before-you-answer',
+  format: 'legacy-quiz',
   title: 'Pause Before You Answer',
   summary: 'Practice taking a short pause before responding when emotions are strong.',
   category: 'Communication Wisdom',

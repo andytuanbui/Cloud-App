@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import type { WisdomContent } from '../../content/wisdoms';
 import type { WisdomProgress } from '../../state/types';
+import { isWisdomLearned } from '../../state/useDailyWisdoms';
 import { appColors, radii, space } from '../../theme';
 import {
   AppText,
   PrimaryButton,
   SurfaceCard,
-  TextButton,
 } from '../ui';
 import { WisdomArtworkStage } from './WisdomArtworkStage';
 
@@ -22,10 +22,10 @@ export function TodayWisdomCard({
   progress?: WisdomProgress;
   wisdom: WisdomContent;
 }) {
-  const completed = Boolean(progress?.completed);
+  const learned = isWisdomLearned(progress);
   const started = Boolean(progress);
 
-  return (
+  const card = (
     <SurfaceCard elevated style={styles.card}>
       <View style={styles.clip}>
         <WisdomArtworkStage wisdom={wisdom} />
@@ -53,7 +53,7 @@ export function TodayWisdomCard({
             {wisdom.summary}
           </AppText>
 
-          {completed ? (
+          {learned ? (
             <View style={styles.completedPanel}>
               <View style={styles.completedHeader}>
                 <Ionicons
@@ -62,7 +62,7 @@ export function TodayWisdomCard({
                   size={22}
                 />
                 <AppText tone="brand" variant="label">
-                  Completed today
+                  Learned
                 </AppText>
               </View>
               <AppText
@@ -72,12 +72,15 @@ export function TodayWisdomCard({
               >
                 {wisdom.skillOutcome}.
               </AppText>
-              <TextButton
-                icon="arrow-forward"
-                label="Review Wisdom"
-                onPress={onReview}
-                style={styles.reviewButton}
-              />
+              <View style={styles.reviewButton}>
+                <AppText tone="brand" variant="label">Review Wisdom</AppText>
+                <Ionicons
+                  accessible={false}
+                  color={appColors.primary}
+                  name="arrow-forward"
+                  size={18}
+                />
+              </View>
             </View>
           ) : (
             <PrimaryButton
@@ -90,11 +93,28 @@ export function TodayWisdomCard({
       </View>
     </SurfaceCard>
   );
+
+  if (!learned) return card;
+
+  return (
+    <Pressable
+      accessibilityHint="Opens a fresh review at the Welcome screen"
+      accessibilityLabel={`Review ${wisdom.title}`}
+      accessibilityRole="button"
+      onPress={onReview}
+      style={({ pressed }) => pressed && styles.cardPressed}
+    >
+      {card}
+    </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({
   card: {
     marginBottom: space.lg,
+  },
+  cardPressed: {
+    opacity: 0.86,
   },
   clip: {
     borderRadius: radii.card,
@@ -140,8 +160,12 @@ const styles = StyleSheet.create({
     marginTop: space.xxs,
   },
   reviewButton: {
+    alignItems: 'center',
     alignSelf: 'flex-start',
+    flexDirection: 'row',
+    gap: space.xs,
     marginLeft: 10,
-    marginTop: space.xxs,
+    marginTop: space.sm,
+    minHeight: 44,
   },
 });

@@ -6,7 +6,8 @@ import { ChoiceList } from '../components/mvp/ChoiceList';
 import { FlowScaffold } from '../components/mvp/FlowScaffold';
 import { WisdomButton } from '../components/mvp/WisdomButton';
 import { AppText, StatusPanel, SurfaceCard } from '../components/ui';
-import { getWisdomById } from '../content/wisdoms';
+import { getWisdomById, type LegacyQuizWisdomContent } from '../content/wisdoms';
+import { ThreeWaysGuidedWisdomScreen } from './guided/ThreeWaysGuidedWisdomScreen';
 import { useAppState } from '../state/useAppState';
 import { wisdomSteps, WisdomStep } from '../state/types';
 import {
@@ -21,7 +22,7 @@ import {
 import { RootStackParamList } from '../types/wisdom';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WisdomFlow'>;
-type Wisdom = NonNullable<ReturnType<typeof getWisdomById>>;
+type Wisdom = LegacyQuizWisdomContent;
 const cloudAvatar = require('../../assets/cloud/cloud-avatar.png');
 
 export function WisdomFlowScreen({ navigation, route }: Props) {
@@ -35,8 +36,10 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
   const [quizFeedback, setQuizFeedback] = useState<'correct' | 'wrong'>();
 
   useEffect(() => {
-    if (!isRestoring && !progress) updateProgress(route.params.wisdomId, { currentStep: 'opening' });
-  }, [isRestoring, progress, route.params.wisdomId, updateProgress]);
+    if (!isRestoring && wisdom?.format === 'legacy-quiz' && !progress) {
+      updateProgress(route.params.wisdomId, { currentStep: 'opening' });
+    }
+  }, [isRestoring, progress, route.params.wisdomId, updateProgress, wisdom?.format]);
 
   useEffect(() => {
     setQuizChoice(undefined);
@@ -55,6 +58,18 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
           Restoring your Wisdom…
         </AppText>
       </View>
+    );
+  }
+
+  if (wisdom.format === 'guided-story-v1') {
+    return (
+      <ThreeWaysGuidedWisdomScreen
+        onBack={() => navigation.goBack()}
+        onExit={() => navigation.replace('Today')}
+        progress={progress}
+        reviewMode={reviewMode}
+        wisdom={wisdom}
+      />
     );
   }
 

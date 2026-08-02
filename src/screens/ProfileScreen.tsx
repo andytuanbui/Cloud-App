@@ -6,12 +6,13 @@ import { AppText, Screen, SurfaceCard, TextButton } from '../components/ui';
 import { useAppState } from '../state/useAppState';
 import { appColors, layout, radii, space } from '../theme';
 import { RootStackParamList } from '../types/wisdom';
+import { isWisdomLearned } from '../state/useDailyWisdoms';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export function ProfileScreen({ navigation }: Props) {
   const { profile, wisdomProgress } = useAppState();
-  const completed = Object.values(wisdomProgress).filter((item) => item.completed).length;
+  const learned = Object.values(wisdomProgress).filter(isWisdomLearned).length;
 
   return (
     <Screen
@@ -83,10 +84,10 @@ export function ProfileScreen({ navigation }: Props) {
             />
           </View>
           <AppText tone="muted" variant="caption">
-            Wisdoms completed
+            Wisdoms learned
           </AppText>
           <AppText style={styles.statValue} variant="sectionTitle">
-            {completed}
+            {learned}
           </AppText>
         </SurfaceCard>
       </View>

@@ -7,7 +7,6 @@ import {
   compareLocalDateKeys,
   getAssignedWisdomId,
   getLocalDateKey,
-  hasTomorrowAssignment,
 } from '../services/date/dateService';
 import type { WisdomProgress } from './types';
 import { useAppState } from './useAppState';
@@ -18,6 +17,14 @@ export type ScheduledWisdom = {
   progress?: WisdomProgress;
   completionDateKey?: string;
 };
+
+export function isWisdomLearned(progress?: WisdomProgress) {
+  if (!progress) return false;
+  const compatibleProgress = progress as WisdomProgress & {
+    isCompleted?: boolean;
+  };
+  return Boolean(compatibleProgress.isCompleted ?? compatibleProgress.completed);
+}
 
 export function useDailyWisdoms() {
   const { profile, wisdomProgress, currentDateKey } = useAppState();
@@ -39,6 +46,7 @@ export function useDailyWisdoms() {
     };
 
     const isWisdomAvailable = (wisdomId: string) => {
+      if (wisdomProgress[wisdomId]) return true;
       const assignedDateKey = assignedDateForWisdom(wisdomId);
       return Boolean(
         assignedDateKey && compareLocalDateKeys(assignedDateKey, currentDateKey) <= 0,
@@ -61,24 +69,28 @@ export function useDailyWisdoms() {
     });
 
     const accessible = scheduled.filter(
-      (item) => compareLocalDateKeys(item.assignedDateKey, currentDateKey) <= 0,
+      (item) =>
+        compareLocalDateKeys(item.assignedDateKey, currentDateKey) <= 0 ||
+        Boolean(item.progress),
     );
     const todayId = profile.programStartDateKey
       ? getAssignedWisdomId(profile.programStartDateKey, currentDateKey)
       : undefined;
+    const tomorrowDateKey = addLocalCalendarDays(currentDateKey, 1);
+    const untouchedTomorrowWisdom = scheduled.find(
+      (item) => item.assignedDateKey === tomorrowDateKey && !item.progress,
+    );
 
     return {
       todayWisdom: todayId ? getWisdomById(todayId) : undefined,
       todayProgress: todayId ? wisdomProgress[todayId] : undefined,
-      tomorrowWisdomExists: profile.programStartDateKey
-        ? hasTomorrowAssignment(profile.programStartDateKey, currentDateKey)
-        : false,
+      tomorrowWisdomExists: Boolean(untouchedTomorrowWisdom),
       availableWisdoms: accessible.filter((item) => !item.progress),
       inProgressWisdoms: accessible.filter(
-        (item) => item.progress && !item.progress.completed,
+        (item) => item.progress && !isWisdomLearned(item.progress),
       ),
       completedWisdoms: accessible
-        .filter((item) => item.progress?.completed)
+        .filter((item) => isWisdomLearned(item.progress))
         .sort((left, right) =>
           (right.progress?.completedAt ?? '').localeCompare(
             left.progress?.completedAt ?? '',

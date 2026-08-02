@@ -3,6 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
 import {
   CloudGreetingHero,
+  LibraryWisdomCard,
   TodayWisdomCard,
 } from '../components/wisdom';
 import {
@@ -25,8 +26,16 @@ const caughtUpCloud = require('../../assets/cloud/cloud-avatar.png');
 
 export function TodayScreen({ navigation }: Props) {
   const { profile, isRestoring } = useAppState();
-  const { todayWisdom, todayProgress, tomorrowWisdomExists } = useDailyWisdoms();
+  const {
+    completedWisdoms,
+    todayWisdom,
+    todayProgress,
+    tomorrowWisdomExists,
+  } = useDailyWisdoms();
   const greeting = getProfileGreeting(profile.name);
+  const learnedWisdoms = completedWisdoms.filter(
+    (item) => item.wisdom.id !== todayWisdom?.id,
+  );
 
   if (isRestoring) {
     return (
@@ -97,6 +106,27 @@ export function TodayScreen({ navigation }: Props) {
         )}
       </View>
 
+      {learnedWisdoms.length > 0 ? (
+        <View>
+          <SectionHeader title="Learned Wisdoms" />
+          <View style={styles.learnedList}>
+            {learnedWisdoms.map((item) => (
+              <LibraryWisdomCard
+                completionLabel="Learned"
+                item={item}
+                key={item.wisdom.id}
+                onOpen={() =>
+                  navigation.navigate('WisdomFlow', {
+                    wisdomId: item.wisdom.id,
+                    review: true,
+                  })
+                }
+              />
+            ))}
+          </View>
+        </View>
+      ) : null}
+
       <View>
         <SectionHeader title="Tomorrow" />
         <StatusPanel
@@ -153,5 +183,8 @@ const styles = StyleSheet.create({
     marginTop: space.xs,
     maxWidth: 360,
     textAlign: 'center',
+  },
+  learnedList: {
+    gap: space.sm,
   },
 });

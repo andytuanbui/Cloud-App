@@ -2,6 +2,7 @@ import { WisdomContent } from './types';
 
 export const needsVsWants: WisdomContent = {
   id: 'needs-vs-wants',
+  format: 'legacy-quiz',
   title: 'Needs vs Wants',
   summary: 'Learn how to tell the difference between something you need and something you want.',
   category: 'Money Wisdom',

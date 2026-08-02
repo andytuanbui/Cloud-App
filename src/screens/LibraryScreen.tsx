@@ -3,21 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import { BottomNav } from '../components/BottomNav';
 import { AppText, Screen, SectionHeader } from '../components/ui';
 import { LibraryWisdomCard } from '../components/wisdom';
-import { useDailyWisdoms } from '../state/useDailyWisdoms';
+import {
+  isWisdomLearned,
+  useDailyWisdoms,
+} from '../state/useDailyWisdoms';
 import { space } from '../theme';
 import { RootStackParamList } from '../types/wisdom';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Library'>;
-
-function formatCompletionDate(dateKey?: string) {
-  if (!dateKey) return 'Completed';
-  const [year, month, day] = dateKey.split('-').map(Number);
-  return `Completed ${new Intl.DateTimeFormat(undefined, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(year, month - 1, day, 12))}`;
-}
 
 export function LibraryScreen({ navigation }: Props) {
   const { availableWisdoms, inProgressWisdoms, completedWisdoms } =
@@ -25,7 +18,7 @@ export function LibraryScreen({ navigation }: Props) {
   const sections = [
     { title: 'Available', items: availableWisdoms },
     { title: 'In Progress', items: inProgressWisdoms },
-    { title: 'Completed', items: completedWisdoms },
+    { title: 'Learned', items: completedWisdoms },
   ].filter((section) => section.items.length > 0);
 
   return (
@@ -44,16 +37,14 @@ export function LibraryScreen({ navigation }: Props) {
             {section.items.map((item) => (
               <LibraryWisdomCard
                 completionLabel={
-                  item.progress?.completed
-                    ? formatCompletionDate(item.completionDateKey)
-                    : undefined
+                  isWisdomLearned(item.progress) ? 'Learned' : undefined
                 }
                 item={item}
                 key={item.wisdom.id}
                 onOpen={() =>
                   navigation.navigate('WisdomFlow', {
                     wisdomId: item.wisdom.id,
-                    review: Boolean(item.progress?.completed),
+                    review: isWisdomLearned(item.progress),
                   })
                 }
               />
