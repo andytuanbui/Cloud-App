@@ -24,6 +24,7 @@ import {
   SecondaryButton,
   SurfaceCard,
 } from '../../components/ui';
+import { cloudGuideAssets } from '../../content/characterAssets';
 import type {
   GuidedReflectionChoice,
   GuidedStoryWisdomContent,
@@ -49,11 +50,11 @@ import {
 import { useAppState } from '../../state/useAppState';
 import { appColors, radii, shadows, space, spacing, typography } from '../../theme';
 
-const leoArtwork = require('../../../assets/cloud/cat-money.png');
-const leoHeroArtwork = require('../../../assets/cloud/cloud-hero-wave.png');
-const leoHeadphonesArtwork = require('../../../assets/cloud/cat-modern.png');
-const leoThinkingArtwork = require('../../../assets/cloud/cloud-thinking.png');
-const leoHelpsArtwork = require('../../../assets/cloud/cloud-helps-friend.png');
+/**
+ * Cloud is the guide, not the child in the story. Leo has no artwork yet, so his
+ * scenes are composed object-led — see src/content/characterAssets.ts.
+ */
+const cloudHero = cloudGuideAssets.hero;
 
 type Props = {
   onBack: () => void;
@@ -427,10 +428,11 @@ export function ThreeWaysGuidedWisdomScreen({
               <StageHeading eyebrow="Talk with Cloud" title="Think about waiting" />
             </View>
             <Image
-              accessible={false}
+              accessibilityLabel="Cloud, your guide"
+              accessible
               resizeMode="contain"
-              source={leoHeroArtwork}
-              style={styles.talkLeo}
+              source={cloudHero}
+              style={styles.talkCloud}
             />
           </View>
           <CloudResponseCard text={wisdom.reflection.question} />
@@ -494,12 +496,14 @@ export function ThreeWaysGuidedWisdomScreen({
                 supporting="Move money in 10 kr steps. The amounts do not need to be equal."
               />
             </View>
-            <Image
-              accessible={false}
-              resizeMode="contain"
-              source={leoHeroArtwork}
-              style={styles.moneyBoardLeo}
-            />
+            <View accessible={false} style={styles.moneyBoardTotal}>
+              <AppText style={styles.moneyBoardTotalValue} variant="screenTitle">
+                90
+              </AppText>
+              <AppText tone="secondary" variant="caption">
+                KRONER
+              </AppText>
+            </View>
           </View>
           <View style={styles.stepperList}>
             {wisdom.decision.categories.map((category) => {
@@ -664,9 +668,7 @@ function WelcomeStep({
         style={styles.welcomeCanvas}
       >
         <WisdomHeroCanvas
-          artwork={leoHeroArtwork}
-          artworkAccessibilityLabel="Leo has 90 kr and is choosing between football cards, headphones, and a gift for his sister Mia"
-          artworkStyle={styles.welcomeArtwork}
+          artworkAccessibilityLabel="Ninety kroner beside football cards, headphones, and a wrapped gift for Mia"
           height={330}
           style={styles.welcomeStage}
         >
@@ -684,26 +686,39 @@ function WelcomeStep({
             </View>
           </View>
 
-          <View accessible={false} pointerEvents="none" style={styles.welcomeProps}>
-            <WisdomObjectBadge
-              icon="football-outline"
-              label="Spend now"
-              tone="solid"
-              value="Football cards"
-            />
-            <WisdomObjectBadge
-              icon="headset-outline"
-              label="Save for later"
-              style={styles.welcomePropOffset}
-              tone="solid"
-              value="Headphones"
-            />
-            <WisdomObjectBadge
-              icon="gift-outline"
-              label="Give or help"
-              tone="solid"
-              value="Mia's birthday"
-            />
+          <View accessible={false} pointerEvents="none" style={styles.welcomeObjects}>
+            <View style={styles.welcomeCoin}>
+              <Ionicons
+                accessible={false}
+                color={appColors.wisdomGoldBright}
+                name="cash-outline"
+                size={spacing.s58}
+              />
+            </View>
+            <View style={styles.welcomeObjectRow}>
+              <WisdomObjectBadge
+                icon="football-outline"
+                label="Spend now"
+                tone="solid"
+                value="Football cards"
+              />
+            </View>
+            <View style={[styles.welcomeObjectRow, styles.welcomePropOffset]}>
+              <WisdomObjectBadge
+                icon="headset-outline"
+                label="Save for later"
+                tone="solid"
+                value="Headphones"
+              />
+            </View>
+            <View style={styles.welcomeObjectRow}>
+              <WisdomObjectBadge
+                icon="gift-outline"
+                label="Give or help"
+                tone="solid"
+                value="Mia's birthday"
+              />
+            </View>
           </View>
 
           <View style={styles.welcomeHeadline}>
@@ -782,23 +797,35 @@ function LastPlanCard({ session }: { session: GuidedWisdomSession }) {
   );
 }
 
+/**
+ * Leo's six story beats, composed object-led.
+ *
+ * Leo has no artwork yet (see src/content/characterAssets.ts) and Cloud's
+ * artwork must not stand in for him, so each scene is carried by the objects
+ * that matter in the story: the money, the cards, the headphones, the gift.
+ */
 function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   if (sceneIndex === 0) {
     return (
       <LinearGradient colors={[appColors.wisdomNight, appColors.wisdomNightDeep]} style={styles.storyMoment}>
-        <Image accessible={false} resizeMode="cover" source={leoArtwork} style={styles.leoStoryImage} />
-        <LinearGradient
-          colors={['rgba(16,51,58,0.98)', 'rgba(16,51,58,0.55)', 'rgba(16,51,58,0.08)']}
-          end={{ x: 1, y: 0 }}
-          pointerEvents="none"
-          start={{ x: 0, y: 0 }}
-          style={styles.storySceneFade}
-        />
-        <StoryVisualLabel label="MONEY AND FOOTBALL CARDS" />
         <View accessible={false} style={styles.storyGoldOrb} />
-        <View style={styles.storyPropStack}>
-          <PropBubble icon="cash-outline" label="90 kr" />
-          <PropBubble icon="football-outline" label="Cards now" />
+        <StoryVisualLabel label="MONEY AND FOOTBALL CARDS" />
+        <View style={styles.sceneStage}>
+          <View style={styles.amountDisc}>
+            <AppText style={styles.amountDiscValue} tone="inverse" variant="screenTitle">
+              90
+            </AppText>
+            <AppText tone="inverse" variant="caption">
+              KRONER
+            </AppText>
+          </View>
+          <View accessible={false} style={styles.cardFan}>
+            <View style={[styles.cardTile, styles.cardTileBack]} />
+            <View style={[styles.cardTile, styles.cardTileMid]} />
+            <View style={[styles.cardTile, styles.cardTileFront]}>
+              <Ionicons color={appColors.wisdomGoldBright} name="football" size={spacing.s34} />
+            </View>
+          </View>
         </View>
       </LinearGradient>
     );
@@ -806,22 +833,18 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   if (sceneIndex === 1) {
     return (
       <LinearGradient colors={['#A97127', appColors.wisdomNight]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
-        <Image accessible={false} resizeMode="cover" source={leoHeadphonesArtwork} style={styles.leoHeadphonesImage} />
-        <LinearGradient
-          colors={['rgba(88,53,17,0.97)', 'rgba(88,53,17,0.5)', 'rgba(88,53,17,0.05)']}
-          end={{ x: 1, y: 0 }}
-          pointerEvents="none"
-          start={{ x: 0, y: 0 }}
-          style={styles.storySceneFade}
-        />
         <StoryVisualLabel label="SAVING FOR SOMETHING BIGGER" />
-        <View style={styles.goalWrap}>
-          <View accessible={false} style={styles.goalIcon}>
-            <Ionicons color={appColors.wisdomGoldBright} name="headset-outline" size={spacing.s30} />
+        <View style={styles.sceneStage}>
+          <View accessible={false} style={styles.objectDisc}>
+            <Ionicons color={appColors.wisdomGoldBright} name="headset" size={spacing.s58} />
           </View>
-          <AppText tone="inverse" variant="label">HEADPHONE GOAL</AppText>
-          <View style={styles.goalTrack}><View style={styles.goalFill} /></View>
-          <AppText tone="inverse" variant="supporting">120 kr still to save</AppText>
+          <View style={styles.goalWrap}>
+            <AppText tone="inverse" variant="label">HEADPHONE GOAL</AppText>
+            <View style={styles.goalTrack}>
+              <View style={styles.goalFill} />
+            </View>
+            <AppText tone="inverse" variant="supporting">120 kr still to save</AppText>
+          </View>
         </View>
       </LinearGradient>
     );
@@ -829,19 +852,21 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   if (sceneIndex === 2) {
     return (
       <LinearGradient colors={['#5A3B22', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
-        <Image accessible={false} resizeMode="cover" source={leoHelpsArtwork} style={styles.storySceneImage} />
-        <LinearGradient
-          colors={['rgba(7,31,40,0.1)', 'rgba(7,31,40,0.72)', 'rgba(7,31,40,0.96)']}
-          pointerEvents="none"
-          style={StyleSheet.absoluteFill}
-        />
+        <View accessible={false} style={styles.storyGoldOrb} />
         <StoryVisualLabel label="MIA'S BIRTHDAY" />
-        <View style={styles.giftWrap}>
-          <Ionicons color={appColors.wisdomGoldBright} name="gift" size={spacing.s76} />
-          <Ionicons color={appColors.wisdomGoldBright} name="sparkles" size={spacing.s28} style={styles.giftSparkle} />
-        </View>
-        <View style={styles.saturdayTag}>
-          <AppText tone="inverse" variant="label">MIA · SATURDAY</AppText>
+        <View style={styles.sceneStage}>
+          <View style={styles.giftWrap}>
+            <Ionicons color={appColors.wisdomGoldBright} name="gift" size={spacing.s76} />
+            <Ionicons
+              color={appColors.wisdomGoldBright}
+              name="sparkles"
+              size={spacing.s28}
+              style={styles.giftSparkle}
+            />
+          </View>
+          <View style={styles.saturdayTag}>
+            <AppText tone="inverse" variant="label">MIA · SATURDAY</AppText>
+          </View>
         </View>
       </LinearGradient>
     );
@@ -849,7 +874,6 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   if (sceneIndex === 3) {
     return (
       <LinearGradient colors={[appColors.wisdomNightSoft, appColors.wisdomNightDeep]} style={[styles.storyMoment, styles.threeProps]}>
-        <Image accessible={false} resizeMode="contain" source={leoHeroArtwork} style={styles.threePropsLeo} />
         <StoryVisualLabel label="THREE WAYS TO USE MONEY" />
         <PropTile icon="football-outline" label="Cards" />
         <PropTile icon="headset-outline" label="Headphones" />
@@ -860,27 +884,24 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   if (sceneIndex === 4) {
     return (
       <LinearGradient colors={['#493E61', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
-        <Image accessible={false} resizeMode="cover" source={leoThinkingArtwork} style={styles.leoStoryImage} />
-        <LinearGradient
-          colors={['rgba(31,26,48,0.98)', 'rgba(31,26,48,0.5)', 'rgba(31,26,48,0.04)']}
-          end={{ x: 1, y: 0 }}
-          pointerEvents="none"
-          start={{ x: 0, y: 0 }}
-          style={styles.storySceneFade}
-        />
         <StoryVisualLabel label="A SMALL PAUSE" />
-        <View style={styles.pauseBubble}>
-          <Ionicons color={appColors.wisdomGoldBright} name="pause-circle-outline" size={spacing.s34} />
-          <AppText style={styles.pauseBubbleLabel} tone="inverse" variant="label">PAUSE AND THINK</AppText>
+        <View style={styles.sceneStage}>
+          <View accessible={false} style={styles.shopFront}>
+            <View style={styles.shopAwning} />
+            <Ionicons color={appColors.wisdomGoldBright} name="storefront-outline" size={spacing.s52} />
+            <AppText style={styles.shopLabel} tone="inverse" variant="caption">THE SHOP</AppText>
+          </View>
+          <View style={styles.pauseBubble}>
+            <Ionicons color={appColors.wisdomGoldBright} name="pause-circle-outline" size={spacing.s34} />
+            <AppText style={styles.pauseBubbleLabel} tone="inverse" variant="label">PAUSE AND THINK</AppText>
+          </View>
         </View>
-        <View style={styles.storySpacer} />
       </LinearGradient>
     );
   }
   return (
     <LinearGradient colors={[appColors.wisdomNight, '#276657']} style={[styles.storyMoment, styles.planProps]}>
       <StoryVisualLabel label="A PLAN WITH ROOM FOR EACH CHOICE" />
-      <Image accessible={false} resizeMode="contain" source={leoHeroArtwork} style={styles.planLeo} />
       <PlanProp amount="40" icon="football-outline" label="Cards" />
       <PlanProp amount="30" icon="headset-outline" label="Headphones" />
       <PlanProp amount="20" icon="gift-outline" label="Mia" />
@@ -893,15 +914,6 @@ function StoryVisualLabel({ dark = false, label }: { dark?: boolean; label: stri
     <View style={[styles.storyVisualLabel, dark && styles.storyVisualLabelLight]}>
       <AppText tone={dark ? 'brand' : 'inverse'} variant="caption">LEO'S STORY</AppText>
       <AppText style={styles.storyVisualLabelText} tone={dark ? 'primary' : 'inverse'} variant="label">{label}</AppText>
-    </View>
-  );
-}
-
-function PropBubble({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label: string }) {
-  return (
-    <View style={styles.propBubble}>
-      <Ionicons color={appColors.wisdomGoldBright} name={icon} size={spacing.s24} />
-      <AppText style={styles.propLabel} tone="inverse" variant="label">{label}</AppText>
     </View>
   );
 }
@@ -961,12 +973,12 @@ function PracticeStep({
     >
       <StageHeading eyebrow="Practice" inverse title={wisdom.practice.title} />
       <View
-        accessibilityLabel="Leo pauses before choosing what to do with money"
+        accessibilityLabel="Cloud stands beside symbols for pausing, money, and thinking of other people"
         accessible
         style={styles.practiceVisual}
       >
         <View accessible={false} style={styles.practiceGlow} />
-        <Image accessible={false} resizeMode="contain" source={leoHeroArtwork} style={styles.practiceLeo} />
+        <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.practiceLeo} />
         <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolPause]}>
           <Ionicons color={appColors.wisdomGoldBright} name="pause" size={spacing.s24} />
         </View>
@@ -1032,8 +1044,8 @@ function CompletionStep({
         <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="sparkles" size={spacing.s15} />
       </View>
       <View style={styles.completionHero}>
-        <View accessibilityLabel="Leo celebrates a thoughtful money plan" accessible style={styles.completionArtworkFrame}>
-          <Image accessible={false} resizeMode="contain" source={leoHeroArtwork} style={styles.completionArtwork} />
+        <View accessibilityLabel="Cloud celebrates a thoughtful money plan" accessible style={styles.completionArtworkFrame}>
+          <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.completionArtwork} />
         </View>
         <View style={styles.completionCopy}>
           <View style={styles.completionStatus}>
@@ -1149,7 +1161,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
     paddingRight: space.xs,
   },
-  talkLeo: {
+  talkCloud: {
     alignSelf: 'flex-end',
     height: spacing.s116,
     marginBottom: -space.sm,
@@ -1208,13 +1220,6 @@ const styles = StyleSheet.create({
     minWidth: 0,
     paddingRight: space.xs,
   },
-  moneyBoardLeo: {
-    alignSelf: 'flex-end',
-    height: spacing.s116 + space.sm,
-    marginBottom: -space.md,
-    marginRight: -space.sm,
-    width: spacing.s92,
-  },
   totalCard: {
     alignItems: 'center',
     borderColor: appColors.border,
@@ -1267,10 +1272,27 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     minWidth: 0,
   },
-  welcomeProps: {
+  welcomeObjects: {
     alignItems: 'flex-start',
     gap: space.xs,
-    maxWidth: '62%',
+    maxWidth: '78%',
+    position: 'relative',
+  },
+  welcomeObjectRow: {
+    alignItems: 'flex-start',
+  },
+  welcomeCoin: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s92,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: -spacing.s76,
+    top: -space.xs,
+    width: spacing.s92,
   },
   welcomePropOffset: {
     marginLeft: space.sm,
@@ -1291,13 +1313,6 @@ const styles = StyleSheet.create({
     color: appColors.wisdomGoldBright,
     fontSize: 34,
     lineHeight: 40,
-  },
-  welcomeArtwork: {
-    bottom: -space.xs,
-    height: '108%',
-    position: 'absolute',
-    right: -space.lg,
-    width: '58%',
   },
   welcomeBody: {
     padding: space.md,
@@ -1348,29 +1363,6 @@ const styles = StyleSheet.create({
     top: spacing.s48,
     width: 220,
   },
-  leoStoryImage: {
-    bottom: 0,
-    height: '100%',
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    width: '56%',
-  },
-  leoHeadphonesImage: {
-    bottom: 0,
-    height: '100%',
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    width: '54%',
-  },
-  storySceneFade: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
   storyPropStack: { gap: space.sm, marginRight: 'auto', maxWidth: '52%', zIndex: 2 },
   propBubble: {
     alignItems: 'center',
@@ -1382,7 +1374,7 @@ const styles = StyleSheet.create({
     padding: space.sm,
   },
   propLabel: { marginLeft: space.xs },
-  goalWrap: { marginRight: 'auto', maxWidth: '50%', zIndex: 2 },
+  goalWrap: { flexShrink: 1, minWidth: 0, zIndex: 2 },
   goalIcon: {
     alignItems: 'center',
     backgroundColor: appColors.wisdomGlass,
@@ -1394,13 +1386,6 @@ const styles = StyleSheet.create({
   },
   goalTrack: { backgroundColor: appColors.wisdomGlassStrong, borderRadius: radii.round, height: spacing.s14, marginVertical: space.sm, overflow: 'hidden' },
   goalFill: { backgroundColor: appColors.wisdomGoldBright, borderRadius: radii.round, height: '100%', width: '44%' },
-  storySceneImage: {
-    height: '112%',
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
   giftWrap: { position: 'relative', zIndex: 2 },
   giftSparkle: { position: 'absolute', right: -space.lg, top: -space.sm },
   saturdayTag: {
@@ -1414,14 +1399,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   threeProps: { gap: space.xs },
-  threePropsLeo: {
-    bottom: -space.sm,
-    height: '84%',
-    left: -space.lg,
-    opacity: 0.28,
-    position: 'absolute',
-    width: '52%',
-  },
   propTile: { alignItems: 'center', backgroundColor: appColors.wisdomGlass, borderColor: appColors.wisdomLine, borderRadius: radii.large, borderWidth: 1, flex: 1, minHeight: spacing.s116, justifyContent: 'center', minWidth: 0, padding: space.sm },
   propTileLabel: { marginTop: space.xs, textAlign: 'center' },
   pauseBubble: {
@@ -1435,9 +1412,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   pauseBubbleLabel: { textAlign: 'center' },
-  storySpacer: { flex: 1 },
   planProps: { gap: space.xs },
-  planLeo: { bottom: -space.lg, height: '70%', left: -space.xl, opacity: 0.62, position: 'absolute', width: '46%' },
   planProp: { alignItems: 'center', backgroundColor: appColors.wisdomGlass, borderColor: appColors.wisdomLine, borderRadius: radii.large, borderWidth: 1, flex: 1, minWidth: 0, padding: space.sm, zIndex: 2 },
   planAmount: { marginTop: space.xs },
   memoryCard: {
@@ -1591,4 +1566,106 @@ const styles = StyleSheet.create({
   takeawaySummary: { backgroundColor: appColors.wisdomGlass, borderColor: appColors.wisdomLine, borderRadius: radii.medium, borderWidth: 1, marginTop: space.md, padding: space.md },
   takeawaySummaryLabel: { alignItems: 'center', flexDirection: 'row', gap: space.xs },
   takeawaySummaryText: { marginTop: space.xs },
+  sceneStage: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    gap: space.md,
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  amountDisc: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s116,
+    justifyContent: 'center',
+    width: spacing.s116,
+  },
+  amountDiscValue: {
+    color: appColors.wisdomGoldBright,
+    fontSize: 38,
+    lineHeight: 44,
+  },
+  objectDisc: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s116,
+    justifyContent: 'center',
+    width: spacing.s116,
+  },
+  cardFan: {
+    height: spacing.s116,
+    position: 'relative',
+    width: spacing.s92,
+  },
+  cardTile: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.medium,
+    borderWidth: 1,
+    height: spacing.s92,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: space.sm,
+    width: spacing.s66,
+  },
+  cardTileBack: {
+    left: 0,
+    opacity: 0.45,
+    transform: [{ rotate: '-14deg' }],
+  },
+  cardTileMid: {
+    left: spacing.s12,
+    opacity: 0.7,
+    transform: [{ rotate: '-6deg' }],
+  },
+  cardTileFront: {
+    left: spacing.s24,
+    transform: [{ rotate: '4deg' }],
+  },
+  shopFront: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlass,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.large,
+    borderWidth: 1,
+    overflow: 'hidden',
+    paddingBottom: space.sm,
+    paddingHorizontal: space.md,
+    paddingTop: spacing.s24,
+    position: 'relative',
+  },
+  shopAwning: {
+    backgroundColor: appColors.wisdomGoldGlow,
+    height: spacing.s14,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  shopLabel: {
+    marginTop: space.xxs,
+    opacity: 0.86,
+  },
+  moneyBoardTotal: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: appColors.surfaceOverlay,
+    borderColor: appColors.borderStrong,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s92,
+    justifyContent: 'center',
+    width: spacing.s92,
+  },
+  moneyBoardTotalValue: {
+    color: appColors.primary,
+  },
 });

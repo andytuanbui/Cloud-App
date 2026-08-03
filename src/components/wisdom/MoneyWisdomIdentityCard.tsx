@@ -1,12 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import type { WisdomContent } from '../../content/wisdoms';
 import { appColors, radii, shadows, space, spacing, typography } from '../../theme';
 import { AppText } from '../ui';
 
-const identityArtwork = require('../../../assets/cloud/cloud-neighborhood-home.png');
-
+/**
+ * Object-led identity for "Three Ways to Use Money".
+ *
+ * The Wisdom's story belongs to Leo, who has no artwork yet, and Cloud's
+ * artwork must not stand in for him (see src/content/characterAssets.ts). The
+ * card is therefore carried by the money and the three things it could go to.
+ */
 const identityProps = [
   'football-outline',
   'headset-outline',
@@ -35,22 +40,25 @@ export function MoneyWisdomIdentityCard({
         focused && styles.focusedCard,
       ]}
     >
-      <Image
-        accessible={false}
-        resizeMode="cover"
-        source={identityArtwork}
-        style={[styles.artwork, compact && styles.compactArtwork]}
-      />
       <LinearGradient
-        colors={[
-          appColors.transparent,
-          appColors.overlay,
-          appColors.wisdomNightDeep,
-        ]}
-        end={{ x: 0.45, y: 1 }}
-        start={{ x: 0.65, y: 0.08 }}
+        colors={[appColors.wisdomNightSoft, appColors.wisdomNight, appColors.wisdomNightDeep]}
+        end={{ x: 1, y: 1 }}
+        start={{ x: 0, y: 0 }}
         style={StyleSheet.absoluteFillObject}
       />
+      <View accessible={false} pointerEvents="none" style={styles.identityGlow} />
+      <View
+        accessible={false}
+        pointerEvents="none"
+        style={[styles.identityCoin, compact && styles.compactCoin]}
+      >
+        <AppText style={[styles.identityCoinValue, compact && styles.compactCoinValue]} tone="inverse" variant="screenTitle">
+          90
+        </AppText>
+        <AppText style={styles.identityCoinUnit} tone="inverse" variant="caption">
+          KR
+        </AppText>
+      </View>
       <View style={styles.topRow}>
         <View accessible={false} style={styles.objectCluster}>
           {identityProps.map((icon) => (
@@ -131,17 +139,6 @@ const styles = StyleSheet.create({
   focusedCard: {
     borderColor: appColors.focus,
     ...shadows.focus,
-  },
-  artwork: {
-    height: '230%',
-    left: 0,
-    position: 'absolute',
-    top: '-120%',
-    width: '100%',
-  },
-  compactArtwork: {
-    height: '300%',
-    top: '-170%',
   },
   topRow: {
     alignItems: 'center',
@@ -235,5 +232,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: space.xs,
+  },
+  identityGlow: {
+    backgroundColor: appColors.wisdomGoldGlow,
+    borderRadius: radii.round,
+    height: 220,
+    opacity: 0.5,
+    position: 'absolute',
+    right: -60,
+    top: -70,
+    width: 220,
+  },
+  identityCoin: {
+    alignItems: 'center',
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s92,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: space.md,
+    top: space.xxl,
+    width: spacing.s92,
+  },
+  identityCoinValue: {
+    color: appColors.wisdomGoldBright,
+    fontSize: 30,
+    lineHeight: 34,
+  },
+  compactCoin: {
+    height: spacing.s62,
+    top: spacing.s48,
+    width: spacing.s62,
+  },
+  compactCoinValue: {
+    fontSize: 24,
+    lineHeight: 28,
+  },
+  identityCoinUnit: {
+    opacity: 0.86,
   },
 });
