@@ -14,6 +14,7 @@ export type PersonalResponseSuggestion = {
 export function PersonalResponseInput({
   compact = false,
   disabled = false,
+  suggestionIcons,
   inputLabel = 'Or write your own',
   maxLength = PERSONAL_RESPONSE_MAX_LENGTH,
   onChangeText,
@@ -28,6 +29,9 @@ export function PersonalResponseInput({
 }: {
   compact?: boolean;
   disabled?: boolean;
+  /** Optional per-suggestion icon. When supplied the suggestions render as
+   * larger two-up memory cards instead of small inline chips. */
+  suggestionIcons?: Record<string, keyof typeof Ionicons.glyphMap>;
   inputLabel?: string;
   maxLength?: number;
   onChangeText: (value: string) => void;
@@ -66,6 +70,7 @@ export function PersonalResponseInput({
               onPress={() => onSelectSuggestion(suggestion)}
               style={({ pressed }) => [
                 styles.suggestion,
+                suggestionIcons && styles.suggestionCard,
                 selected && styles.suggestionSelected,
                 focusedSuggestionId === suggestion.id && styles.suggestionFocused,
                 pressed && !disabled && styles.suggestionPressed,
@@ -75,8 +80,12 @@ export function PersonalResponseInput({
               <Ionicons
                 accessible={false}
                 color={selected ? appColors.onPrimary : appColors.primary}
-                name={selected ? 'checkmark-circle' : 'chatbubble-outline'}
-                size={spacing.s20}
+                name={
+                  selected
+                    ? 'checkmark-circle'
+                    : suggestionIcons?.[suggestion.id] ?? 'chatbubble-outline'
+                }
+                size={suggestionIcons ? spacing.s24 : spacing.s20}
               />
               <AppText
                 style={styles.suggestionText}
@@ -153,6 +162,14 @@ const styles = StyleSheet.create({
     minHeight: spacing.s48,
     paddingHorizontal: space.sm,
     paddingVertical: space.xs,
+  },
+  suggestionCard: {
+    borderRadius: radii.large,
+    flexBasis: '46%',
+    flexGrow: 1,
+    minHeight: spacing.s68,
+    paddingHorizontal: space.sm,
+    paddingVertical: space.sm,
   },
   suggestionSelected: {
     backgroundColor: appColors.primary,

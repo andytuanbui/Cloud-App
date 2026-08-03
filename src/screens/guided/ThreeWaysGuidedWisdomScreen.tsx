@@ -611,6 +611,7 @@ export function ThreeWaysGuidedWisdomScreen({
               placeholder="Write your own thought"
               selectedSuggestionId={session.selectedTakeaway?.choiceId}
               submitLabel="See What Cloud Remembered"
+              suggestionIcons={takeawayChoiceIcons}
               suggestions={wisdom.takeaway.choices}
               suggestionsLabel="Choose a thought"
               value={takeawayDraft}
@@ -1136,6 +1137,13 @@ const categoryIcons: Record<MoneyDecisionCategoryId, keyof typeof Ionicons.glyph
   give: 'gift-outline',
 };
 
+const takeawayChoiceIcons: Record<string, keyof typeof Ionicons.glyphMap> = {
+  'not-spend-everything': 'wallet-outline',
+  'future-goals': 'trending-up-outline',
+  'help-others': 'heart-outline',
+  'what-matters': 'options-outline',
+};
+
 const reflectionChoiceIcons: Record<string, keyof typeof Ionicons.glyphMap> = {
   'yes-many-times': 'happy-outline',
   sometimes: 'time-outline',
@@ -1405,12 +1413,12 @@ const styles = StyleSheet.create({
   },
   memoryCardCopy: { flex: 1, minWidth: 0 },
   memoryCardText: { marginTop: space.xs },
-  practiceCanvas: { minHeight: 560, padding: space.md },
+  practiceCanvas: { padding: space.md },
   practiceVisual: {
     borderColor: appColors.wisdomLine,
     borderRadius: radii.large,
     borderWidth: 1,
-    height: 232,
+    height: 196,
     overflow: 'hidden',
     position: 'relative',
   },

@@ -45,12 +45,12 @@ export function ReflectionChoiceCard({
           accessible={false}
           color={selected ? appColors.wisdomNightDeep : appColors.primary}
           name={selected ? 'checkmark' : icon}
-          size={spacing.s18}
+          size={spacing.s20}
         />
       </View>
       <View style={styles.copy}>
         <AppText
-          style={styles.label}
+          style={[styles.label, selected && styles.labelSelected]}
           tone={selected ? 'inverse' : 'primary'}
           variant="body"
         >
@@ -70,19 +70,24 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     backgroundColor: appColors.surfaceElevated,
-    borderColor: appColors.border,
-    borderRadius: radii.large,
-    borderWidth: 1,
+    borderBottomLeftRadius: radii.large,
+    borderBottomRightRadius: spacing.md,
+    borderColor: appColors.borderStrong,
+    borderTopLeftRadius: radii.large,
+    borderTopRightRadius: radii.large,
+    borderWidth: 2,
     flexDirection: 'row',
+    minHeight: spacing.s68,
     minWidth: 0,
-    minHeight: spacing.s62,
-    paddingHorizontal: space.xs,
+    paddingHorizontal: space.sm,
     paddingVertical: space.sm,
     ...shadows.subtle,
   },
   selected: {
     backgroundColor: appColors.primary,
-    borderColor: appColors.primary,
+    borderBottomLeftRadius: spacing.md,
+    borderBottomRightRadius: radii.large,
+    borderColor: appColors.wisdomGoldBright,
     ...shadows.card,
   },
   focused: {
@@ -90,8 +95,8 @@ const styles = StyleSheet.create({
     ...shadows.focus,
   },
   pressed: {
-    opacity: 0.86,
-    transform: [{ scale: 0.995 }],
+    opacity: 0.9,
+    transform: [{ scale: 0.99 }],
   },
   disabled: {
     opacity: 0.42,
@@ -102,10 +107,10 @@ const styles = StyleSheet.create({
     borderColor: appColors.border,
     borderRadius: radii.round,
     borderWidth: 1,
-    height: spacing.s30,
+    height: spacing.s38,
     justifyContent: 'center',
-    marginRight: space.xs,
-    width: spacing.s30,
+    marginRight: space.sm,
+    width: spacing.s38,
   },
   indicatorSelected: {
     backgroundColor: appColors.wisdomGoldBright,
@@ -117,6 +122,9 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: typography.weight.bold,
+  },
+  labelSelected: {
+    fontWeight: typography.weight.heavy,
   },
   supporting: {
     marginTop: space.xxs,
