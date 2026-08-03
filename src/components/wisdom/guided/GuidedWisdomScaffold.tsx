@@ -59,7 +59,14 @@ export function GuidedWisdomScaffold({
   const stageTitle = stageTitles[stage];
 
   useEffect(() => {
+    // Reset twice: once immediately, and once after the new stage has laid out.
+    // Without the second pass a taller stage (Completion) can keep the previous
+    // scroll offset and open with its status badge already scrolled off screen.
     scrollRef.current?.scrollTo({ animated: false, y: 0 });
+    const frame = requestAnimationFrame(() => {
+      scrollRef.current?.scrollTo({ animated: false, y: 0 });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [stage]);
 
   return (
@@ -100,7 +107,9 @@ export function GuidedWisdomScaffold({
               current={stageIndex + 1}
               label={
                 isComplete
-                  ? `${completionLabel} · All ${guidedWisdomStages.length} stages`
+                  ? // The completion canvas already carries the learned state.
+                    // Repeating it here gave the child the same badge twice.
+                    `All ${guidedWisdomStages.length} stages`
                   : `${stageTitle} · ${stageIndex + 1} of ${guidedWisdomStages.length}`
               }
               total={guidedWisdomStages.length}

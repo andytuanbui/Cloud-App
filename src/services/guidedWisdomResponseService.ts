@@ -151,9 +151,15 @@ export function evaluateMoneyPlan(
   const includesEveryPart = amounts.every(
     (amount) => amount >= decision.rules.balancedMinimumPerCategory,
   );
+  // A plan only reads as balanced when every part is present *and* no single
+  // part dominates. Without the spread check, 50/20/20 would be described the
+  // same way as 30/30/30 and the child would get no signal about the choice
+  // they actually made.
+  const spread = Math.max(...amounts) - Math.min(...amounts);
+  const withinBalancedSpread = spread <= decision.rules.balancedMaximumSpread;
 
   let kind: MoneyPlanResponseKind;
-  if (includesEveryPart) {
+  if (includesEveryPart && withinBalancedSpread) {
     kind = 'balanced';
   } else if (
     plan.give >= decision.rules.significantGiveMinimum &&

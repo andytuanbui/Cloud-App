@@ -424,16 +424,22 @@ export function ThreeWaysGuidedWisdomScreen({
           style={[styles.stageCanvas, styles.conversationCanvas]}
         >
           <View style={styles.talkHeader}>
+            <View
+              accessibilityLabel="Cloud, your guide, is listening"
+              accessible
+              style={styles.talkCloudFrame}
+            >
+              <View accessible={false} style={styles.talkCloudGlow} />
+              <Image
+                accessible={false}
+                resizeMode="cover"
+                source={cloudGuideAssets.avatar}
+                style={styles.talkCloudPortrait}
+              />
+            </View>
             <View style={styles.talkHeading}>
               <StageHeading eyebrow="Talk with Cloud" title="Think about waiting" />
             </View>
-            <Image
-              accessibilityLabel="Cloud, your guide"
-              accessible
-              resizeMode="contain"
-              source={cloudHero}
-              style={styles.talkCloud}
-            />
           </View>
           <CloudResponseCard text={wisdom.reflection.question} />
           <View accessibilityLabel="Reflection choices" accessibilityRole="radiogroup" style={styles.choiceList}>
@@ -669,7 +675,7 @@ function WelcomeStep({
       >
         <WisdomHeroCanvas
           artworkAccessibilityLabel="Ninety kroner beside football cards, headphones, and a wrapped gift for Mia"
-          height={330}
+          height={296}
           style={styles.welcomeStage}
         >
           <View style={styles.welcomeStageTop}>
@@ -687,37 +693,41 @@ function WelcomeStep({
           </View>
 
           <View accessible={false} pointerEvents="none" style={styles.welcomeObjects}>
-            <View style={styles.welcomeCoin}>
-              <Ionicons
-                accessible={false}
-                color={appColors.wisdomGoldBright}
-                name="cash-outline"
-                size={spacing.s58}
-              />
-            </View>
-            <View style={styles.welcomeObjectRow}>
+            <View style={styles.welcomeBadgeColumn}>
               <WisdomObjectBadge
                 icon="football-outline"
                 label="Spend now"
                 tone="solid"
                 value="Football cards"
               />
-            </View>
-            <View style={[styles.welcomeObjectRow, styles.welcomePropOffset]}>
               <WisdomObjectBadge
                 icon="headset-outline"
                 label="Save for later"
+                style={styles.welcomePropOffset}
                 tone="solid"
                 value="Headphones"
               />
-            </View>
-            <View style={styles.welcomeObjectRow}>
               <WisdomObjectBadge
                 icon="gift-outline"
                 label="Give or help"
                 tone="solid"
                 value="Mia's birthday"
               />
+            </View>
+            <View style={styles.welcomeMoneyCluster}>
+              <View style={[styles.welcomeCardTile, styles.welcomeCardTileBack]} />
+              <View style={[styles.welcomeCardTile, styles.welcomeCardTileMid]} />
+              <View style={styles.welcomeCoin}>
+                <Ionicons
+                  accessible={false}
+                  color={appColors.wisdomGoldBright}
+                  name="cash-outline"
+                  size={spacing.s52}
+                />
+                <AppText style={styles.welcomeCoinLabel} tone="inverse" variant="caption">
+                  90 KR
+                </AppText>
+              </View>
             </View>
           </View>
 
@@ -1149,25 +1159,6 @@ const styles = StyleSheet.create({
     padding: space.md,
   },
   conversationCanvas: { minHeight: 420, padding: space.md },
-  talkHeader: {
-    flexDirection: 'row',
-    marginBottom: space.xs,
-    marginTop: -space.xs,
-    minHeight: spacing.s92,
-  },
-  talkHeading: {
-    flex: 1,
-    justifyContent: 'center',
-    minWidth: 0,
-    paddingRight: space.xs,
-  },
-  talkCloud: {
-    alignSelf: 'flex-end',
-    height: spacing.s116,
-    marginBottom: -space.sm,
-    marginRight: -space.xs,
-    width: spacing.s76,
-  },
   reflectionCanvas: { minHeight: 420, padding: space.md, position: 'relative' },
   reflectionHeading: { paddingRight: spacing.s58 },
   reflectionMark: {
@@ -1271,28 +1262,6 @@ const styles = StyleSheet.create({
   welcomeKickerLabel: {
     flexShrink: 1,
     minWidth: 0,
-  },
-  welcomeObjects: {
-    alignItems: 'flex-start',
-    gap: space.xs,
-    maxWidth: '78%',
-    position: 'relative',
-  },
-  welcomeObjectRow: {
-    alignItems: 'flex-start',
-  },
-  welcomeCoin: {
-    alignItems: 'center',
-    backgroundColor: appColors.wisdomGlassStrong,
-    borderColor: appColors.wisdomLine,
-    borderRadius: radii.round,
-    borderWidth: 1,
-    height: spacing.s92,
-    justifyContent: 'center',
-    position: 'absolute',
-    right: -spacing.s76,
-    top: -space.xs,
-    width: spacing.s92,
   },
   welcomePropOffset: {
     marginLeft: space.sm,
@@ -1667,5 +1636,89 @@ const styles = StyleSheet.create({
   },
   moneyBoardTotalValue: {
     color: appColors.primary,
+  },
+  talkHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: space.sm,
+    marginBottom: space.md,
+  },
+  talkCloudFrame: {
+    alignItems: 'center',
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.primarySoft,
+    borderRadius: radii.round,
+    borderWidth: 3,
+    height: spacing.s76,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    position: 'relative',
+    width: spacing.s76,
+    ...shadows.card,
+  },
+  talkCloudGlow: {
+    backgroundColor: appColors.primarySoft,
+    borderRadius: radii.round,
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
+  },
+  talkCloudPortrait: {
+    height: '100%',
+    width: '100%',
+  },
+  talkHeading: {
+    flex: 1,
+    justifyContent: 'center',
+    minWidth: 0,
+  },
+  welcomeObjects: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: space.sm,
+  },
+  welcomeBadgeColumn: {
+    alignItems: 'flex-start',
+    flex: 1,
+    gap: space.xs,
+    minWidth: 0,
+  },
+  welcomeMoneyCluster: {
+    alignItems: 'center',
+    height: spacing.s116,
+    justifyContent: 'center',
+    position: 'relative',
+    width: spacing.s116,
+  },
+  welcomeCardTile: {
+    backgroundColor: appColors.wisdomGlassStrong,
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.medium,
+    borderWidth: 1,
+    height: spacing.s92,
+    position: 'absolute',
+    width: spacing.s66,
+  },
+  welcomeCardTileBack: {
+    opacity: 0.4,
+    transform: [{ rotate: '-16deg' }, { translateX: -spacing.s12 }],
+  },
+  welcomeCardTileMid: {
+    opacity: 0.6,
+    transform: [{ rotate: '10deg' }, { translateX: spacing.s12 }],
+  },
+  welcomeCoin: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(7, 31, 40, 0.82)',
+    borderColor: appColors.wisdomLine,
+    borderRadius: radii.round,
+    borderWidth: 1,
+    height: spacing.s92,
+    justifyContent: 'center',
+    width: spacing.s92,
+  },
+  welcomeCoinLabel: {
+    color: appColors.wisdomGoldBright,
+    marginTop: space.xxs,
   },
 });
