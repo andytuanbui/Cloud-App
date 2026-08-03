@@ -1,6 +1,7 @@
 import type {
   GuidedMoneyDecision,
   GuidedStoryWisdomContent,
+  MoneyDecisionCategoryId,
   MoneyPlan,
   MoneyPlanResponseKind,
 } from '../content/wisdoms';
@@ -236,69 +237,54 @@ export function getPracticeAction({
 }
 
 /** Returns a personal, plan-specific completion response under 35 words. */
+/**
+ * Two short sentences recognising what the child actually did: how their saved
+ * plan divided the money, and the thought they chose to keep.
+ *
+ * It deliberately describes the plan's own objects rather than the example they
+ * mentioned earlier — the completion screen already shows the amounts, so
+ * naming something unrelated (a toy) read as if Cloud had not been listening.
+ */
 export function buildCompletionRecognition({
   moneyPlan,
-  personalResponse,
   takeaway,
   context,
 }: CompletionRecognitionInput): string {
   const { kind } = evaluateMoneyPlan(moneyPlan, context.decision);
-  const firstSentence = buildCompletionPersonalSentence(personalResponse);
+  const label = (id: MoneyDecisionCategoryId): string => {
+    const raw =
+      context.decision.categories.find((category) => category.id === id)
+        ?.objectLabel ?? '';
+    // Keep proper nouns capitalised ("Mia's birthday") but lowercase common
+    // nouns so they sit correctly inside a sentence.
+    const [firstWord] = raw.split(' ');
+    if (firstWord.includes('\u2019') || firstWord.includes("'")) return raw;
+    return raw.charAt(0).toLowerCase() + raw.slice(1);
+  };
+
+  const planSentence =
+    kind === 'balanced'
+      ? `You gave ${label('spend')}, ${label('save')}, and ${label('give')} a place in your plan.`
+      : `You gave ${label(kind)} the biggest place in your plan.`;
+
   const normalizedTakeaway = normalizePersonalResponse(takeaway ?? '');
-  const takeawayIdByLabel: Record<string, string> = {
-    'I do not need to spend everything': 'not-spend-everything',
-    'Saving helps future goals': 'future-goals',
-    'Money can help other people': 'help-others',
-    'Balance depends on what matters': 'what-matters',
+  const takeawaySentenceByLabel: Record<string, string> = {
+    'I do not need to spend everything':
+      'You remembered that you do not need to spend everything.',
+    'Saving helps future goals':
+      'You remembered that saving helps future goals.',
+    'Money can help other people':
+      'You remembered that money can help other people.',
+    'Balance depends on what matters':
+      'You remembered that balance depends on what matters.',
   };
-  const takeawayId = takeawayIdByLabel[normalizedTakeaway];
 
-  if (takeawayId === 'not-spend-everything') {
-    return `${firstSentence} ${
-      kind === 'spend'
-        ? 'Your latest plan kept more for today without spending everything.'
-        : 'Your latest plan showed that you do not need to spend everything.'
-    }`;
-  }
-  if (takeawayId === 'future-goals') {
-    return `${firstSentence} ${
-      kind === 'save'
-        ? 'Your latest plan moved the headphones goal closer because later mattered.'
-        : 'Your latest plan kept room for the headphones because future goals matter.'
-    }`;
-  }
-  if (takeawayId === 'help-others') {
-    return `${firstSentence} ${
-      kind === 'give'
-        ? 'Your latest plan gave Mia an important place because helping mattered.'
-        : 'Your latest plan kept a place for Mia because helping mattered.'
-    }`;
-  }
-  if (takeawayId === 'what-matters') {
-    return `${firstSentence} Your latest plan reflected what mattered most to you.`;
-  }
+  if (!normalizedTakeaway) return planSentence;
+  const takeawaySentence =
+    takeawaySentenceByLabel[normalizedTakeaway] ??
+    ensureSentence(`You remembered that ${normalizedTakeaway.charAt(0).toLowerCase()}${normalizedTakeaway.slice(1)}`);
 
-  const planSentence: Record<MoneyPlanResponseKind, string> = {
-    give: 'Your latest plan gave Mia’s birthday the most room.',
-    balanced: 'Your latest plan made room for today, later, and Mia.',
-    save: 'Your latest plan moved the headphones goal closer.',
-    spend: 'Your latest plan kept more for football cards today.',
-  };
-  return `${firstSentence} ${planSentence[kind]}`;
-}
-
-function buildCompletionPersonalSentence(personalResponse?: string): string {
-  const normalized = normalizePersonalResponse(personalResponse ?? '');
-  const knownDetails: Record<string, string> = {
-    'I wanted a game item': 'You thought about wanting a game item.',
-    'I wanted a toy': 'You thought about wanting a toy.',
-    'I wanted some sweets': 'You thought about wanting some sweets.',
-    'I wanted to save for something bigger':
-      'You were already thinking about saving for something bigger.',
-    'I cannot remember': 'You stayed curious even without an example.',
-  };
-  if (!normalized) return 'You paused and thought carefully.';
-  return knownDetails[normalized] ?? buildTypedSummarySentence(normalized);
+  return `${planSentence} ${takeawaySentence}`;
 }
 
 function buildPersonalDetailSentence(

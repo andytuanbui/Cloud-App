@@ -504,10 +504,7 @@ export function ThreeWaysGuidedWisdomScreen({
             </View>
             <View accessible={false} style={styles.moneyBoardTotal}>
               <AppText style={styles.moneyBoardTotalValue} variant="screenTitle">
-                90
-              </AppText>
-              <AppText tone="secondary" variant="caption">
-                KRONER
+                {`${wisdom.decision.totalAmount} kr`}
               </AppText>
             </View>
           </View>
@@ -675,7 +672,7 @@ function WelcomeStep({
         style={styles.welcomeCanvas}
       >
         <WisdomHeroCanvas
-          artworkAccessibilityLabel="Ninety kroner beside football cards, headphones, and a wrapped gift for Mia"
+          artworkAccessibilityLabel="90 kr beside football cards, headphones, and a wrapped gift for Mia"
           height={296}
           style={styles.welcomeStage}
         >
@@ -726,7 +723,7 @@ function WelcomeStep({
                   size={spacing.s52}
                 />
                 <AppText style={styles.welcomeCoinLabel} tone="inverse" variant="caption">
-                  90 KR
+                  90 kr
                 </AppText>
               </View>
             </View>
@@ -824,10 +821,7 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
         <View style={styles.sceneStage}>
           <View style={styles.amountDisc}>
             <AppText style={styles.amountDiscValue} tone="inverse" variant="screenTitle">
-              90
-            </AppText>
-            <AppText tone="inverse" variant="caption">
-              KRONER
+              90 kr
             </AppText>
           </View>
           <View accessible={false} style={styles.cardFan}>
@@ -1563,8 +1557,8 @@ const styles = StyleSheet.create({
   },
   amountDiscValue: {
     color: appColors.wisdomGoldBright,
-    fontSize: 38,
-    lineHeight: 44,
+    fontSize: 26,
+    lineHeight: 32,
   },
   objectDisc: {
     alignItems: 'center',
@@ -1644,6 +1638,8 @@ const styles = StyleSheet.create({
   },
   moneyBoardTotalValue: {
     color: appColors.primary,
+    fontSize: 22,
+    lineHeight: 28,
   },
   talkHeader: {
     alignItems: 'center',

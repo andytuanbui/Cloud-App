@@ -39,8 +39,10 @@ const styles = StyleSheet.create({
   },
   hero: {
     borderRadius: radii.hero,
+    // Tall enough that Cloud's face and upper body sit fully inside the frame.
+    // At the previous 152 the crop cut through his head.
     justifyContent: 'flex-end',
-    minHeight: 152,
+    minHeight: 190,
     overflow: 'hidden',
     padding: space.sm,
     position: 'relative',
@@ -51,14 +53,17 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   copyPanel: {
-    backgroundColor: appColors.surfaceOverlay,
-    borderColor: appColors.surfaceElevated,
+    // Narrow and bottom-left so the panel never sits over Cloud, who stands in
+    // the right half of the artwork. A fully opaque surface keeps the greeting
+    // readable without washing the character out.
+    backgroundColor: appColors.surfaceElevated,
+    borderColor: appColors.border,
     borderRadius: radii.medium,
     borderWidth: 1,
-    maxWidth: 300,
+    maxWidth: 216,
     paddingHorizontal: space.sm,
     paddingVertical: space.xs,
-    width: '78%',
+    width: '56%',
   },
   body: {
     marginTop: space.xxs,

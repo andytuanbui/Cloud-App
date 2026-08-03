@@ -53,10 +53,7 @@ export function MoneyWisdomIdentityCard({
         style={[styles.identityCoin, compact && styles.compactCoin]}
       >
         <AppText style={[styles.identityCoinValue, compact && styles.compactCoinValue]} tone="inverse" variant="screenTitle">
-          90
-        </AppText>
-        <AppText style={styles.identityCoinUnit} tone="inverse" variant="caption">
-          KR
+          90 kr
         </AppText>
       </View>
       <View style={styles.topRow}>
@@ -258,8 +255,8 @@ const styles = StyleSheet.create({
   },
   identityCoinValue: {
     color: appColors.wisdomGoldBright,
-    fontSize: 30,
-    lineHeight: 34,
+    fontSize: 22,
+    lineHeight: 26,
   },
   compactCoin: {
     height: spacing.s62,
@@ -267,10 +264,7 @@ const styles = StyleSheet.create({
     width: spacing.s62,
   },
   compactCoinValue: {
-    fontSize: 24,
-    lineHeight: 28,
-  },
-  identityCoinUnit: {
-    opacity: 0.86,
+    fontSize: 17,
+    lineHeight: 21,
   },
 });

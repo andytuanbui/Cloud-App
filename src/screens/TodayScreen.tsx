@@ -130,17 +130,9 @@ export function TodayScreen({ navigation }: Props) {
       <View>
         <SectionHeader title="Tomorrow" />
         <StatusPanel
-          body={
-            tomorrowWisdomExists
-              ? 'A new Wisdom will be ready when you return.'
-              : 'New thinking and practice will be added soon.'
-          }
+          body="A new Wisdom will be ready when you return."
           icon="lock-closed"
-          title={
-            tomorrowWisdomExists
-              ? 'Cloud is preparing this for tomorrow'
-              : 'More Wisdom is being prepared'
-          }
+          title="Cloud is preparing this for tomorrow."
           tone={tomorrowWisdomExists ? 'gold' : 'soft'}
         />
       </View>
