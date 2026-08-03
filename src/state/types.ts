@@ -13,13 +13,26 @@ export const guidedWisdomStages = [
 export type GuidedWisdomStage = (typeof guidedWisdomStages)[number];
 
 export const CURRENT_GUIDED_WISDOM_SESSION_VERSION = 1 as const;
-export const CURRENT_SCHEMA_VERSION = 5 as const;
+export const CURRENT_SCHEMA_VERSION = 6 as const;
 
 export type GuidedResponseSource = 'suggested' | 'typed';
+export type GuidedPersonalResponseSource = GuidedResponseSource | 'voice';
 
 export type GuidedPersonalResponse = {
-  source: GuidedResponseSource;
+  source: GuidedPersonalResponseSource;
   text: string;
+};
+
+/**
+ * The only durable artifact from a live Cloud conversation. Raw audio and the
+ * rolling transcript deliberately remain outside PersistedAppState.
+ */
+export type GuidedVoiceReflection = {
+  summary: string;
+  childExample: string;
+  cloudInsight: string;
+  confidence: 'low' | 'medium' | 'high';
+  safetyStatus: string;
 };
 
 export type GuidedTakeaway = {
@@ -34,6 +47,7 @@ export type GuidedWisdomSession = {
   currentStoryScene: number;
   selectedReflectionAnswer?: string;
   personalResponse?: GuidedPersonalResponse;
+  voiceReflection?: GuidedVoiceReflection;
   adaptiveResponse: string;
   spendAmount: number;
   saveAmount: number;
@@ -49,10 +63,15 @@ export type GuidedWisdomSession = {
 export type GuidedWisdomSessionUpdate = Partial<
   Omit<
     GuidedWisdomSession,
-    'version' | 'personalResponse' | 'selectedTakeaway' | 'completed'
+    | 'version'
+    | 'personalResponse'
+    | 'voiceReflection'
+    | 'selectedTakeaway'
+    | 'completed'
   >
 > & {
   personalResponse?: Partial<GuidedPersonalResponse> | null;
+  voiceReflection?: GuidedVoiceReflection | null;
   selectedTakeaway?: Partial<GuidedTakeaway> | null;
 };
 
@@ -83,6 +102,8 @@ export type ChildProfile = {
   programStartedAt: string | null;
   programStartDateKey: string | null;
   lastOpenedDateKey: string;
+  voiceFeaturesApprovedByParent: boolean;
+  voiceSafetyIdentifier: string;
 };
 
 export type ProfileDetails = {

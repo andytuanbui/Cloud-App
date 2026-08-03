@@ -8,6 +8,13 @@ import {
 
 const LOCAL_PROFILE_ID = 'local-child-profile';
 
+function createVoiceSafetyIdentifier(): string {
+  const randomUuid = globalThis.crypto?.randomUUID?.();
+  if (randomUuid) return `cw_${randomUuid}`;
+
+  return `cw_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 14)}`;
+}
+
 function asRecord(value: unknown): Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
     ? (value as Record<string, unknown>)
@@ -81,13 +88,15 @@ export function createDefaultAppState(dateKey = getLocalDateKey()): PersistedApp
       programStartedAt: null,
       programStartDateKey: null,
       lastOpenedDateKey: dateKey,
+      voiceFeaturesApprovedByParent: false,
+      voiceSafetyIdentifier: createVoiceSafetyIdentifier(),
     },
     wisdomProgress: {},
   };
 }
 
 /**
- * Migrates both unversioned app state and earlier versioned state to schema v5.
+ * Migrates both unversioned app state and earlier versioned state to schema v6.
  *
  * Wisdom progress keeps all existing fields while permanent completion metadata is
  * normalized, so partial steps, responses, quiz state, and timestamps survive.
@@ -154,6 +163,11 @@ export function migrateAppState(
       programStartedAt,
       programStartDateKey,
       lastOpenedDateKey: currentDateKey,
+      voiceFeaturesApprovedByParent:
+        savedProfile.voiceFeaturesApprovedByParent === true,
+      voiceSafetyIdentifier:
+        optionalString(savedProfile.voiceSafetyIdentifier) ??
+        defaults.profile.voiceSafetyIdentifier,
     },
     wisdomProgress: migrateWisdomProgress(savedProgress),
   };
