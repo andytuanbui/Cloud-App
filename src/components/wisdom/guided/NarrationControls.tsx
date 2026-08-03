@@ -2,7 +2,12 @@ import { StyleSheet, View } from 'react-native';
 import { appColors, radii, shadows, space } from '../../../theme';
 import { AppText, SecondaryButton, TextButton } from '../../ui';
 
-export type NarrationStatus = 'unavailable' | 'idle' | 'speaking' | 'paused';
+export type NarrationStatus =
+  | 'unavailable'
+  | 'idle'
+  | 'loading'
+  | 'speaking'
+  | 'paused';
 
 export function NarrationControls({
   hasPlayed = false,
@@ -22,13 +27,23 @@ export function NarrationControls({
   unavailableMessage?: string;
 }) {
   const unavailable = status === 'unavailable';
-  const hasNarrated = hasPlayed || status === 'speaking' || status === 'paused';
+  const hasNarrated =
+    hasPlayed || status === 'loading' || status === 'speaking' || status === 'paused';
   const replayDisabled = unavailable || !hasNarrated || !onReplay;
 
   return (
     <View accessibilityLabel="Story narration controls" style={styles.wrap}>
       <View style={styles.controls}>
-        {status === 'speaking' ? (
+        {status === 'loading' ? (
+          <SecondaryButton
+            accessibilityLabel="Preparing story narration"
+            disabled
+            label="Preparing voice..."
+            loading
+            onPress={noOp}
+            style={styles.control}
+          />
+        ) : status === 'speaking' ? (
           <SecondaryButton
             accessibilityLabel="Pause story narration"
             disabled={!onPause}
@@ -65,6 +80,10 @@ export function NarrationControls({
           style={styles.control}
         />
       </View>
+
+      <AppText style={styles.disclosure} tone="muted" variant="caption">
+        Cloud is an AI guide. When available, this read-aloud voice is AI-generated.
+      </AppText>
 
       {unavailable ? (
         <AppText style={styles.status} tone="muted" variant="caption">
@@ -116,6 +135,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   status: {
+    marginTop: space.xs,
+    paddingHorizontal: space.xs,
+    textAlign: 'center',
+  },
+  disclosure: {
     marginTop: space.xs,
     paddingHorizontal: space.xs,
     textAlign: 'center',

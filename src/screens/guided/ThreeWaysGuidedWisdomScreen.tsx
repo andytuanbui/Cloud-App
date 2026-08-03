@@ -31,6 +31,11 @@ import type {
   MoneyDecisionCategoryId,
   MoneyPlan,
 } from '../../content/wisdoms';
+import { CloudVoiceConversationSurface } from '../../features/cloudVoice/components';
+import { redactSensitiveText } from '../../features/cloudVoice/core/safety';
+import { isCompleteCloudVoiceReflection } from '../../features/cloudVoice/core/reflection';
+import { buildGuidedUpdateFromVoiceReflection } from '../../features/cloudVoice/integration/guidedReflection';
+import { useCloudVoice } from '../../features/cloudVoice/useCloudVoice';
 import {
   buildAdaptiveReflectionResponse,
   buildCompletionRecognition,
@@ -70,6 +75,14 @@ const welcomeIdeaIcons = [
   'gift-outline',
 ] as const;
 
+function getChildAgeBand(age: number | null): string {
+  if (age === null) return 'child';
+  if (age <= 8) return '7-8';
+  if (age <= 10) return '9-10';
+  if (age <= 12) return '11-12';
+  return '13-plus';
+}
+
 export function ThreeWaysGuidedWisdomScreen({
   onBack,
   onExit,
@@ -79,9 +92,11 @@ export function ThreeWaysGuidedWisdomScreen({
 }: Props) {
   const {
     completeGuidedWisdom,
+    profile,
     startGuidedWisdomReview,
     updateGuidedSession,
   } = useAppState();
+  const cloudVoice = useCloudVoice();
   const isLearned = Boolean(progress?.isCompleted || progress?.completed);
   const reviewStarted = useRef(false);
   const [reviewInitializing, setReviewInitializing] = useState(
@@ -115,6 +130,7 @@ export function ThreeWaysGuidedWisdomScreen({
     narrationService.supported ? 'idle' : 'unavailable',
   );
   const [hasNarratedScene, setHasNarratedScene] = useState(false);
+  const savedVoiceReflection = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (reviewMode && isLearned && !reviewStarted.current) {
@@ -153,8 +169,11 @@ export function ThreeWaysGuidedWisdomScreen({
           (suggestion) => suggestion.label === session.personalResponse?.text,
         )?.id,
       );
+    } else if (session.personalResponse?.source === 'typed') {
+      setPersonalDraft(session.personalResponse.text);
+      setPersonalSuggestionId(undefined);
     } else {
-      setPersonalDraft(session.personalResponse?.text ?? '');
+      setPersonalDraft('');
       setPersonalSuggestionId(undefined);
     }
   }, [
@@ -177,6 +196,47 @@ export function ThreeWaysGuidedWisdomScreen({
     setHasNarratedScene(false);
     return () => narrationService.stop();
   }, [sceneIndex, stage]);
+
+  useEffect(
+    () => () => narrationService.clearSessionCache(),
+    [],
+  );
+
+  useEffect(() => {
+    if (!cloudVoice.reflection) {
+      savedVoiceReflection.current = undefined;
+      return;
+    }
+    if (
+      cloudVoice.activeWisdomId !== wisdom.id ||
+      !isCompleteCloudVoiceReflection(cloudVoice.reflection)
+    ) {
+      return;
+    }
+    const reflectionKey = JSON.stringify(cloudVoice.reflection);
+    if (savedVoiceReflection.current === reflectionKey) return;
+    savedVoiceReflection.current = reflectionKey;
+    updateGuidedSession(
+      wisdom.id,
+      buildGuidedUpdateFromVoiceReflection(
+        cloudVoice.reflection,
+        wisdom.reflection.choices.map((choice) => choice.id),
+      ),
+    );
+  }, [
+    cloudVoice.activeWisdomId,
+    cloudVoice.reflection,
+    updateGuidedSession,
+    wisdom.id,
+    wisdom.reflection.choices,
+  ]);
+
+  useEffect(() => {
+    if (stage !== 'talk') return;
+    return () => {
+      void cloudVoice.closeConversation('screen_exit');
+    };
+  }, [cloudVoice.closeConversation, stage]);
 
   const updateSession = (
     update: Parameters<typeof updateGuidedSession>[1],
@@ -210,8 +270,9 @@ export function ThreeWaysGuidedWisdomScreen({
     }
   };
 
-  const readScene = () => {
-    const started = narrationService.read(scene.narrationText, {
+  const readScene = async () => {
+    const started = await narrationService.read(scene.text, {
+      cacheKey: `${wisdom.id}:${scene.id}`,
       onStateChange: setNarrationStatus,
       onComplete: () => setNarrationStatus('idle'),
       onError: () => setNarrationStatus(
@@ -227,6 +288,7 @@ export function ThreeWaysGuidedWisdomScreen({
     updateSession({
       selectedReflectionAnswer: choice.id,
       personalResponse: null,
+      voiceReflection: null,
       adaptiveResponse: '',
       personalizedSummary: '',
     });
@@ -272,6 +334,34 @@ export function ThreeWaysGuidedWisdomScreen({
         personalResponse: normalized,
         context: wisdom,
       }),
+      personalizedSummary: '',
+    });
+  };
+
+  const startVoiceConversation = () => {
+    narrationService.stop();
+    void cloudVoice.startConversation({
+      wisdomId: wisdom.id,
+      wisdomTitle: wisdom.title,
+      storySummary: wisdom.storyScenes.map((storyScene) => storyScene.text).join(' '),
+      currentStoryScene: wisdom.storyScenes[wisdom.storyScenes.length - 1]?.text ?? '',
+      reflectionGoal: wisdom.reflection.question,
+      childAgeBand: getChildAgeBand(profile.age),
+      previousAnswer: session.personalResponse
+        ? redactSensitiveText(session.personalResponse.text)
+        : undefined,
+      moneyDecision: wisdom.decision.scenario,
+      takeaway: session.selectedTakeaway?.text,
+      authoredChoiceIds: wisdom.reflection.choices.map((choice) => choice.id),
+    });
+  };
+
+  const continueByTyping = () => {
+    void cloudVoice.resetConversation();
+    updateSession({
+      personalResponse: null,
+      voiceReflection: null,
+      adaptiveResponse: '',
       personalizedSummary: '',
     });
   };
@@ -392,7 +482,7 @@ export function ThreeWaysGuidedWisdomScreen({
               onPause={() => narrationService.pause()}
               onRead={readScene}
               onReplay={readScene}
-              onResume={() => narrationService.resume()}
+              onResume={() => void narrationService.resume()}
               status={narrationStatus}
             />
             <View style={[styles.pairedActions, styles.storyNavigation]}>
@@ -442,6 +532,27 @@ export function ThreeWaysGuidedWisdomScreen({
             </View>
           </View>
           <CloudResponseCard text={wisdom.reflection.question} />
+          <CloudVoiceConversationSurface
+            cloudTurns={cloudVoice.state.cloudTurns}
+            durationSeconds={cloudVoice.durationSeconds}
+            enabled={cloudVoice.enabled}
+            error={cloudVoice.state.error}
+            hasCompleteReflection={Boolean(
+              cloudVoice.reflection &&
+                isCompleteCloudVoiceReflection(cloudVoice.reflection),
+            )}
+            mode={cloudVoice.mode}
+            onFinish={() => void cloudVoice.finishConversation()}
+            onStart={startVoiceConversation}
+            onToggleMute={cloudVoice.toggleMuted}
+            onTypeInstead={continueByTyping}
+            parentApproved={cloudVoice.parentApproved}
+            safetyEnded={Boolean(
+              cloudVoice.safetyAssessment?.shouldEndConversation,
+            )}
+            status={cloudVoice.state.status}
+            transcript={cloudVoice.transcript}
+          />
           <View accessibilityLabel="Reflection choices" accessibilityRole="radiogroup" style={styles.choiceList}>
             {wisdom.reflection.choices.map((choice) => (
               <View key={choice.id} style={styles.choiceCell}>
@@ -454,7 +565,7 @@ export function ThreeWaysGuidedWisdomScreen({
               </View>
             ))}
           </View>
-          {selectedReflection ? (
+          {selectedReflection && session.personalResponse?.source !== 'voice' ? (
             <View style={styles.followUp}>
               <CloudResponseCard
                 text={`${selectedReflection.cloudResponse} ${selectedReflection.followUpQuestion}`}

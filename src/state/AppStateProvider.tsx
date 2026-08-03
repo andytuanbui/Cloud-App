@@ -29,6 +29,7 @@ type AppStateContextValue = PersistedAppState & {
   updateProfileDraft: (update: Partial<ProfileDetails>) => void;
   completeProfileSetup: (details: ProfileDetails) => boolean;
   updateProfile: (details: ProfileDetails) => boolean;
+  setVoiceFeaturesApprovedByParent: (approved: boolean) => void;
   getProgress: (wisdomId: string) => WisdomProgress | undefined;
   updateProgress: (wisdomId: string, update: Partial<WisdomProgress>) => void;
   completeStep: (wisdomId: string, step: WisdomStep, nextStep: WisdomStep) => void;
@@ -43,6 +44,7 @@ declare global {
   var __cloudwiseReset: (() => Promise<void>) | undefined;
   var __cloudwiseSetDate: ((dateKey: string) => void) | undefined;
   var __cloudwiseClearDate: (() => void) | undefined;
+  var __cloudwiseApproveVoice: ((approved?: boolean) => void) | undefined;
 }
 
 function newProgress(wisdomId: string): WisdomProgress {
@@ -194,11 +196,21 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       setDateOverride(null);
       setCurrentDateKey(getLocalDateKey());
     };
+    globalThis.__cloudwiseApproveVoice = (approved = true) => {
+      setState((current) => ({
+        ...current,
+        profile: {
+          ...current.profile,
+          voiceFeaturesApprovedByParent: approved,
+        },
+      }));
+    };
 
     return () => {
       delete globalThis.__cloudwiseReset;
       delete globalThis.__cloudwiseSetDate;
       delete globalThis.__cloudwiseClearDate;
+      delete globalThis.__cloudwiseApproveVoice;
     };
   }, [currentDateKey]);
 
@@ -254,6 +266,16 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       return next ?? current;
     });
     return true;
+  }, []);
+
+  const setVoiceFeaturesApprovedByParent = useCallback((approved: boolean) => {
+    setState((current) => ({
+      ...current,
+      profile: {
+        ...current.profile,
+        voiceFeaturesApprovedByParent: approved,
+      },
+    }));
   }, []);
 
   const getProgress = useCallback(
@@ -316,7 +338,12 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       setState((current) => {
         const existing = current.wisdomProgress[wisdomId] ?? newProgress(wisdomId);
         const session = hydrateGuidedSession(existing.guidedSession);
-        const { personalResponse, selectedTakeaway, ...flatUpdate } = update;
+        const {
+          personalResponse,
+          voiceReflection,
+          selectedTakeaway,
+          ...flatUpdate
+        } = update;
         const guidedSession: GuidedWisdomSession = {
           ...session,
           ...definedProperties(flatUpdate),
@@ -325,6 +352,10 @@ export function AppStateProvider({ children }: PropsWithChildren) {
             session.personalResponse,
             personalResponse,
           ),
+          voiceReflection:
+            voiceReflection === null
+              ? undefined
+              : voiceReflection ?? session.voiceReflection,
           selectedTakeaway: mergeGuidedResponse(
             session.selectedTakeaway,
             selectedTakeaway,
@@ -423,6 +454,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       updateProfileDraft,
       completeProfileSetup,
       updateProfile,
+      setVoiceFeaturesApprovedByParent,
       getProgress,
       updateProgress,
       completeStep,
@@ -439,6 +471,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       updateProfileDraft,
       completeProfileSetup,
       updateProfile,
+      setVoiceFeaturesApprovedByParent,
       getProgress,
       updateProgress,
       completeStep,
