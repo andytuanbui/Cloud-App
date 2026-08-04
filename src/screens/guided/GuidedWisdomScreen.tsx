@@ -25,6 +25,8 @@ import {
   SurfaceCard,
 } from '../../components/ui';
 import { cloudGuideAssets } from '../../content/characterAssets';
+import { formatPlacedOfTotal, formatUnits } from '../../features/guidedWisdom/allocation';
+import type { GuidedWisdomDefinition } from '../../features/guidedWisdom/types';
 import type {
   GuidedReflectionChoice,
   GuidedStoryWisdomContent,
@@ -57,11 +59,12 @@ import { appColors, radii, shadows, space, spacing, typography } from '../../the
 const cloudHero = cloudGuideAssets.hero;
 
 type Props = {
+  /** Resolved from the Guided Wisdom registry by Wisdom id. */
+  definition: GuidedWisdomDefinition;
   onBack: () => void;
   onExit: () => void;
   progress?: WisdomProgress;
   reviewMode: boolean;
-  wisdom: GuidedStoryWisdomContent;
 };
 
 const welcomeIdeaIcons = [
@@ -70,13 +73,17 @@ const welcomeIdeaIcons = [
   'gift-outline',
 ] as const;
 
-export function ThreeWaysGuidedWisdomScreen({
+export function GuidedWisdomScreen({
+  definition,
   onBack,
   onExit,
   progress,
   reviewMode,
-  wisdom,
 }: Props) {
+  // Every stage below reads its copy, labels, amounts and rules from the
+  // definition. Nothing about this Wisdom is written into the screen.
+  const wisdom = definition.content;
+  const allocation = definition.allocation;
   const {
     completeGuidedWisdom,
     startGuidedWisdomReview,
@@ -504,7 +511,7 @@ export function ThreeWaysGuidedWisdomScreen({
             </View>
             <View accessible={false} style={styles.moneyBoardTotal}>
               <AppText style={styles.moneyBoardTotalValue} variant="screenTitle">
-                {`${wisdom.decision.totalAmount} kr`}
+                {formatUnits(allocation, allocation.totalUnits)}
               </AppText>
             </View>
           </View>
@@ -540,7 +547,7 @@ export function ThreeWaysGuidedWisdomScreen({
             </View>
             <AppText tone={planValidation.isValid ? 'inverse' : 'secondary'} variant="label">Money placed</AppText>
             <AppText accessibilityLiveRegion="polite" tone={planValidation.isValid ? 'inverse' : 'primary'} variant="sectionTitle">
-              {planValidation.total} of {wisdom.decision.totalAmount} kr
+              {formatPlacedOfTotal(allocation, planValidation.total)}
             </AppText>
             <AppText style={styles.totalHint} tone={planValidation.isValid ? 'inverse' : 'secondary'} variant="supporting">
               {planValidation.isValid

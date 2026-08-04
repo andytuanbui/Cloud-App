@@ -7,7 +7,8 @@ import { FlowScaffold } from '../components/mvp/FlowScaffold';
 import { WisdomButton } from '../components/mvp/WisdomButton';
 import { AppText, StatusPanel, SurfaceCard } from '../components/ui';
 import { getWisdomById, type LegacyQuizWisdomContent } from '../content/wisdoms';
-import { ThreeWaysGuidedWisdomScreen } from './guided/ThreeWaysGuidedWisdomScreen';
+import { GuidedWisdomScreen } from './guided/GuidedWisdomScreen';
+import { getGuidedWisdom } from '../features/guidedWisdom/registry';
 import { useAppState } from '../state/useAppState';
 import { wisdomSteps, WisdomStep } from '../state/types';
 import {
@@ -62,13 +63,26 @@ export function WisdomFlowScreen({ navigation, route }: Props) {
   }
 
   if (wisdom.format === 'guided-story-v1') {
+    // Guided Wisdoms open by id through the registry, so adding one needs a
+    // definition rather than another screen or route. This branch always
+    // returns, which also keeps the legacy narrowing below intact.
+    const definition = getGuidedWisdom(route.params.wisdomId);
+    if (!definition) {
+      return (
+        <View style={styles.loading}>
+          <AppText tone="secondary" variant="body">
+            This Wisdom is not available yet.
+          </AppText>
+        </View>
+      );
+    }
     return (
-      <ThreeWaysGuidedWisdomScreen
+      <GuidedWisdomScreen
+        definition={definition}
         onBack={() => navigation.goBack()}
         onExit={() => navigation.replace('Today')}
         progress={progress}
         reviewMode={reviewMode}
-        wisdom={wisdom}
       />
     );
   }

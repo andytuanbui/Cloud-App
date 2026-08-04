@@ -119,6 +119,20 @@ export type GuidedMoneyDecision = {
 
 export type GuidedTakeawayChoice = Choice;
 
+/**
+ * Asset-free form of a guided Wisdom.
+ *
+ * Identical to `GuidedStoryWisdomContent` minus every image binding, so Node
+ * (tests, validation scripts) can import real production content without a
+ * bundler resolving PNG modules.
+ */
+export type GuidedStoryWisdomData = Omit<
+  GuidedStoryWisdomContent,
+  'artwork' | 'storyScenes'
+> & {
+  storyScenes: Omit<GuidedStoryScene, 'artwork'>[];
+};
+
 export type GuidedStoryWisdomContent = WisdomCommonContent & {
   format: 'guided-story-v1';
   introduction: string;

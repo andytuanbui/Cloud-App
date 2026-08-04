@@ -8,7 +8,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:wisdom-engine": "tsx --test \"src/features/guidedWisdom/**/*.test.ts\"",
+    "validate:wisdom-engine": "npm run typecheck && npm run test:wisdom-engine"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
@@ -29,7 +31,9 @@
     "react-native-web": "~0.21.0"
   },
   "devDependencies": {
+    "@types/node": "^24.0.0",
     "@types/react": "~19.1.10",
+    "tsx": "^4.20.0",
     "typescript": "~5.9.2"
   }
 }
