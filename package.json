@@ -10,7 +10,9 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "test:wisdom-engine": "tsx --test \"src/features/guidedWisdom/**/*.test.ts\"",
-    "validate:wisdom-engine": "npm run typecheck && npm run test:wisdom-engine"
+    "validate:wisdom-engine": "npm run typecheck && npm run test:wisdom-engine",
+    "test:wisdom-canvas": "tsx --test \"src/features/wisdomCanvas/**/*.test.ts\"",
+    "validate:wisdom-canvas": "npm run typecheck && npm run test:wisdom-canvas"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",

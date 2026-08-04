@@ -1,0 +1,574 @@
+{
+  "schemaVersion": 1,
+  "wisdomId": "three-ways-to-use-money",
+  "wisdomCode": "WIS-MONEY-001",
+  "note": "Canvas artwork is text-free. All interface text, controls, amounts and status are rendered by the application.",
+  "assets": [
+    {
+      "assetId": "WIS-MONEY-001-WELCOME-HERO",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "welcome",
+      "purpose": "hero",
+      "filename": "WIS-MONEY-001-welcome-hero-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 888,
+      "aspectRatio": 1.3176,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.62,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.62,
+          "width": 0.92,
+          "height": 0.34,
+          "purpose": "title"
+        },
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.6,
+          "height": 0.16,
+          "purpose": "progress"
+        },
+        {
+          "x": 0.04,
+          "y": 0.2,
+          "width": 0.62,
+          "height": 0.4,
+          "purpose": "controls"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Ninety kronor with football cards, headphones and a gift for Mia.",
+      "textFree": true,
+      "accessibilityDescription": "Ninety kronor beside football cards, headphones and a wrapped gift.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-01",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-01-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Ninety kronor beside a pack of football cards.",
+      "textFree": true,
+      "accessibilityDescription": "Ninety kronor beside a pack of football cards.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-wants-the-cards-now"
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-02",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-02-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Headphones with a savings goal still to reach.",
+      "textFree": true,
+      "accessibilityDescription": "Headphones with a savings goal still to reach.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-remembers-the-headphones"
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-03",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-03-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "A wrapped birthday gift for Mia.",
+      "textFree": true,
+      "accessibilityDescription": "A wrapped birthday gift for Mia.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-remembers-mias-birthday"
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-04",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-04-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Football cards, headphones and a gift side by side.",
+      "textFree": true,
+      "accessibilityDescription": "Football cards, headphones and a gift side by side.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-sees-three-choices"
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-05",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-05-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "A shop entrance with a pause before going in.",
+      "textFree": true,
+      "accessibilityDescription": "A shop entrance with a pause before going in.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-pauses"
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-06",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "story",
+      "purpose": "scene",
+      "filename": "WIS-MONEY-001-story-scene-06-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 822,
+      "aspectRatio": 1.2774,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.18,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.66,
+          "width": 0.96,
+          "height": 0.32,
+          "purpose": "body"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Money divided into three parts.",
+      "textFree": true,
+      "accessibilityDescription": "Money divided into three parts.",
+      "status": "awaiting-final-art",
+      "replacementHistory": [],
+      "storySceneId": "leo-makes-a-plan"
+    },
+    {
+      "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "talk",
+      "purpose": "background",
+      "filename": "WIS-MONEY-001-talk-with-cloud-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 720,
+      "aspectRatio": 1.625,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.22,
+        "y": 0.4
+      },
+      "safeAreas": [
+        {
+          "x": 0.3,
+          "y": 0.06,
+          "width": 0.66,
+          "height": 0.4,
+          "purpose": "title"
+        },
+        {
+          "x": 0.02,
+          "y": 0.5,
+          "width": 0.96,
+          "height": 0.46,
+          "purpose": "controls"
+        },
+        {
+          "x": 0.04,
+          "y": 0.06,
+          "width": 0.24,
+          "height": 0.4,
+          "purpose": "character"
+        }
+      ],
+      "character": "Cloud",
+      "visualSubject": "Cloud listening, with calm space beside him for the question.",
+      "textFree": true,
+      "accessibilityDescription": "Cloud, the CloudWise guide, listening.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "choice",
+      "purpose": "background",
+      "filename": "WIS-MONEY-001-choice-background-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 1560,
+      "aspectRatio": 0.75,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.18
+      },
+      "safeAreas": [
+        {
+          "x": 0.03,
+          "y": 0.02,
+          "width": 0.94,
+          "height": 0.16,
+          "purpose": "title"
+        },
+        {
+          "x": 0.03,
+          "y": 0.18,
+          "width": 0.94,
+          "height": 0.66,
+          "purpose": "controls"
+        },
+        {
+          "x": 0.6,
+          "y": 0.02,
+          "width": 0.36,
+          "height": 0.14,
+          "purpose": "amount"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "A calm decision board surface for dividing ninety kronor.",
+      "textFree": true,
+      "accessibilityDescription": "A warm background for the money decision board.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "takeaway",
+      "purpose": "background",
+      "filename": "WIS-MONEY-001-takeaway-background-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 1260,
+      "aspectRatio": 0.9286,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.2
+      },
+      "safeAreas": [
+        {
+          "x": 0.03,
+          "y": 0.02,
+          "width": 0.94,
+          "height": 0.2,
+          "purpose": "title"
+        },
+        {
+          "x": 0.03,
+          "y": 0.24,
+          "width": 0.94,
+          "height": 0.62,
+          "purpose": "controls"
+        }
+      ],
+      "character": "Cloud",
+      "visualSubject": "A quiet reflection surface for choosing one thought to keep.",
+      "textFree": true,
+      "accessibilityDescription": "A calm background for choosing a thought to remember.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-PRACTICE-HERO",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "practice",
+      "purpose": "hero",
+      "filename": "WIS-MONEY-001-practice-hero-v1.png",
+      "version": 1,
+      "sourceWidth": 1050,
+      "sourceHeight": 588,
+      "aspectRatio": 1.7857,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.3,
+        "y": 0.45
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.6,
+          "width": 0.92,
+          "height": 0.36,
+          "purpose": "body"
+        },
+        {
+          "x": 0.04,
+          "y": 0.06,
+          "width": 0.5,
+          "height": 0.5,
+          "purpose": "character"
+        }
+      ],
+      "character": "Cloud",
+      "visualSubject": "Cloud beside symbols for pausing, money and thinking of others.",
+      "textFree": true,
+      "accessibilityDescription": "Cloud beside symbols for pausing, money and other people.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-COMPLETION-HERO",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "completion",
+      "purpose": "hero",
+      "filename": "WIS-MONEY-001-completion-hero-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 900,
+      "aspectRatio": 1.3,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.72,
+        "y": 0.4
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.1,
+          "width": 0.58,
+          "height": 0.6,
+          "purpose": "title"
+        },
+        {
+          "x": 0.04,
+          "y": 0.02,
+          "width": 0.4,
+          "height": 0.08,
+          "purpose": "progress"
+        },
+        {
+          "x": 0.6,
+          "y": 0.06,
+          "width": 0.38,
+          "height": 0.86,
+          "purpose": "character"
+        }
+      ],
+      "character": "Cloud",
+      "visualSubject": "A warm, calm recognition scene with Cloud.",
+      "textFree": true,
+      "accessibilityDescription": "Cloud in a warm recognition scene.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-HOME-CARD",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "home-card",
+      "purpose": "card",
+      "filename": "WIS-MONEY-001-home-card-v1.png",
+      "version": 1,
+      "sourceWidth": 1074,
+      "sourceHeight": 714,
+      "aspectRatio": 1.5042,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.72,
+        "y": 0.4
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.66,
+          "width": 0.92,
+          "height": 0.3,
+          "purpose": "title"
+        },
+        {
+          "x": 0.6,
+          "y": 0.04,
+          "width": 0.36,
+          "height": 0.2,
+          "purpose": "progress"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "Ninety kronor with the three money objects, for the Home card.",
+      "textFree": true,
+      "accessibilityDescription": "The money Wisdom card showing ninety kronor and three choices.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-LIBRARY-CARD",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "library-card",
+      "purpose": "card",
+      "filename": "WIS-MONEY-001-library-card-v1.png",
+      "version": 1,
+      "sourceWidth": 1074,
+      "sourceHeight": 462,
+      "aspectRatio": 2.3247,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.72,
+        "y": 0.42
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.56,
+          "width": 0.92,
+          "height": 0.38,
+          "purpose": "title"
+        },
+        {
+          "x": 0.6,
+          "y": 0.06,
+          "width": 0.36,
+          "height": 0.28,
+          "purpose": "progress"
+        }
+      ],
+      "character": "none",
+      "visualSubject": "A compact version of the money Wisdom card.",
+      "textFree": true,
+      "accessibilityDescription": "The money Wisdom card in compact form.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    }
+  ]
+}
