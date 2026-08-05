@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "packId": "WIS-MONEY-001",
+  "wisdomId": "three-ways-to-use-money",
+  "title": "Three Ways to Use Money",
+  "canvasVersion": 1,
+  "generatedDate": "2026-08-05",
+  "defaultSourceWidth": 1024,
+  "defaultSourceHeight": 576,
+  "defaultAspectRatio": "16:9",
+  "textFree": true,
+  "assetCount": 14,
+  "assets": [
+    {
+      "assetId": "WIS-MONEY-001-WELCOME-HERO",
+      "stageId": "welcome",
+      "storySceneId": null,
+      "purpose": "hero-canvas",
+      "filename": "WIS-MONEY-001-welcome-hero-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.55,
+        "y": 0.52
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.04,
+          "y": 0.05,
+          "width": 0.48,
+          "height": 0.18
+        },
+        {
+          "purpose": "body",
+          "x": 0.04,
+          "y": 0.58,
+          "width": 0.92,
+          "height": 0.2
+        },
+        {
+          "purpose": "controls",
+          "x": 0.04,
+          "y": 0.79,
+          "width": 0.92,
+          "height": 0.17
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Football cards, headphones, and a wrapped birthday gift in a warm room",
+      "accessibilityDescription": "Football cards, headphones, and a birthday gift representing three money choices.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-01",
+      "stageId": "story",
+      "storySceneId": "leo-wants-the-cards-now",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-01-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.48,
+        "y": 0.52
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Football cards, headphones, football, and wrapped gifts",
+      "accessibilityDescription": "Football cards sit beside headphones, a football, and wrapped gifts.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-02",
+      "stageId": "story",
+      "storySceneId": "leo-remembers-the-headphones",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-02-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.52,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Leo"
+      },
+      "visualSubject": "Leo thinking beside a savings jar",
+      "accessibilityDescription": "Leo thinks beside a savings jar while considering his headphones goal.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-03",
+      "stageId": "story",
+      "storySceneId": "leo-remembers-mias-birthday",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-03-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Leo and Mia"
+      },
+      "visualSubject": "Leo giving Mia a wrapped birthday present",
+      "accessibilityDescription": "Leo gives Mia a wrapped birthday present.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-04",
+      "stageId": "story",
+      "storySceneId": "leo-sees-three-choices",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-04-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Three glowing choices represented by football cards, headphones, and a gift",
+      "accessibilityDescription": "Three glowing choices show football cards, headphones, and a birthday gift.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-05",
+      "stageId": "story",
+      "storySceneId": "leo-pauses",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-05-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.43,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Leo"
+      },
+      "visualSubject": "Leo pausing outdoors before making a decision",
+      "accessibilityDescription": "Leo pauses outdoors and takes time to think.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-STORY-SCENE-06",
+      "stageId": "story",
+      "storySceneId": "leo-makes-a-plan",
+      "purpose": "story-scene",
+      "filename": "WIS-MONEY-001-story-scene-06-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.52,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "unrestricted",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1.0,
+          "height": 1.0
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Leo"
+      },
+      "visualSubject": "Leo writing a plan beside three coin jars",
+      "accessibilityDescription": "Leo writes his plan beside three jars containing coins.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+      "stageId": "talk-with-cloud",
+      "storySceneId": null,
+      "purpose": "guide-canvas",
+      "filename": "WIS-MONEY-001-talk-with-cloud-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.55,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "body",
+          "x": 0.04,
+          "y": 0.1,
+          "width": 0.42,
+          "height": 0.55
+        },
+        {
+          "purpose": "controls",
+          "x": 0.04,
+          "y": 0.72,
+          "width": 0.92,
+          "height": 0.22
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Cloud"
+      },
+      "visualSubject": "Cloud standing in a calm blue guide space",
+      "accessibilityDescription": "Cloud waves in a calm blue space and invites the child to think.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+      "stageId": "your-choice",
+      "storySceneId": null,
+      "purpose": "background-canvas",
+      "filename": "WIS-MONEY-001-choice-background-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.48,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.05,
+          "y": 0.05,
+          "width": 0.62,
+          "height": 0.16
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.22,
+          "width": 0.9,
+          "height": 0.72
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Calm dark teal abstract background with subtle gold points of light",
+      "accessibilityDescription": "A calm dark teal background supports the money allocation controls.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+      "stageId": "takeaway",
+      "storySceneId": null,
+      "purpose": "background-canvas",
+      "filename": "WIS-MONEY-001-takeaway-background-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.48
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.05,
+          "y": 0.05,
+          "width": 0.72,
+          "height": 0.18
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.24,
+          "width": 0.9,
+          "height": 0.7
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Soft mint and teal abstract background with small warm lights",
+      "accessibilityDescription": "A soft mint and teal background supports reflection choices.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-PRACTICE-HERO",
+      "stageId": "practice",
+      "storySceneId": null,
+      "purpose": "hero-canvas",
+      "filename": "WIS-MONEY-001-practice-hero-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.36,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "body",
+          "x": 0.54,
+          "y": 0.1,
+          "width": 0.4,
+          "height": 0.62
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.76,
+          "width": 0.9,
+          "height": 0.18
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Cloud"
+      },
+      "visualSubject": "Cloud waving on a warm sunlit path",
+      "accessibilityDescription": "Cloud waves on a sunlit path and encourages one small action.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-COMPLETION-HERO",
+      "stageId": "completion",
+      "storySceneId": null,
+      "purpose": "hero-canvas",
+      "filename": "WIS-MONEY-001-completion-hero-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.46,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.05,
+          "y": 0.05,
+          "width": 0.44,
+          "height": 0.22
+        },
+        {
+          "purpose": "body",
+          "x": 0.52,
+          "y": 0.08,
+          "width": 0.42,
+          "height": 0.45
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.72,
+          "width": 0.9,
+          "height": 0.22
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Cloud"
+      },
+      "visualSubject": "Cloud looking toward three glowing choice symbols at sunset",
+      "accessibilityDescription": "Cloud looks toward symbols for spending, saving, and helping at sunset.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-HOME-CARD",
+      "stageId": "home-card",
+      "storySceneId": null,
+      "purpose": "card-canvas",
+      "filename": "WIS-MONEY-001-home-card-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.62,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.05,
+          "y": 0.08,
+          "width": 0.46,
+          "height": 0.24
+        },
+        {
+          "purpose": "body",
+          "x": 0.05,
+          "y": 0.38,
+          "width": 0.48,
+          "height": 0.28
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.75,
+          "width": 0.9,
+          "height": 0.16
+        }
+      ],
+      "character": {
+        "present": true,
+        "name": "Cloud"
+      },
+      "visualSubject": "Cloud outside a bright cottage garden",
+      "accessibilityDescription": "Cloud waves outside a bright cottage garden.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    },
+    {
+      "assetId": "WIS-MONEY-001-LIBRARY-CARD",
+      "stageId": "library-card",
+      "storySceneId": null,
+      "purpose": "card-canvas",
+      "filename": "WIS-MONEY-001-library-card-v1.png",
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.6,
+        "y": 0.5
+      },
+      "safeAreas": [
+        {
+          "purpose": "title",
+          "x": 0.05,
+          "y": 0.08,
+          "width": 0.52,
+          "height": 0.24
+        },
+        {
+          "purpose": "body",
+          "x": 0.05,
+          "y": 0.4,
+          "width": 0.54,
+          "height": 0.25
+        },
+        {
+          "purpose": "controls",
+          "x": 0.05,
+          "y": 0.76,
+          "width": 0.9,
+          "height": 0.15
+        }
+      ],
+      "character": {
+        "present": false,
+        "name": null
+      },
+      "visualSubject": "Warm library interior with books, desk, flowers, and sunlight",
+      "accessibilityDescription": "A warm library with books, a desk, flowers, and sunlight.",
+      "wisdomId": "three-ways-to-use-money",
+      "version": 1,
+      "sourceWidth": 1024,
+      "sourceHeight": 576,
+      "aspectRatio": "16:9",
+      "textFree": true,
+      "status": "ready-for-visual-review",
+      "replacementHistory": []
+    }
+  ]
+}

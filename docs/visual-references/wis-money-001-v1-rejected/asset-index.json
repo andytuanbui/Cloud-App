@@ -1,0 +1,72 @@
+{
+  "WIS-MONEY-001-WELCOME-HERO": {
+    "filename": "WIS-MONEY-001-welcome-hero-v1.png",
+    "stageId": "welcome",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-STORY-SCENE-01": {
+    "filename": "WIS-MONEY-001-story-scene-01-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-wants-the-cards-now"
+  },
+  "WIS-MONEY-001-STORY-SCENE-02": {
+    "filename": "WIS-MONEY-001-story-scene-02-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-remembers-the-headphones"
+  },
+  "WIS-MONEY-001-STORY-SCENE-03": {
+    "filename": "WIS-MONEY-001-story-scene-03-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-remembers-mias-birthday"
+  },
+  "WIS-MONEY-001-STORY-SCENE-04": {
+    "filename": "WIS-MONEY-001-story-scene-04-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-sees-three-choices"
+  },
+  "WIS-MONEY-001-STORY-SCENE-05": {
+    "filename": "WIS-MONEY-001-story-scene-05-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-pauses"
+  },
+  "WIS-MONEY-001-STORY-SCENE-06": {
+    "filename": "WIS-MONEY-001-story-scene-06-v1.png",
+    "stageId": "story",
+    "storySceneId": "leo-makes-a-plan"
+  },
+  "WIS-MONEY-001-TALK-WITH-CLOUD": {
+    "filename": "WIS-MONEY-001-talk-with-cloud-v1.png",
+    "stageId": "talk-with-cloud",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-CHOICE-BACKGROUND": {
+    "filename": "WIS-MONEY-001-choice-background-v1.png",
+    "stageId": "your-choice",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-TAKEAWAY-BACKGROUND": {
+    "filename": "WIS-MONEY-001-takeaway-background-v1.png",
+    "stageId": "takeaway",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-PRACTICE-HERO": {
+    "filename": "WIS-MONEY-001-practice-hero-v1.png",
+    "stageId": "practice",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-COMPLETION-HERO": {
+    "filename": "WIS-MONEY-001-completion-hero-v1.png",
+    "stageId": "completion",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-HOME-CARD": {
+    "filename": "WIS-MONEY-001-home-card-v1.png",
+    "stageId": "home-card",
+    "storySceneId": null
+  },
+  "WIS-MONEY-001-LIBRARY-CARD": {
+    "filename": "WIS-MONEY-001-library-card-v1.png",
+    "stageId": "library-card",
+    "storySceneId": null
+  }
+}

@@ -54,18 +54,36 @@ stay visible when a container forces a crop.
 Enable `showSafeAreas` on `WisdomCanvas` during development to see the outlines.
 It is off by default and additionally gated on `__DEV__`.
 
+## Character rules
+
+These are binding. A pack that breaks them will be rejected.
+
+- **Cloud is the CloudWise guide.** See `docs/CLOUD_CHARACTER.md`.
+- Cloud may appear in **Talk with Cloud, Practice, Completion, and selected
+  guide-led cards**.
+- **Cloud must never represent Leo.**
+- **Leo must not wear Cloud's cloud emblem** or the navy hoodie that carries it.
+- Leo's Story scenes should remain **object-led** wherever possible.
+- Story scenes may show hands, objects, environments, or Leo — provided Leo
+  carries no Cloud branding.
+- **Mia appears only in the birthday Story context.**
+- **Character faces must not be cropped.**
+- **No permanent words, numbers, currency, buttons or interface labels may
+  appear inside a canvas.**
+
 ## Visual rules
 
-- Cloud is the guide. He appears only where the definition requires him —
-  Talk with Cloud, guidance, reflection, practice and completion.
-- Leo's Story scenes are **object-led**. There is no approved Leo artwork, so
-  never substitute Cloud for him.
-- No permanent interface text inside images.
 - No important face or object beneath a known text safe area.
 - Never stretch outside the approved aspect ratio.
-- Never crop a character's face.
 - Interactive controls stay outside the artwork.
 - Visual meaning must be understandable without embedded words.
+
+## Canvas shapes
+
+**Do not force one image ratio across the pack.** Each canvas is generated for
+the real container it appears in; the required `sourceWidth`, `sourceHeight`
+and `aspectRatio` are in `manifest.json` per asset. Your Choice is portrait;
+Home and Library cards are wide. A single 16:9 export is not acceptable.
 
 ## Replacing an image
 
@@ -113,7 +131,12 @@ image imports so Node tests can read it.
 
 ## Current status
 
-**No final artwork has been delivered.** Every entry is
-`awaiting-final-art` and the app still composes its own visuals, so the
-approved appearance is unchanged. Eight IDs temporarily share an existing
-approved image; the six story scenes keep their own approved artwork.
+**No approved final artwork exists.** Every entry is `awaiting-final-art` and
+the app still composes its own visuals, so the approved appearance is
+unchanged. Eight IDs temporarily share an existing approved image; the six
+story scenes keep their own approved artwork.
+
+Canvas Pack **v1 was delivered and rejected** — see
+`docs/visual-references/wis-money-001-v1-rejected/REVIEW.md`. Nothing in that
+folder is loaded by the application. The corrected pack will reuse the same
+stable asset IDs, so no application code will need to change.

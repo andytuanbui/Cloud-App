@@ -221,3 +221,68 @@ describe('production content stays asset-free', () => {
     }
   });
 });
+
+describe('rejected reference artwork is quarantined', () => {
+  const rejectedDir = path.join(
+    process.cwd(),
+    'docs/visual-references/wis-money-001-v1-rejected',
+  );
+
+  it('keeps the rejected v1 pack out of the production Canvas Pack folder', () => {
+    for (const name of filesOnDisk) {
+      assert.equal(
+        /^WIS-MONEY-001-.*\.png$/.test(name),
+        false,
+        `${name} must not sit in the production canvases folder`,
+      );
+    }
+    assert.deepEqual(filesOnDisk.sort(), ['README.md', 'manifest.json']);
+  });
+
+  it('still holds the rejected pack as a reference with a review', () => {
+    const rejected = readdirSync(rejectedDir);
+    assert.equal(rejected.filter((n) => n.endsWith('.png')).length, 15);
+    assert.ok(rejected.includes('REVIEW.md'));
+    assert.ok(rejected.includes('delivered-manifest.json'));
+    assert.ok(rejected.includes('delivered-README.md'));
+    const review = readFileSync(path.join(rejectedDir, 'REVIEW.md'), 'utf8');
+    assert.ok(/Rejected for production use/.test(review));
+  });
+
+  it('never routes a production asset id at a rejected reference file', () => {
+    // Source keys are plain identifiers bound to approved artwork in
+    // registry.ts. None may point into the reference folder.
+    for (const assetId of wisdomCanvasAssetIds) {
+      const key = canvasSourceKeyByAssetId[assetId];
+      assert.equal(/wis-money-001-v1-rejected|visual-references/.test(key), false, assetId);
+    }
+    const registrySource = readFileSync(
+      path.join(process.cwd(), 'src/features/wisdomCanvas/registry.ts'),
+      'utf8',
+    );
+    assert.equal(
+      /visual-references|v1-rejected/.test(registrySource),
+      false,
+      'registry must not require anything from the reference folder',
+    );
+  });
+
+  it('keeps every production asset awaiting final art', () => {
+    for (const asset of manifest.assets) {
+      assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
+      assert.equal(
+        filesOnDisk.includes(asset.filename),
+        false,
+        `${asset.filename} should not be present while awaiting final art`,
+      );
+    }
+  });
+
+  it('preserves stage-specific canvas shapes rather than one shared ratio', () => {
+    const ratios = new Set(manifest.assets.map((a) => a.aspectRatio));
+    assert.ok(ratios.size > 1, 'manifest must not force a single aspect ratio');
+    const byId = Object.fromEntries(manifest.assets.map((a) => [a.assetId, a]));
+    assert.ok(byId['WIS-MONEY-001-CHOICE-BACKGROUND'].aspectRatio < 1, 'Your Choice is portrait');
+    assert.ok(byId['WIS-MONEY-001-LIBRARY-CARD'].aspectRatio > 2, 'Library card is wide');
+  });
+});
