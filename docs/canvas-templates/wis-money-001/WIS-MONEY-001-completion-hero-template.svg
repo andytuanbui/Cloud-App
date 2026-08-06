@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="759" viewBox="0 0 900 759">
+<rect width="900" height="759" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="757" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="27" width="846" height="705" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="36" y="76" width="504" height="440" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="96" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
+<rect x="36" y="15" width="360" height="53" fill="#5F716D" fill-opacity="0.10" stroke="#5F716D" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="35" font-family="sans-serif" font-size="15" fill="#5F716D">progress safe area</text>
+<rect x="540" y="38" width="342" height="683" fill="#285F54" fill-opacity="0.10" stroke="#285F54" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="548" y="58" font-family="sans-serif" font-size="15" fill="#285F54">character safe area</text>
+<circle cx="666" cy="304" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="666" cy="304" r="3" fill="#10333A"/>
+<text x="688" y="309" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.74 , 0.4</text>
+<rect x="0" y="637" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="661" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-COMPLETION-HERO</text>
+<text x="16" y="683" font-family="sans-serif" font-size="14" fill="#FFF8EA">Hero canvas  |  source 1070x902  |  ratio 1.1863  |  fit cover</text>
+<text x="16" y="705" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud may appear.</text>
+<text x="16" y="727" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+</svg>

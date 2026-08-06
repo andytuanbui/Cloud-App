@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1602" viewBox="0 0 900 1602">
+<rect width="900" height="1602" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="1600" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="27" width="846" height="1548" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="27" y="32" width="846" height="256" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="35" y="52" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
+<rect x="27" y="320" width="846" height="1185" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="35" y="340" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
+<circle cx="450" cy="256" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="450" cy="256" r="3" fill="#10333A"/>
+<text x="472" y="261" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.16</text>
+<rect x="0" y="1480" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="1504" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-TAKEAWAY-BACKGROUND</text>
+<text x="16" y="1526" font-family="sans-serif" font-size="14" fill="#FFF8EA">Reflection background  |  source 1170x2083  |  ratio 0.5617  |  fit cover</text>
+<text x="16" y="1548" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Calm reflection background. Cloud lives in the app layer, not the canvas.</text>
+<text x="16" y="1570" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+</svg>

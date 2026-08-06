@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="694" viewBox="0 0 900 694">
+<rect width="900" height="694" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="692" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="27" width="846" height="640" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="36" y="21" width="828" height="118" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="41" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
+<rect x="18" y="444" width="864" height="236" fill="#3E7587" fill-opacity="0.10" stroke="#3E7587" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="26" y="464" font-family="sans-serif" font-size="15" fill="#3E7587">body safe area</text>
+<circle cx="450" cy="291" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="450" cy="291" r="3" fill="#10333A"/>
+<text x="472" y="296" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.42</text>
+<rect x="0" y="572" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="596" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-STORY-SCENE-01 … -06</text>
+<text x="16" y="618" font-family="sans-serif" font-size="14" fill="#FFF8EA">Story scene canvas (all six)  |  source 1116x861  |  ratio 1.2962  |  fit cover</text>
+<text x="16" y="640" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Leo's story. Cloud must never represent Leo. Prefer object-led.</text>
+<text x="16" y="662" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+</svg>
