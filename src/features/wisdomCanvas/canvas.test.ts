@@ -39,9 +39,9 @@ describe('canvas asset ids', () => {
     assert.ok(canvasSourceKeyByAssetId['WIS-MONEY-001-WELCOME-HERO']);
   });
 
-  it('declares fourteen unique asset ids', () => {
-    assert.equal(wisdomCanvasAssetIds.length, 14);
-    assert.equal(new Set(wisdomCanvasAssetIds).size, 14);
+  it('declares fifteen unique asset ids', () => {
+    assert.equal(wisdomCanvasAssetIds.length, 15);
+    assert.equal(new Set(wisdomCanvasAssetIds).size, 15);
   });
 
   it('binds every asset id to a known source key', () => {
@@ -74,10 +74,10 @@ describe('story scenes', () => {
 });
 
 describe('manifest', () => {
-  it('describes all fourteen assets with unique ids and filenames', () => {
-    assert.equal(manifest.assets.length, 14);
-    assert.equal(new Set(manifest.assets.map((a) => a.assetId)).size, 14);
-    assert.equal(new Set(manifest.assets.map((a) => a.filename)).size, 14);
+  it('describes all fifteen assets with unique ids and filenames', () => {
+    assert.equal(manifest.assets.length, 15);
+    assert.equal(new Set(manifest.assets.map((a) => a.assetId)).size, 15);
+    assert.equal(new Set(manifest.assets.map((a) => a.filename)).size, 15);
   });
 
   it('stays synchronized with the registry in both directions', () => {
@@ -211,7 +211,7 @@ describe('production content stays asset-free', () => {
   });
 
   it('records which asset ids still share existing artwork', () => {
-    assert.equal(assetIdsSharingFallbackArtwork.length, 8);
+    assert.equal(assetIdsSharingFallbackArtwork.length, 9);
     for (const assetId of assetIdsSharingFallbackArtwork) {
       assert.ok(isCanvasAssetId(assetId));
     }
@@ -282,7 +282,20 @@ describe('rejected reference artwork is quarantined', () => {
     const ratios = new Set(manifest.assets.map((a) => a.aspectRatio));
     assert.ok(ratios.size > 1, 'manifest must not force a single aspect ratio');
     const byId = Object.fromEntries(manifest.assets.map((a) => [a.assetId, a]));
-    assert.ok(byId['WIS-MONEY-001-CHOICE-BACKGROUND'].aspectRatio < 1, 'Your Choice is portrait');
+    // Every artwork region is now a fixed landscape band: wide, short, and
+    // never taller than it is wide. Before stabilisation Your Choice was a
+    // portrait full-stage background whose height moved with the allocation
+    // controls, so its shape could not be specified at all.
+    for (const asset of manifest.assets) {
+      assert.ok(asset.aspectRatio > 1, `${asset.assetId} must be a landscape band`);
+    }
+    // The shorter the band, the wider its ratio. Takeaway (180) is the
+    // shortest stage band, Talk (240) the tallest.
+    assert.ok(
+      byId['WIS-MONEY-001-TAKEAWAY-BACKGROUND'].aspectRatio >
+        byId['WIS-MONEY-001-TALK-WITH-CLOUD'].aspectRatio,
+      'Takeaway is the shortest stage band and must be the widest of the two',
+    );
     assert.ok(byId['WIS-MONEY-001-LIBRARY-CARD'].aspectRatio > 2, 'Library card is wide');
   });
 });

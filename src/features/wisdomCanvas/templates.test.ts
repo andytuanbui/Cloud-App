@@ -34,6 +34,7 @@ const templateTypes: Record<string, string[]> = {
   'practice-hero': ['WIS-MONEY-001-PRACTICE-HERO'],
   'completion-hero': ['WIS-MONEY-001-COMPLETION-HERO'],
   'home-card': ['WIS-MONEY-001-HOME-CARD'],
+  'home-card-compact': ['WIS-MONEY-001-HOME-CARD-COMPACT'],
   'library-card': ['WIS-MONEY-001-LIBRARY-CARD'],
 };
 
@@ -45,7 +46,7 @@ describe('template files', () => {
         `missing SVG for ${key}`,
       );
     }
-    assert.equal(templateFiles.filter((f) => f.endsWith('.svg')).length, 9);
+    assert.equal(templateFiles.filter((f) => f.endsWith('.svg')).length, 10);
   });
 
   it('has a PNG preview for every SVG', () => {
@@ -115,7 +116,10 @@ describe('templates and manifest agree', () => {
     const ratios = new Set(manifest.assets.map((a) => a.aspectRatio));
     assert.ok(ratios.size >= 6, 'containers must keep stage-specific shapes');
     const byId = Object.fromEntries(manifest.assets.map((a) => [a.assetId, a]));
-    assert.ok(byId['WIS-MONEY-001-CHOICE-BACKGROUND'].aspectRatio < 1, 'Your Choice is portrait');
+    assert.ok(
+      byId['WIS-MONEY-001-CHOICE-BACKGROUND'].aspectRatio > 1,
+      'Your Choice is a fixed landscape band, not a portrait full-stage background',
+    );
     assert.ok(byId['WIS-MONEY-001-LIBRARY-CARD'].aspectRatio > 2, 'Library card is wide');
   });
 });
@@ -150,6 +154,7 @@ describe('character roles', () => {
     assert.deepEqual(cloudAssets, [
       'WIS-MONEY-001-COMPLETION-HERO',
       'WIS-MONEY-001-HOME-CARD',
+      'WIS-MONEY-001-HOME-CARD-COMPACT',
       'WIS-MONEY-001-PRACTICE-HERO',
       'WIS-MONEY-001-TALK-WITH-CLOUD',
     ]);

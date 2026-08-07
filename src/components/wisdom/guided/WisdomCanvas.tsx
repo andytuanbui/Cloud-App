@@ -49,6 +49,7 @@ export function WisdomHeroCanvas({
   glow = 'gold',
   height,
   style,
+  testID,
 }: {
   artwork?: ImageSourcePropType;
   artworkAccessibilityLabel?: string;
@@ -58,12 +59,15 @@ export function WisdomHeroCanvas({
   glow?: 'gold' | 'green' | 'none';
   height: number;
   style?: StyleProp<ViewStyle>;
+  /** Layout-measurement hook. Never affects rendering. */
+  testID?: string;
 }) {
   return (
     <View
       accessibilityLabel={artworkAccessibilityLabel}
       accessible={Boolean(artworkAccessibilityLabel)}
       style={[styles.hero, { height }, style]}
+      testID={testID}
     >
       <LinearGradient
         colors={colors}

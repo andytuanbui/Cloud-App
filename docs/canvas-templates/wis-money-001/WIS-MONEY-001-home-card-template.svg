@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="549" viewBox="0 0 900 549">
-<rect width="900" height="549" fill="#FFF8EA"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="677" viewBox="0 0 900 677">
+<rect width="900" height="677" fill="#FFF8EA"/>
 <rect x="1" y="1" width="898" height="547" fill="none" stroke="#10333A" stroke-width="2"/>
 <rect x="27" y="27" width="846" height="495" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
-<rect x="36" y="340" width="828" height="187" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="44" y="360" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
-<rect x="522" y="22" width="342" height="110" fill="#5F716D" fill-opacity="0.10" stroke="#5F716D" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="530" y="42" font-family="sans-serif" font-size="15" fill="#5F716D">progress safe area</text>
+<text x="33" y="514" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="36" y="362" width="828" height="165" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="382" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
+<rect x="540" y="22" width="324" height="110" fill="#5F716D" fill-opacity="0.10" stroke="#5F716D" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="548" y="42" font-family="sans-serif" font-size="15" fill="#5F716D">progress safe area</text>
 <circle cx="648" cy="220" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
 <circle cx="648" cy="220" r="3" fill="#10333A"/>
 <text x="670" y="225" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.72 , 0.4</text>
-<rect x="0" y="427" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="451" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-HOME-CARD</text>
-<text x="16" y="473" font-family="sans-serif" font-size="14" fill="#FFF8EA">Card canvas (feature + compact)  |  source 1170x714  |  ratio 1.6387  |  fit cover</text>
-<text x="16" y="495" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud may appear.</text>
-<text x="16" y="517" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<rect x="0" y="555" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="579" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-HOME-CARD</text>
+<text x="16" y="601" font-family="sans-serif" font-size="14" fill="#FFF8EA">Feature card band (238 px, Today's Wisdom)  |  source 1170x714  |  ratio 1.6387  |  fit cover</text>
+<text x="16" y="623" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud may appear; keep his full face inside the focal-safe area.</text>
+<text x="16" y="645" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

@@ -32,8 +32,13 @@ WIS-MONEY-001-TAKEAWAY-BACKGROUND
 WIS-MONEY-001-PRACTICE-HERO
 WIS-MONEY-001-COMPLETION-HERO
 WIS-MONEY-001-HOME-CARD
+WIS-MONEY-001-HOME-CARD-COMPACT
 WIS-MONEY-001-LIBRARY-CARD
 ```
+
+The Home card renders at two heights — 238 as Today's Wisdom and 154 once
+learned — so it is two assets. The Library card shares the compact shape but is
+object-led and must not reuse Home artwork.
 
 ## Versioning
 
@@ -110,7 +115,7 @@ descriptions, manifest/registry drift in either direction, and assets marked
 
 ## Contact sheet
 
-`contact-sheet.png` should show all fourteen canvases together with the asset
+`contact-sheet.png` should show all fifteen canvases together with the asset
 ID and stage name under each, so the correct canvas can be confirmed at a
 glance. It is **not** shipped to the app and is not yet present.
 

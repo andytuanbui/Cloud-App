@@ -42,7 +42,11 @@ export function TodayWisdomCard({
           pressed && styles.cardPressed,
         ]}
       >
-        <MoneyWisdomIdentityCard focused={focused} wisdom={wisdom} />
+        <MoneyWisdomIdentityCard
+          assetId="WIS-MONEY-001-HOME-CARD"
+          focused={focused}
+          wisdom={wisdom}
+        />
       </Pressable>
     );
   }
@@ -57,7 +61,7 @@ export function TodayWisdomCard({
       ]}
     >
       <View style={styles.clip}>
-        <View style={styles.artworkWrap}>
+        <View style={styles.artworkWrap} testID="canvas-band-WIS-MONEY-001-HOME-CARD">
           <WisdomArtworkStage wisdom={wisdom} />
           {learned ? (
             <View accessible={false} style={styles.artworkCheck}>

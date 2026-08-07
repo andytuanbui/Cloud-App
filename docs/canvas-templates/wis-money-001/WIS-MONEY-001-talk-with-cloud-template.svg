@@ -1,20 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="886" viewBox="0 0 900 886">
-<rect width="900" height="886" fill="#FFF8EA"/>
-<rect x="1" y="1" width="898" height="884" fill="none" stroke="#10333A" stroke-width="2"/>
-<rect x="27" y="27" width="846" height="832" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
-<rect x="27" y="35" width="234" height="301" fill="#285F54" fill-opacity="0.10" stroke="#285F54" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="55" font-family="sans-serif" font-size="15" fill="#285F54">character safe area</text>
-<rect x="288" y="44" width="576" height="266" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="296" y="64" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
-<rect x="18" y="372" width="864" height="496" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="26" y="392" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
-<circle cx="198" cy="266" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
-<circle cx="198" cy="266" r="3" fill="#10333A"/>
-<text x="220" y="271" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.22 , 0.3</text>
-<rect x="0" y="764" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="788" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-TALK-WITH-CLOUD</text>
-<text x="16" y="810" font-family="sans-serif" font-size="14" fill="#FFF8EA">Guide canvas  |  source 1170x1152  |  ratio 1.0156  |  fit cover</text>
-<text x="16" y="832" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud should appear.</text>
-<text x="16" y="854" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="682" viewBox="0 0 900 682">
+<rect width="900" height="682" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="552" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="28" width="846" height="498" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="518" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="36" y="33" width="306" height="488" fill="#285F54" fill-opacity="0.10" stroke="#285F54" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="53" font-family="sans-serif" font-size="15" fill="#285F54">character safe area</text>
+<rect x="360" y="33" width="504" height="488" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="368" y="53" font-family="sans-serif" font-size="15" fill="#846126">unrestricted safe area</text>
+<circle cx="198" cy="233" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="198" cy="233" r="3" fill="#10333A"/>
+<text x="220" y="238" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.22 , 0.42</text>
+<rect x="0" y="560" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="584" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-TALK-WITH-CLOUD</text>
+<text x="16" y="606" font-family="sans-serif" font-size="14" fill="#FFF8EA">Fixed guide band (240 px)  |  source 1170x720  |  ratio 1.625  |  fit cover</text>
+<text x="16" y="628" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud should appear.</text>
+<text x="16" y="650" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

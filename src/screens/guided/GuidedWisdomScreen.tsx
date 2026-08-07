@@ -24,6 +24,7 @@ import {
   SecondaryButton,
   SurfaceCard,
 } from '../../components/ui';
+import { WisdomCanvasBand } from '../../components/wisdom/WisdomCanvasBand';
 import { cloudGuideAssets } from '../../content/characterAssets';
 import { formatPlacedOfTotal, formatUnits } from '../../features/guidedWisdom/allocation';
 import type { GuidedWisdomDefinition } from '../../features/guidedWisdom/types';
@@ -424,26 +425,20 @@ export function GuidedWisdomScreen({
       ) : null}
 
       {stage === 'talk' ? (
+        <>
+          {/* Fixed artwork region. Its height never changes when the child
+              answers or Cloud follows up — everything dynamic sits below. */}
+          <WisdomCanvasBand
+            accessibilityDescription="Cloud, your guide, is listening"
+            assetId="WIS-MONEY-001-TALK-WITH-CLOUD"
+          />
         <LinearGradient
           colors={[appColors.wisdomCream, appColors.primarySoft]}
           end={{ x: 0.9, y: 1 }}
           start={{ x: 0.1, y: 0 }}
-          style={[styles.stageCanvas, styles.conversationCanvas]}
+          style={[styles.stageCanvas, styles.conversationCanvas, styles.stageBelowBand]}
         >
           <View style={styles.talkHeader}>
-            <View
-              accessibilityLabel="Cloud, your guide, is listening"
-              accessible
-              style={styles.talkCloudFrame}
-            >
-              <View accessible={false} style={styles.talkCloudGlow} />
-              <Image
-                accessible={false}
-                resizeMode="cover"
-                source={cloudGuideAssets.avatar}
-                style={styles.talkCloudPortrait}
-              />
-            </View>
             <View style={styles.talkHeading}>
               <StageHeading eyebrow="Talk with Cloud" title="Think about waiting" />
             </View>
@@ -492,14 +487,22 @@ export function GuidedWisdomScreen({
             </>
           ) : null}
         </LinearGradient>
+        </>
       ) : null}
 
       {stage === 'choice' ? (
+        <>
+          {/* Object-led artwork band. Allocation controls render below it so
+              the artwork cannot stretch as amounts and responses change. */}
+          <WisdomCanvasBand
+            accessibilityDescription="Football cards, headphones and a gift for Mia"
+            assetId="WIS-MONEY-001-CHOICE-BACKGROUND"
+          />
         <LinearGradient
           colors={[appColors.warmGoldSoft, appColors.canvasSoft]}
           end={{ x: 1, y: 1 }}
           start={{ x: 0, y: 0 }}
-          style={[styles.stageCanvas, styles.moneyBoard]}
+          style={[styles.stageCanvas, styles.moneyBoard, styles.stageBelowBand]}
         >
           <View style={styles.moneyBoardHeader}>
             <View style={styles.moneyBoardHeading}>
@@ -588,14 +591,22 @@ export function GuidedWisdomScreen({
             </View>
           )}
         </LinearGradient>
+        </>
       ) : null}
 
       {stage === 'takeaway' ? (
+        <>
+          {/* Character-free reflection band. Cloud stays a live application
+              element below, never embedded in the artwork. */}
+          <WisdomCanvasBand
+            accessibilityDescription="A calm space for choosing a thought to keep"
+            assetId="WIS-MONEY-001-TAKEAWAY-BACKGROUND"
+          />
         <LinearGradient
           colors={[appColors.canvas, appColors.primarySoft]}
           end={{ x: 0.9, y: 1 }}
           start={{ x: 0.1, y: 0 }}
-          style={[styles.stageCanvas, styles.reflectionCanvas]}
+          style={[styles.stageCanvas, styles.reflectionCanvas, styles.stageBelowBand]}
         >
           <View accessible={false} style={styles.reflectionMark}>
             <Ionicons color={appColors.warmGold} name="sparkles" size={spacing.s24} />
@@ -630,6 +641,7 @@ export function GuidedWisdomScreen({
             </>
           ) : null}
         </LinearGradient>
+        </>
       ) : null}
 
       {stage === 'practice' ? (
@@ -682,6 +694,7 @@ function WelcomeStep({
           artworkAccessibilityLabel="90 kr beside football cards, headphones, and a wrapped gift for Mia"
           height={296}
           style={styles.welcomeStage}
+          testID="canvas-band-WIS-MONEY-001-WELCOME-HERO"
         >
           <View style={styles.welcomeStageTop}>
             <View style={styles.welcomeKicker}>
@@ -988,6 +1001,7 @@ function PracticeStep({
         accessibilityLabel="Cloud stands beside symbols for pausing, money, and thinking of other people"
         accessible
         style={styles.practiceVisual}
+        testID="canvas-band-WIS-MONEY-001-PRACTICE-HERO"
       >
         <View accessible={false} style={styles.practiceGlow} />
         <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.practiceLeo} />
@@ -1055,22 +1069,24 @@ function CompletionStep({
         <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="sparkles" size={spacing.s24} />
         <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="sparkles" size={spacing.s15} />
       </View>
-      <View style={styles.completionHero}>
-        <View accessibilityLabel="Cloud celebrates a thoughtful money plan" accessible style={styles.completionArtworkFrame}>
-          <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.completionArtwork} />
+      {/* Fixed artwork band. Recognition copy renders below it rather than
+          over it, so wrapping text can never change the artwork's shape. */}
+      <WisdomCanvasBand
+        accessibilityDescription="Cloud celebrates a thoughtful money plan"
+        assetId="WIS-MONEY-001-COMPLETION-HERO"
+        style={styles.completionBand}
+      />
+      <View style={styles.completionCopy}>
+        <View style={styles.completionStatus}>
+          <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="checkmark-circle" size={spacing.s18} />
+          <AppText tone="inverse" variant="label">{isRepeat ? 'Reviewed again' : 'Learned'}</AppText>
         </View>
-        <View style={styles.completionCopy}>
-          <View style={styles.completionStatus}>
-            <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="checkmark-circle" size={spacing.s18} />
-            <AppText tone="inverse" variant="label">{isRepeat ? 'Reviewed again' : 'Learned'}</AppText>
-          </View>
-          <AppText accessibilityRole="header" style={styles.completionTitle} tone="inverse" variant="screenTitle">
-            {isRepeat ? 'You practiced this Wisdom again' : 'You made a thoughtful choice'}
-          </AppText>
-          <AppText style={styles.completionMessage} tone="inverse" variant="body">
-            {completionMessage}
-          </AppText>
-        </View>
+        <AppText accessibilityRole="header" style={styles.completionTitle} tone="inverse" variant="screenTitle">
+          {isRepeat ? 'You practiced this Wisdom again' : 'You made a thoughtful choice'}
+        </AppText>
+        <AppText style={styles.completionMessage} tone="inverse" variant="body">
+          {completionMessage}
+        </AppText>
       </View>
       <View style={styles.planSummary}>
         <View style={styles.planSummaryHeader}>
@@ -1167,6 +1183,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: space.md,
   },
+  stageBelowBand: { marginTop: space.sm },
   conversationCanvas: { minHeight: 420, padding: space.md },
   reflectionCanvas: { minHeight: 420, padding: space.md, position: 'relative' },
   reflectionHeading: { paddingRight: spacing.s58 },
@@ -1522,7 +1539,8 @@ const styles = StyleSheet.create({
     width: '58%',
   },
   completionArtwork: { height: '100%', width: '100%' },
-  completionCopy: { paddingTop: spacing.s48, width: '68%', zIndex: 2 },
+  completionBand: { marginTop: space.xs },
+  completionCopy: { paddingTop: space.md, width: '100%', zIndex: 2 },
   completionStatus: { alignItems: 'center', alignSelf: 'flex-start', backgroundColor: appColors.wisdomGlass, borderColor: appColors.wisdomLine, borderRadius: radii.round, borderWidth: 1, flexDirection: 'row', gap: space.xs, paddingHorizontal: space.sm, paddingVertical: space.xs },
   completionTitle: { fontSize: typography.size.heroCard, lineHeight: 32, marginTop: space.lg, textAlign: 'left' },
   completionMessage: { marginTop: space.sm, opacity: 0.9, textAlign: 'left' },

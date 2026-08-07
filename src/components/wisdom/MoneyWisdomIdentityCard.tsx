@@ -19,11 +19,18 @@ const identityProps = [
 ] as const;
 
 export function MoneyWisdomIdentityCard({
+  assetId,
   completionLabel = 'Learned',
   focused = false,
   mode = 'feature',
   wisdom,
 }: {
+  /**
+   * Which canvas this card's artwork region corresponds to. The feature and
+   * compact Home cards and the Library card are three separate assets, so the
+   * id has to come from the surface rendering the card.
+   */
+  assetId?: string;
   completionLabel?: string;
   focused?: boolean;
   mode?: 'feature' | 'compact';
@@ -39,6 +46,7 @@ export function MoneyWisdomIdentityCard({
         compact && styles.compactCard,
         focused && styles.focusedCard,
       ]}
+      testID={assetId ? `canvas-band-${assetId}` : undefined}
     >
       <LinearGradient
         colors={[appColors.wisdomNightSoft, appColors.wisdomNight, appColors.wisdomNightDeep]}

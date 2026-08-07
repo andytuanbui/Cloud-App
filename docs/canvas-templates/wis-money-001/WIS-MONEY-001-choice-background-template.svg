@@ -1,20 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="2060" viewBox="0 0 900 2060">
-<rect width="900" height="2060" fill="#FFF8EA"/>
-<rect x="1" y="1" width="898" height="2058" fill="none" stroke="#10333A" stroke-width="2"/>
-<rect x="27" y="27" width="846" height="2006" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
-<rect x="27" y="41" width="558" height="268" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="61" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
-<rect x="594" y="41" width="279" height="227" fill="#8A4B45" fill-opacity="0.10" stroke="#8A4B45" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="602" y="61" font-family="sans-serif" font-size="15" fill="#8A4B45">amount safe area</text>
-<rect x="27" y="330" width="846" height="1648" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="350" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
-<circle cx="450" cy="288" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
-<circle cx="450" cy="288" r="3" fill="#10333A"/>
-<text x="472" y="293" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.14</text>
-<rect x="0" y="1938" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="1962" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-CHOICE-BACKGROUND</text>
-<text x="16" y="1984" font-family="sans-serif" font-size="14" fill="#FFF8EA">Interface background  |  source 1170x2678  |  ratio 0.4369  |  fit cover</text>
-<text x="16" y="2006" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led interface background. No character.</text>
-<text x="16" y="2028" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="613" viewBox="0 0 900 613">
+<rect width="900" height="613" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="483" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="24" width="846" height="437" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="453" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="27" y="29" width="846" height="427" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="35" y="49" font-family="sans-serif" font-size="15" fill="#846126">unrestricted safe area</text>
+<circle cx="450" cy="223" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="450" cy="223" r="3" fill="#10333A"/>
+<text x="472" y="228" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.46</text>
+<rect x="0" y="491" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="515" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-CHOICE-BACKGROUND</text>
+<text x="16" y="537" font-family="sans-serif" font-size="14" fill="#FFF8EA">Fixed object band (210 px)  |  source 1170x630  |  ratio 1.8571  |  fit cover</text>
+<text x="16" y="559" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led. No character.</text>
+<text x="16" y="581" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

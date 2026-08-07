@@ -1,20 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="685" viewBox="0 0 900 685">
-<rect width="900" height="685" fill="#FFF8EA"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="813" viewBox="0 0 900 813">
+<rect width="900" height="813" fill="#FFF8EA"/>
 <rect x="1" y="1" width="898" height="683" fill="none" stroke="#10333A" stroke-width="2"/>
-<rect x="27" y="27" width="846" height="631" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="27" y="34" width="846" height="617" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="643" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
 <rect x="36" y="425" width="828" height="233" fill="#2F7058" fill-opacity="0.10" stroke="#2F7058" stroke-width="2" stroke-dasharray="6 4"/>
 <text x="44" y="445" font-family="sans-serif" font-size="15" fill="#2F7058">title safe area</text>
-<rect x="36" y="21" width="540" height="96" fill="#5F716D" fill-opacity="0.10" stroke="#5F716D" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="44" y="41" font-family="sans-serif" font-size="15" fill="#5F716D">progress safe area</text>
-<rect x="27" y="137" width="576" height="274" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="157" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
+<rect x="36" y="27" width="540" height="110" fill="#5F716D" fill-opacity="0.10" stroke="#5F716D" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="47" font-family="sans-serif" font-size="15" fill="#5F716D">progress safe area</text>
+<rect x="36" y="137" width="558" height="274" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="157" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
 <circle cx="540" cy="288" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
 <circle cx="540" cy="288" r="3" fill="#10333A"/>
 <text x="562" y="293" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.6 , 0.42</text>
-<rect x="0" y="563" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="587" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-WELCOME-HERO</text>
-<text x="16" y="609" font-family="sans-serif" font-size="14" fill="#FFF8EA">Hero canvas  |  source 1170x890  |  ratio 1.3146  |  fit cover</text>
-<text x="16" y="631" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led. No Cloud and no Leo.</text>
-<text x="16" y="653" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<rect x="0" y="691" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="715" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-WELCOME-HERO</text>
+<text x="16" y="737" font-family="sans-serif" font-size="14" fill="#FFF8EA">Hero band  |  source 1170x891  |  ratio 1.3131  |  fit cover</text>
+<text x="16" y="759" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led. No Cloud and no Leo.</text>
+<text x="16" y="781" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

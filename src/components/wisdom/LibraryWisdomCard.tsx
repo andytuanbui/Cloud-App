@@ -25,10 +25,17 @@ export function LibraryWisdomCard({
   completionLabel,
   item,
   onOpen,
+  surface = 'library',
 }: {
   completionLabel?: string;
   item: ScheduledWisdom;
   onOpen: () => void;
+  /**
+   * The same compact card appears in two places. Home's learned card may show
+   * Cloud; the Library card is object-led and must not reuse Home artwork, so
+   * the two resolve to different canvas assets.
+   */
+  surface?: 'home' | 'library';
 }) {
   const learned = isWisdomLearned(item.progress);
   const started = Boolean(item.progress);
@@ -49,6 +56,11 @@ export function LibraryWisdomCard({
         ]}
       >
         <MoneyWisdomIdentityCard
+          assetId={
+            surface === 'home'
+              ? 'WIS-MONEY-001-HOME-CARD-COMPACT'
+              : 'WIS-MONEY-001-LIBRARY-CARD'
+          }
           completionLabel={completionLabel}
           focused={focused}
           mode="compact"
@@ -68,7 +80,7 @@ export function LibraryWisdomCard({
       ]}
     >
       <View style={styles.topRow}>
-        <View style={styles.artworkWrap}>
+        <View style={styles.artworkWrap} testID="canvas-band-WIS-MONEY-001-LIBRARY-CARD">
           <WisdomArtworkStage mode="compact" wisdom={item.wisdom} />
           {learned ? (
             <View accessible={false} style={styles.artworkCheck}>

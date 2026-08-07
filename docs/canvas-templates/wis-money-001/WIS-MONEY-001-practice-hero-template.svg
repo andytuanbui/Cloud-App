@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="495" viewBox="0 0 900 495">
-<rect width="900" height="495" fill="#FFF8EA"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="623" viewBox="0 0 900 623">
+<rect width="900" height="623" fill="#FFF8EA"/>
 <rect x="1" y="1" width="898" height="493" fill="none" stroke="#10333A" stroke-width="2"/>
-<rect x="27" y="27" width="846" height="441" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="47" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
-<rect x="27" y="25" width="432" height="446" fill="#285F54" fill-opacity="0.10" stroke="#285F54" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="45" font-family="sans-serif" font-size="15" fill="#285F54">character safe area</text>
-<rect x="486" y="30" width="378" height="257" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="494" y="50" font-family="sans-serif" font-size="15" fill="#846126">controls safe area</text>
+<rect x="27" y="25" width="846" height="445" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="462" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="36" y="297" width="828" height="178" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="317" font-family="sans-serif" font-size="15" fill="#846126">body safe area</text>
+<rect x="36" y="30" width="450" height="248" fill="#285F54" fill-opacity="0.10" stroke="#285F54" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="44" y="50" font-family="sans-serif" font-size="15" fill="#285F54">character safe area</text>
 <circle cx="252" cy="218" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
 <circle cx="252" cy="218" r="3" fill="#10333A"/>
 <text x="274" y="223" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.28 , 0.44</text>
-<rect x="0" y="373" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="397" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-PRACTICE-HERO</text>
-<text x="16" y="419" font-family="sans-serif" font-size="14" fill="#FFF8EA">Hero canvas  |  source 1070x588  |  ratio 1.8197  |  fit cover</text>
-<text x="16" y="441" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud may appear.</text>
-<text x="16" y="463" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<rect x="0" y="501" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="525" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-PRACTICE-HERO</text>
+<text x="16" y="547" font-family="sans-serif" font-size="14" fill="#FFF8EA">Fixed hero band (196 px)  |  source 1070x588  |  ratio 1.8197  |  fit cover</text>
+<text x="16" y="569" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Guide-led. Cloud may appear.</text>
+<text x="16" y="591" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

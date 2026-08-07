@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "wisdomId": "three-ways-to-use-money",
   "wisdomCode": "WIS-MONEY-001",
-  "note": "Canvas artwork is text-free. All interface text, controls, amounts and status are rendered by the application. Source dimensions and focal points corrected from real container measurements — see docs/canvas-templates/wis-money-001/MEASUREMENTS.md.",
+  "note": "Canvas artwork is text-free. All interface text, controls, amounts and status are rendered by the application. Artwork regions are fixed-height bands; dynamic content grows in a sibling region below. See docs/canvas-templates/wis-money-001/MEASUREMENTS.md.",
   "assets": [
     {
       "assetId": "WIS-MONEY-001-WELCOME-HERO",
@@ -12,8 +12,8 @@
       "filename": "WIS-MONEY-001-welcome-hero-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 890,
-      "aspectRatio": 1.3146,
+      "sourceHeight": 891,
+      "aspectRatio": 1.3131,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.6,
@@ -56,9 +56,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-01-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -95,9 +95,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-02-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -134,9 +134,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-03-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -173,9 +173,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-04-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -212,9 +212,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-05-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -251,9 +251,9 @@
       "purpose": "scene",
       "filename": "WIS-MONEY-001-story-scene-06-v1.png",
       "version": 1,
-      "sourceWidth": 1116,
-      "sourceHeight": 861,
-      "aspectRatio": 1.2962,
+      "sourceWidth": 1170,
+      "sourceHeight": 903,
+      "aspectRatio": 1.2957,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -291,34 +291,27 @@
       "filename": "WIS-MONEY-001-talk-with-cloud-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 1152,
-      "aspectRatio": 1.0156,
+      "sourceHeight": 720,
+      "aspectRatio": 1.625,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.22,
-        "y": 0.3
+        "y": 0.42
       },
       "safeAreas": [
         {
-          "x": 0.3,
-          "y": 0.06,
-          "width": 0.66,
-          "height": 0.4,
-          "purpose": "title"
-        },
-        {
-          "x": 0.02,
-          "y": 0.5,
-          "width": 0.96,
-          "height": 0.46,
-          "purpose": "controls"
-        },
-        {
           "x": 0.04,
           "y": 0.06,
-          "width": 0.24,
-          "height": 0.4,
+          "width": 0.34,
+          "height": 0.88,
           "purpose": "character"
+        },
+        {
+          "x": 0.4,
+          "y": 0.06,
+          "width": 0.56,
+          "height": 0.88,
+          "purpose": "unrestricted"
         }
       ],
       "character": "Cloud",
@@ -336,34 +329,20 @@
       "filename": "WIS-MONEY-001-choice-background-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 2678,
-      "aspectRatio": 0.4369,
+      "sourceHeight": 630,
+      "aspectRatio": 1.8571,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
-        "y": 0.14
+        "y": 0.46
       },
       "safeAreas": [
         {
           "x": 0.03,
-          "y": 0.02,
+          "y": 0.06,
           "width": 0.94,
-          "height": 0.16,
-          "purpose": "title"
-        },
-        {
-          "x": 0.03,
-          "y": 0.18,
-          "width": 0.94,
-          "height": 0.66,
-          "purpose": "controls"
-        },
-        {
-          "x": 0.6,
-          "y": 0.02,
-          "width": 0.36,
-          "height": 0.14,
-          "purpose": "amount"
+          "height": 0.88,
+          "purpose": "unrestricted"
         }
       ],
       "character": "none",
@@ -381,27 +360,20 @@
       "filename": "WIS-MONEY-001-takeaway-background-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 2083,
-      "aspectRatio": 0.5617,
+      "sourceHeight": 540,
+      "aspectRatio": 2.1667,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
-        "y": 0.16
+        "y": 0.48
       },
       "safeAreas": [
         {
           "x": 0.03,
-          "y": 0.02,
+          "y": 0.08,
           "width": 0.94,
-          "height": 0.2,
-          "purpose": "title"
-        },
-        {
-          "x": 0.03,
-          "y": 0.24,
-          "width": 0.94,
-          "height": 0.62,
-          "purpose": "controls"
+          "height": 0.84,
+          "purpose": "unrestricted"
         }
       ],
       "character": "none",
@@ -457,34 +429,27 @@
       "filename": "WIS-MONEY-001-completion-hero-v1.png",
       "version": 1,
       "sourceWidth": 1070,
-      "sourceHeight": 902,
-      "aspectRatio": 1.1863,
+      "sourceHeight": 660,
+      "aspectRatio": 1.6212,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.74,
-        "y": 0.4
+        "y": 0.44
       },
       "safeAreas": [
         {
-          "x": 0.04,
-          "y": 0.1,
-          "width": 0.58,
-          "height": 0.6,
-          "purpose": "title"
-        },
-        {
-          "x": 0.04,
-          "y": 0.02,
+          "x": 0.58,
+          "y": 0.04,
           "width": 0.4,
-          "height": 0.08,
-          "purpose": "progress"
+          "height": 0.92,
+          "purpose": "character"
         },
         {
-          "x": 0.6,
+          "x": 0.04,
           "y": 0.06,
-          "width": 0.38,
-          "height": 0.86,
-          "purpose": "character"
+          "width": 0.5,
+          "height": 0.88,
+          "purpose": "unrestricted"
         }
       ],
       "character": "Cloud",
@@ -533,6 +498,44 @@
       "replacementHistory": []
     },
     {
+      "assetId": "WIS-MONEY-001-HOME-CARD-COMPACT",
+      "wisdomId": "three-ways-to-use-money",
+      "stageId": "home-card",
+      "purpose": "card",
+      "filename": "WIS-MONEY-001-home-card-compact-v1.png",
+      "version": 1,
+      "sourceWidth": 1170,
+      "sourceHeight": 462,
+      "aspectRatio": 2.5325,
+      "fitMode": "cover",
+      "focalPoint": {
+        "x": 0.72,
+        "y": 0.44
+      },
+      "safeAreas": [
+        {
+          "x": 0.04,
+          "y": 0.54,
+          "width": 0.92,
+          "height": 0.4,
+          "purpose": "title"
+        },
+        {
+          "x": 0.58,
+          "y": 0.06,
+          "width": 0.38,
+          "height": 0.26,
+          "purpose": "progress"
+        }
+      ],
+      "character": "Cloud",
+      "visualSubject": "Cloud beside the money objects, composed for the short learned card.",
+      "textFree": true,
+      "accessibilityDescription": "Cloud beside the three money choices on the learned Wisdom card.",
+      "status": "awaiting-final-art",
+      "replacementHistory": []
+    },
+    {
       "assetId": "WIS-MONEY-001-LIBRARY-CARD",
       "wisdomId": "three-ways-to-use-money",
       "stageId": "library-card",
@@ -570,5 +573,6 @@
       "status": "awaiting-final-art",
       "replacementHistory": []
     }
-  ]
+  ],
+  "assetCount": 15
 }

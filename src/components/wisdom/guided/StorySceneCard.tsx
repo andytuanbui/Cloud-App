@@ -30,6 +30,7 @@ export function StorySceneCard({
         accessible={hasDistinctIllustrationLabel}
         importantForAccessibility={hasDistinctIllustrationLabel ? 'auto' : 'no-hide-descendants'}
         style={[styles.illustration, illustrationContainerStyle]}
+        testID="canvas-band-WIS-MONEY-001-STORY-SCENE"
       >
         {illustration}
       </View>

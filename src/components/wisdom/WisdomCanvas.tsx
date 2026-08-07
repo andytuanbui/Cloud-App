@@ -1,6 +1,10 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { ReactNode } from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
+import {
+  assetIdsSharingFallbackArtwork,
+  type CanvasAssetId,
+} from '../../features/wisdomCanvas/assetIds';
 import { canvasManifestByAssetId } from '../../features/wisdomCanvas/manifest';
 import { tryResolveCanvasImage } from '../../features/wisdomCanvas/registry';
 import type { CanvasFitMode } from '../../features/wisdomCanvas/types';
@@ -43,8 +47,13 @@ export function WisdomCanvas({
   const resolvedFit = fitMode ?? metadata?.fitMode ?? 'cover';
   const label = accessibilityDescription ?? metadata?.accessibilityDescription;
   const isDev = typeof __DEV__ !== 'undefined' && __DEV__;
+  // Assets still waiting on final art borrow a nearby approved image so the
+  // registry always resolves. Drawing that stand-in inside a fixed band would
+  // crop it badly and misrepresent the design, so the band shows the approved
+  // gradient until the real canvas lands.
+  const awaitingFinalArt = assetIdsSharingFallbackArtwork.includes(assetId);
 
-  if (!source) {
+  if (!source || awaitingFinalArt) {
     // Missing artwork is a content error. In development it is made obvious;
     // in production the overlay still renders on a plain surface so the child
     // never sees a broken screen.
@@ -52,9 +61,24 @@ export function WisdomCanvas({
       <View
         accessibilityLabel={label}
         accessible={Boolean(label)}
-        style={[styles.canvas, styles.missing, { height }, style]}
+        style={[styles.canvas, !source && styles.missing, { height }, style]}
       >
-        {isDev ? (
+        {awaitingFinalArt ? (
+          <>
+            <LinearGradient
+              colors={[
+                appColors.wisdomNightSoft,
+                appColors.wisdomNight,
+                appColors.wisdomNightDeep,
+              ]}
+              end={{ x: 1, y: 1 }}
+              start={{ x: 0, y: 0 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <View accessible={false} pointerEvents="none" style={styles.placeholderGlow} />
+          </>
+        ) : null}
+        {isDev && !source ? (
           <AppText style={styles.missingLabel} tone="secondary" variant="caption">
             {`Missing canvas: ${assetId}`}
           </AppText>
@@ -139,6 +163,16 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
+  },
+  placeholderGlow: {
+    backgroundColor: appColors.wisdomNightSoft,
+    borderRadius: 999,
+    height: 220,
+    opacity: 0.45,
+    position: 'absolute',
+    right: -60,
+    top: -70,
+    width: 220,
   },
   safeArea: {
     borderColor: appColors.focus,

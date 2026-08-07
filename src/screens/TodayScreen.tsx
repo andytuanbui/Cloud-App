@@ -115,6 +115,7 @@ export function TodayScreen({ navigation }: Props) {
                 completionLabel="Learned"
                 item={item}
                 key={item.wisdom.id}
+                surface="home"
                 onOpen={() =>
                   navigation.navigate('WisdomFlow', {
                     wisdomId: item.wisdom.id,

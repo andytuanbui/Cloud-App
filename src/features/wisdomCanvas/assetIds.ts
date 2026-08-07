@@ -23,6 +23,7 @@ export const wisdomCanvasAssetIds = [
   'WIS-MONEY-001-PRACTICE-HERO',
   'WIS-MONEY-001-COMPLETION-HERO',
   'WIS-MONEY-001-HOME-CARD',
+  'WIS-MONEY-001-HOME-CARD-COMPACT',
   'WIS-MONEY-001-LIBRARY-CARD',
 ] as const;
 
@@ -71,7 +72,10 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
   'WIS-MONEY-001-TAKEAWAY-BACKGROUND': 'cloud-avatar',
   'WIS-MONEY-001-PRACTICE-HERO': 'cloud-hero-wave',
   'WIS-MONEY-001-COMPLETION-HERO': 'cloud-hero-wave',
+  // The Home card renders at two heights: 238 as Today's Wisdom and 154 once
+  // learned. One image cannot serve both crops, so each has its own id.
   'WIS-MONEY-001-HOME-CARD': 'cloud-home-garden',
+  'WIS-MONEY-001-HOME-CARD-COMPACT': 'cloud-neighborhood-home',
   'WIS-MONEY-001-LIBRARY-CARD': 'cloud-home-garden',
 };
 
@@ -84,6 +88,7 @@ export const assetIdsSharingFallbackArtwork: readonly CanvasAssetId[] = [
   'WIS-MONEY-001-PRACTICE-HERO',
   'WIS-MONEY-001-COMPLETION-HERO',
   'WIS-MONEY-001-HOME-CARD',
+  'WIS-MONEY-001-HOME-CARD-COMPACT',
   'WIS-MONEY-001-LIBRARY-CARD',
 ];
 
