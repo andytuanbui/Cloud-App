@@ -108,7 +108,7 @@ export function WisdomDetailScreen({ navigation, route }: WisdomDetailScreenProp
           />
           <ActionButton
             icon="volume-medium-outline"
-            label="Read to Me"
+            label="Listen to the Story"
             onPress={() =>
               navigation.navigate('WisdomJourney', {
                 screen: 'Reading',

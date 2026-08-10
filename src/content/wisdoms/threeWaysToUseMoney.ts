@@ -2,6 +2,11 @@ import type {
   GuidedPersonalResponseSuggestion,
   GuidedStoryWisdomContent,
 } from './types';
+import {
+  formatCurrencyAccessibility,
+  formatCurrencyDisplay,
+  formatCurrencySpoken,
+} from '../../config/currency';
 
 const moneyArtwork = require('../../../assets/cloud/cat-money.png');
 const savingsArtwork = require('../../../assets/cloud/cloud-thinking.png');
@@ -9,6 +14,11 @@ const birthdayArtwork = require('../../../assets/cloud/cloud-helps-friend.png');
 const choicesArtwork = require('../../../assets/cloud/cloud-neighborhood-home.png');
 const pauseArtwork = require('../../../assets/cloud/cat-thinking.png');
 const planArtwork = require('../../../assets/cloud/cloud-hero-wave.png');
+
+const TOTAL_AMOUNT = 90;
+const HEADPHONE_GOAL_AMOUNT = 120;
+const CARD_AMOUNT = 30;
+const DECISION_INCREMENT = 10;
 
 const personalResponseSuggestions: GuidedPersonalResponseSuggestion[] = [
   {
@@ -53,7 +63,7 @@ export const threeWaysToUseMoney: GuidedStoryWisdomContent = {
   skillOutcome: 'Builds balanced money habits',
   artwork: moneyArtwork,
   introduction:
-    'Leo has 90 kr.\n\nHe wants football cards, new headphones, and a birthday present for his sister.\n\nHe cannot afford everything.\n\nWhat should he do?',
+    `Leo has ${formatCurrencyDisplay(TOTAL_AMOUNT)}.\n\nHe wants football cards, new headphones, and a birthday present for his sister.\n\nHe cannot afford everything.\n\nWhat should he do?`,
   learningOutcomes: [
     'Enjoy some now',
     'Keep some for later',
@@ -62,58 +72,76 @@ export const threeWaysToUseMoney: GuidedStoryWisdomContent = {
   startButtonLabel: 'Start the Story',
   storyScenes: [
     {
+      id: 'leo-has-a-choice',
+      text:
+        `Leo counted the money on his desk twice: ${formatCurrencyDisplay(TOTAL_AMOUNT)}. It was the first time he had so much that was truly his to decide about. He spread the bills in a neat row and grinned. “I could do almost anything with this,” he said, feeling as if three bright doors had opened at once.`,
+      narrationText:
+        `Leo counted the money on his desk twice: ${formatCurrencySpoken(TOTAL_AMOUNT)}. It was the first time he had so much that was truly his to decide about. He spread the bills in a neat row and grinned. “I could do almost anything with this,” he said, feeling as if three bright doors had opened at once.`,
+      artwork: moneyArtwork,
+      visualLabel: 'Leo’s money and three possible choices',
+    },
+    {
       id: 'leo-wants-the-cards-now',
       text:
-        'Leo squeezed the 90 kr in his hand. A new pack of football cards was waiting at the shop, and he wanted the cards now.',
+        'On the way to the park, Leo stopped at the corner shop. A shiny new pack of football cards sat beside the register. His friends had been trading cards all week, and Leo imagined opening a rare one. “I could buy several packs right now,” he thought. His hand moved toward the money in his pocket.',
       narrationText:
-        'Leo squeezed the 90 kr in his hand. A new pack of football cards was waiting at the shop, and he wanted the cards now.',
+        'On the way to the park, Leo stopped at the corner shop. A shiny new pack of football cards sat beside the register. His friends had been trading cards all week, and Leo imagined opening a rare one. “I could buy several packs right now,” he thought. His hand moved toward the money in his pocket.',
       artwork: moneyArtwork,
-      visualLabel: 'Money and football cards',
+      visualLabel: 'Football cards at the corner shop',
     },
     {
       id: 'leo-remembers-the-headphones',
       text:
-        'Then Leo remembered the headphones he had been saving for. He was still 120 kr away.',
+        `Then a song played through the shop speakers, and Leo remembered the headphones he had wanted for months. His old pair only worked when he held the wire at a funny angle. The new headphones cost ${formatCurrencyDisplay(HEADPHONE_GOAL_AMOUNT)}. If he saved some of his ${formatCurrencyDisplay(TOTAL_AMOUNT)}, that faraway goal would suddenly feel much closer.`,
       narrationText:
-        'Then Leo remembered the headphones he had been saving for. He was still 120 kr away.',
+        `Then a song played through the shop speakers, and Leo remembered the headphones he had wanted for months. His old pair only worked when he held the wire at a funny angle. The new headphones cost ${formatCurrencySpoken(HEADPHONE_GOAL_AMOUNT)}. If he saved some of his ${formatCurrencySpoken(TOTAL_AMOUNT)}, that faraway goal would suddenly feel much closer.`,
       artwork: savingsArtwork,
-      visualLabel: 'Headphones and savings progress',
+      visualLabel: 'Headphones and a savings goal',
     },
     {
       id: 'leo-remembers-mias-birthday',
       text:
-        'His younger sister Mia’s birthday was on Saturday. Leo wanted to bring her a small surprise.',
+        'Outside the shop, Leo saw a window filled with ribbons. Mia’s birthday was Saturday. She had been drawing tiny animals on every scrap of paper she could find, and Leo knew she would love a new sketchbook. He pictured her surprised smile. Buying something for Mia felt different from buying something for himself, but just as exciting.',
       narrationText:
-        'His younger sister Mia’s birthday was on Saturday. Leo wanted to bring her a small surprise.',
+        'Outside the shop, Leo saw a window filled with ribbons. Mia’s birthday was Saturday. She had been drawing tiny animals on every scrap of paper she could find, and Leo knew she would love a new sketchbook. He pictured her surprised smile. Buying something for Mia felt different from buying something for himself, but just as exciting.',
       artwork: birthdayArtwork,
-      visualLabel: 'A birthday gift for Mia',
+      visualLabel: 'A sketchbook for Mia’s birthday',
     },
     {
-      id: 'leo-sees-three-choices',
+      id: 'leo-sees-what-spending-all-would-change',
       text:
-        'The football cards would feel good today. Saving would move him closer to the headphones. A gift would make Mia smile.',
+        `Leo looked back at the football cards. For one thrilling second, he imagined spending all ${formatCurrencyDisplay(TOTAL_AMOUNT)} on packs and tearing them open across his bed. Then the picture changed: no money closer to his headphones, and nothing chosen for Mia. The cards were still tempting, but spending everything now would quietly close the other two doors.`,
       narrationText:
-        'The football cards would feel good today. Saving would move him closer to the headphones. A gift would make Mia smile.',
+        `Leo looked back at the football cards. For one thrilling second, he imagined spending all ${formatCurrencySpoken(TOTAL_AMOUNT)} on packs and tearing them open across his bed. Then the picture changed: no money closer to his headphones, and nothing chosen for Mia. The cards were still tempting, but spending everything now would quietly close the other two doors.`,
       artwork: choicesArtwork,
-      visualLabel: 'Football cards, headphones, and a birthday gift',
+      visualLabel: 'Three choices and what could be lost',
     },
     {
-      id: 'leo-pauses',
+      id: 'leo-tries-different-plans',
       text:
-        'Leo paused before entering the shop. He realised he did not have to choose only one.',
+        `Leo sat on a bench and drew three circles on an old receipt. Over them he wrote Spend, Save, and Give. “They don’t have to be equal,” Leo whispered. He tried one plan, crossed it out, and tried another. Each time he moved ${formatCurrencyDisplay(DECISION_INCREMENT)}, one choice grew while another had to shrink. That made him pause.`,
       narrationText:
-        'Leo paused before entering the shop. He realised he did not have to choose only one.',
+        `Leo sat on a bench and drew three circles on an old receipt. Over them he wrote Spend, Save, and Give. “They don’t have to be equal,” Leo whispered. He tried one plan, crossed it out, and tried another. Each time he moved ${formatCurrencySpoken(DECISION_INCREMENT)}, one choice grew while another had to shrink. That made him pause.`,
       artwork: pauseArtwork,
-      visualLabel: 'Leo pausing to think',
+      visualLabel: 'Leo trying different money plans',
     },
     {
-      id: 'leo-makes-a-plan',
+      id: 'leo-chooses-his-plan',
       text:
-        'Leo chose 40 kr for football cards, 30 kr for his headphones, and 20 kr for Mia. The amounts were different because each choice mattered in a different way.',
+        `At last, Leo chose a plan that felt like his. He kept ${formatCurrencyDisplay(CARD_AMOUNT)} for football cards, placed a larger part in his headphone envelope, and set the rest aside for Mia’s sketchbook. At the shop, he bought only the cards he wanted most. Walking home, he felt happy about today—and still excited about what came next.`,
       narrationText:
-        'Leo chose 40 kr for football cards, 30 kr for his headphones, and 20 kr for Mia. The amounts were different because each choice mattered in a different way.',
+        `At last, Leo chose a plan that felt like his. He kept ${formatCurrencySpoken(CARD_AMOUNT)} for football cards, placed a larger part in his headphone envelope, and set the rest aside for Mia’s sketchbook. At the shop, he bought only the cards he wanted most. Walking home, he felt happy about today—and still excited about what came next.`,
       artwork: planArtwork,
-      visualLabel: 'Leo’s completed money plan',
+      visualLabel: 'Leo’s spend, save, and give plan',
+    },
+    {
+      id: 'leos-choices-show-what-matters',
+      text:
+        `On Saturday, Mia opened the sketchbook and began drawing before the ribbon was off the table. Later, Leo traded his favorite new card with a friend and added the saved money to his headphone envelope. His ${formatCurrencyDisplay(TOTAL_AMOUNT)} had become three different things: fun now, hope for later, and kindness for someone else. Money gave him choices, and his choices showed what mattered.`,
+      narrationText:
+        `On Saturday, Mia opened the sketchbook and began drawing before the ribbon was off the table. Later, Leo traded his favorite new card with a friend and added the saved money to his headphone envelope. His ${formatCurrencySpoken(TOTAL_AMOUNT)} had become three different things: fun now, hope for later, and kindness for someone else. Money gave him choices, and his choices showed what mattered.`,
+      artwork: choicesArtwork,
+      visualLabel: 'Fun now, hope for later, and kindness for Mia',
     },
   ],
   reflection: {
@@ -165,9 +193,9 @@ export const threeWaysToUseMoney: GuidedStoryWisdomContent = {
   },
   decision: {
     scenario:
-      'Leo has 90 kr. How would you divide it between football cards, headphones, and Mia’s birthday?',
-    totalAmount: 90,
-    increment: 10,
+      `Leo has ${formatCurrencyAccessibility(TOTAL_AMOUNT)}. How would you divide it between football cards, headphones, and Mia’s birthday?`,
+    totalAmount: TOTAL_AMOUNT,
+    increment: DECISION_INCREMENT,
     initialPlan: { spend: 30, save: 30, give: 30 },
     categories: [
       { id: 'spend', label: 'Spend now', objectLabel: 'Football cards' },

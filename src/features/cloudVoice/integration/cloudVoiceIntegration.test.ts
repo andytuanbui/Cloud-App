@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, it } from 'node:test';
+import {
+  formatCurrencyAccessibility,
+  formatCurrencyDisplay,
+} from '../../../config/currency';
 import type { GuidedStoryWisdomContent } from '../../../content/wisdoms/types';
 import {
   buildAdaptiveReflectionResponse,
@@ -76,7 +80,7 @@ function createMockSessionOptions(): CloudVoiceSessionOptions {
     context: {
       wisdomId: guidedMoneyWisdomId,
       wisdomTitle: 'Three Ways to Use Money',
-      storySummary: 'Leo has 90 kr and can spend, save, or help.',
+      storySummary: 'Leo has ninety dollars and can spend, save, or help.',
       currentStoryScene: 'Leo paused before entering the shop.',
       reflectionGoal: reflectionFixture.question,
       childAgeBand: '9-10',
@@ -271,7 +275,7 @@ describe('Cloud voice app integration', () => {
     assert.equal(clock.pendingTaskCount, 0);
   });
 
-  it('keeps the approved money total derived from content and rendered as one 90 kr label', () => {
+  it('keeps the approved money total derived from content and formatted as USD', () => {
     const contentSource = readFileSync(
       join(
         process.cwd(),
@@ -279,10 +283,8 @@ describe('Cloud voice app integration', () => {
       ),
       'utf8',
     );
-    const totalAmount = Number(
-      contentSource.match(/totalAmount:\s*(\d+)/)?.[1],
-    );
-    const increment = Number(contentSource.match(/increment:\s*(\d+)/)?.[1]);
+    const totalAmount = 90;
+    const increment = 10;
     const initialPlanMatch = contentSource.match(
       /initialPlan:\s*\{\s*spend:\s*(\d+),\s*save:\s*(\d+),\s*give:\s*(\d+)\s*\}/,
     );
@@ -293,9 +295,13 @@ describe('Cloud voice app integration', () => {
       give: Number(initialPlanMatch[3]),
     };
 
-    assert.equal(totalAmount, 90);
-    assert.equal(`${totalAmount} kr`, '90 kr');
-    assert.match(contentSource, /Leo squeezed the 90 kr in his hand\./);
+    assert.match(contentSource, /totalAmount:\s*TOTAL_AMOUNT/);
+    assert.match(contentSource, /increment:\s*DECISION_INCREMENT/);
+    assert.equal(formatCurrencyDisplay(totalAmount), '$90');
+    assert.equal(formatCurrencyDisplay(increment), '$10');
+    assert.equal(formatCurrencyDisplay(initialPlan.spend), '$30');
+    assert.equal(formatCurrencyAccessibility(totalAmount), '90 dollars');
+    assert.match(contentSource, /formatCurrencySpoken\(TOTAL_AMOUNT\)/);
     assert.deepEqual(validateMoneyPlan(initialPlan, { increment, totalAmount }), {
       isValid: true,
       total: 90,
@@ -321,11 +327,20 @@ describe('Cloud voice app integration', () => {
     assert.match(screenSource, /cloudVoice\.closeConversation\('screen_exit'\)/);
     assert.match(screenSource, /buildGuidedUpdateFromVoiceReflection/);
     assert.match(screenSource, /session\.adaptiveResponse/);
-    assert.ok(screenSource.includes('{`${wisdom.decision.totalAmount} kr`}'));
+    assert.match(
+      screenSource,
+      /formatCurrencyDisplay\(wisdom\.decision\.totalAmount\)/,
+    );
+    assert.match(
+      screenSource,
+      /formatCurrencyDisplay\(wisdom\.decision\.increment\)/,
+    );
+    assert.match(screenSource, /narrationService\.read\(scene\.narrationText/);
+    assert.match(screenSource, /storyScene\.narrationText/);
     const legacyLongCurrencyLabel = ['kro', 'ner'].join('');
     assert.doesNotMatch(
       screenSource,
-      new RegExp(`90\\s*\\/\\s*(?:kr|${legacyLongCurrencyLabel})`, 'i'),
+      new RegExp(`\\bkr\\b|${legacyLongCurrencyLabel}`, 'i'),
     );
     assert.match(surfaceSource, /status === 'error'/);
     assert.match(surfaceSource, /disabled=\{!canStart\}/);

@@ -482,13 +482,33 @@ export class MockCloudVoiceSession implements CloudVoiceSession {
 function buildDeterministicCloudResponse(childText: string): string {
   const normalized = childText.toLocaleLowerCase();
   if (/\b(?:save|saving|headphones?|later)\b/.test(normalized)) {
-    return 'Saving can move a future goal closer. What makes that goal worth waiting for?';
+    const namesHeadphones = /\bheadphones?\b/.test(normalized);
+    const namesThirtyDollars = /(?:\$\s*30\b|\b30\s+dollars?\b)/.test(
+      normalized,
+    );
+    const canWait = /\b(?:can|could)\s+wait\b|\bdon['’]?t\s+need\b.*\btoday\b/.test(
+      normalized,
+    );
+
+    if (namesHeadphones && namesThirtyDollars && canWait) {
+      return 'You’d save 30 dollars for the headphones because you can wait. What could help you remember your saving plan?';
+    }
+    if (namesHeadphones) {
+      return 'You’d save some money for the headphones. What could help you keep that plan?';
+    }
+    return 'You’d save some money for later. What are you saving toward?';
   }
   if (/\b(?:give|giving|help|mia|birthday|gift)\b/.test(normalized)) {
-    return 'Helping someone can be part of a money choice. How would that choice make you feel?';
+    if (/\b(?:mia|birthday|gift)\b/.test(normalized)) {
+      return 'You’d set some money aside for Mia’s birthday gift. How would you choose something meaningful for her?';
+    }
+    return 'You’d use some money to help someone. Who would you want to help?';
   }
   if (/\b(?:spend|cards?|buy|today|now)\b/.test(normalized)) {
-    return 'Enjoying something now can matter too. What might help you pause before buying?';
+    if (/\b(?:football\s+)?cards?\b/.test(normalized)) {
+      return 'You wanted the football cards right away, even though waiting felt difficult. What might help you pause before buying?';
+    }
+    return 'You’d use some money for something you want now. What might help you pause before buying?';
   }
   return 'Waiting can feel hard when something matters now. What could help you pause before choosing?';
 }

@@ -24,11 +24,11 @@ const SDP_OFFER = [
 const WISDOM_CONTEXT = Object.freeze({
   wisdomTitle: 'Three Ways to Use Money',
   storySummary: 'Leo can spend now, save for later, or give to help.',
-  currentStoryScene: 'Leo has 90 kr and pauses before choosing.',
+  currentStoryScene: 'Leo has 90 dollars and pauses before choosing.',
   reflectionGoal: 'Connect waiting and balance to one personal example.',
   childAgeBand: '8-10',
   previousAnswer: 'Waiting for a game item felt difficult.',
-  moneyDecision: '30 kr spend, 40 kr save, 20 kr give.',
+  moneyDecision: '30 dollars spend, 40 dollars save, 20 dollars give.',
   takeaway: 'Balance depends on what matters.',
   maximumConversationTurns: 6,
   maximumDurationSeconds: 180,
@@ -314,9 +314,12 @@ describe('Cloud Voice backend', () => {
         stream_format: string;
       };
       assert.equal(body.model, 'gpt-4o-mini-tts');
-      assert.equal(body.voice, 'cedar');
+      assert.equal(body.voice, 'ash');
       assert.equal(body.input, 'Line one.\nLine two.');
       assert.match(body.instructions, /exactly as written/i);
+      assert.match(body.instructions, /warm, thoughtful storyteller/i);
+      assert.match(body.instructions, /not Cloud/i);
+      assert.match(body.instructions, /never introduce yourself/i);
       assert.equal(body.response_format, 'mp3');
       assert.equal(body.stream_format, 'audio');
 

@@ -1,6 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import {
+  formatCurrencyAccessibility,
+  formatCurrencyDisplay,
+} from '../../../config/currency';
 import { appColors, layout, radii, shadows, space, spacing, typography } from '../../../theme';
 import { AppText, SurfaceCard } from '../../ui';
 
@@ -12,30 +16,34 @@ export function MoneyAmountStepper({
   amount,
   disabled = false,
   icon,
+  increment,
   label,
-  maxAmount = 90,
+  maxAmount,
   onChange,
   supportingText,
   tone = 'save',
-  totalAmount = 90,
+  totalAmount,
 }: {
   amount: number;
   disabled?: boolean;
   icon?: keyof typeof Ionicons.glyphMap;
+  increment: number;
   label: string;
-  maxAmount?: number;
+  maxAmount: number;
   onChange: (amount: number) => void;
   supportingText?: string;
   tone?: MoneyDestinationTone;
-  totalAmount?: number;
+  totalAmount: number;
 }) {
   const [focusedControl, setFocusedControl] = useState<'decrease' | 'increase'>();
   const safeMaximum = Math.max(0, maxAmount);
-  const safeTotal = Math.max(MONEY_AMOUNT_STEP, totalAmount);
+  const finiteIncrement = Number.isFinite(increment) ? increment : MONEY_AMOUNT_STEP;
+  const safeIncrement = Math.max(1, finiteIncrement);
+  const safeTotal = Math.max(safeIncrement, totalAmount);
   const finiteAmount = Number.isFinite(amount) ? amount : 0;
   const safeAmount = Math.min(safeMaximum, Math.max(0, finiteAmount));
-  const canDecrease = !disabled && safeAmount >= MONEY_AMOUNT_STEP;
-  const canIncrease = !disabled && safeAmount + MONEY_AMOUNT_STEP <= safeMaximum;
+  const canDecrease = !disabled && safeAmount >= safeIncrement;
+  const canIncrease = !disabled && safeAmount + safeIncrement <= safeMaximum;
   const progressWidth = `${Math.min(100, Math.max(0, (safeAmount / safeTotal) * 100))}%` as const;
 
   return (
@@ -91,20 +99,25 @@ export function MoneyAmountStepper({
             </AppText>
           )}
         </View>
-        <AppText accessibilityLiveRegion="polite" style={styles.amountText} variant="sectionTitle">
-          {safeAmount} kr
+        <AppText
+          accessibilityLabel={formatCurrencyAccessibility(safeAmount)}
+          accessibilityLiveRegion="polite"
+          style={styles.amountText}
+          variant="sectionTitle"
+        >
+          {formatCurrencyDisplay(safeAmount)}
         </AppText>
       </View>
 
-      <View accessibilityLabel={`${label}: ${safeAmount} kr`} style={styles.controls}>
+      <View accessibilityLabel={`${label}: ${formatCurrencyAccessibility(safeAmount)}`} style={styles.controls}>
         <Pressable
-          accessibilityLabel={`Remove ${MONEY_AMOUNT_STEP} kr from ${label}`}
+          accessibilityLabel={`Remove ${formatCurrencyAccessibility(safeIncrement)} from ${label}`}
           accessibilityRole="button"
           accessibilityState={{ disabled: !canDecrease }}
           disabled={!canDecrease}
           onBlur={() => setFocusedControl(undefined)}
           onFocus={() => setFocusedControl('decrease')}
-          onPress={() => onChange(Math.max(0, safeAmount - MONEY_AMOUNT_STEP))}
+          onPress={() => onChange(Math.max(0, safeAmount - safeIncrement))}
           style={({ pressed }) => [
             styles.stepButton,
             focusedControl === 'decrease' && styles.stepButtonFocused,
@@ -121,13 +134,13 @@ export function MoneyAmountStepper({
         </View>
 
         <Pressable
-          accessibilityLabel={`Add ${MONEY_AMOUNT_STEP} kr to ${label}`}
+          accessibilityLabel={`Add ${formatCurrencyAccessibility(safeIncrement)} to ${label}`}
           accessibilityRole="button"
           accessibilityState={{ disabled: !canIncrease }}
           disabled={!canIncrease}
           onBlur={() => setFocusedControl(undefined)}
           onFocus={() => setFocusedControl('increase')}
-          onPress={() => onChange(Math.min(safeMaximum, safeAmount + MONEY_AMOUNT_STEP))}
+          onPress={() => onChange(Math.min(safeMaximum, safeAmount + safeIncrement))}
           style={({ pressed }) => [
             styles.stepButton,
             focusedControl === 'increase' && styles.stepButtonFocused,

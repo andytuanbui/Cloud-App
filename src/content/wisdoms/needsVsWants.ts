@@ -1,4 +1,5 @@
-import { WisdomContent } from './types';
+import { formatCurrencyDisplay } from '../../config/currency';
+import type { WisdomContent } from './types';
 
 export const needsVsWants: WisdomContent = {
   id: 'needs-vs-wants',
@@ -10,7 +11,7 @@ export const needsVsWants: WisdomContent = {
   skillOutcome: 'Builds thoughtful money choices',
   artwork: require('../../../assets/cloud/needs-wants-jars.png'),
   openingQuestion: {
-    question: 'You have 100 kr. Which would you choose first?',
+    question: `You have ${formatCurrencyDisplay(100)}. Which would you choose first?`,
     options: [
       { id: 'food', label: 'Food for lunch' },
       { id: 'toy', label: 'A new toy' },

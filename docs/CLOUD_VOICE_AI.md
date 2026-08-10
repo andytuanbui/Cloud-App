@@ -1,12 +1,13 @@
 # Cloud Voice AI prototype
 
-Cloud Voice is an optional, voice-tutor-style path inside the existing guided Wisdom experience. It can read the current story scene, let a child speak naturally with Cloud, and return a short structured reflection to the normal Wisdom flow. Suggested answers and typed answers remain available at all times.
+Cloud Voice is an optional, voice-tutor-style path inside the existing guided Wisdom experience. A separate Story narrator can read the current story scene, while Talk with Cloud lets a child speak naturally with Cloud and returns a short structured reflection to the normal Wisdom flow. Suggested answers and typed answers remain available at all times.
 
 This is a development prototype, not a production release for children. No OpenAI key is committed, and live paid API tests require a real server-side key plus explicit permission.
 
 ## Product boundaries
 
 - Cloud is the CloudWise AI guide. Cloud is not Leo; Leo remains the child in the "Three Ways to Use Money" story.
+- The unseen Story narrator reads authored Wisdom stories and is not Cloud or a visible character.
 - Cloud uses a synthetic built-in voice. It does not imitate or clone a real child, the app user, or another identifiable person.
 - The target conversation is three to five short Cloud turns, with a hard maximum of six turns and three minutes.
 - Only one voice session can be active. Starting another, leaving the screen, timing out, or unmounting the provider closes media tracks and the peer connection.
@@ -36,17 +37,17 @@ The backend accepts only the configured origin, defaults to `127.0.0.1:8787`, re
 
 ## OpenAI models and voice
 
-These prototype defaults were checked against the official OpenAI documentation on 2026-08-03:
+These prototype defaults were checked against the official OpenAI documentation on 2026-08-11:
 
 | Use | Default | Configuration |
 | --- | --- | --- |
 | Live speech-to-speech | `gpt-realtime-2.1` | `OPENAI_REALTIME_MODEL` |
-| Live output voice | `cedar` | `OPENAI_REALTIME_VOICE` |
+| Cloud conversation voice | `cedar` | `OPENAI_REALTIME_VOICE` |
 | Live transcript helper | `gpt-4o-mini-transcribe` | `OPENAI_REALTIME_TRANSCRIPTION_MODEL` |
 | Story narration | `gpt-4o-mini-tts` | `OPENAI_TTS_MODEL` |
-| Narration voice | `cedar` | `OPENAI_TTS_VOICE` |
+| Story narrator voice | `ash` | `OPENAI_TTS_VOICE` |
 
-`gpt-realtime-2.1` supports audio input/output and tool use. The Speech guide lists `cedar` for TTS and recommends `cedar` or `marin` for quality. CloudWise uses `cedar` in both systems so Cloud has one recognizable synthetic identity. See the official [GPT-Realtime-2.1 model page](https://developers.openai.com/api/docs/models/gpt-realtime-2.1), [WebRTC guide](https://developers.openai.com/api/docs/guides/realtime-webrtc), [Realtime conversations guide](https://developers.openai.com/api/docs/guides/realtime-conversations), and [text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech).
+`gpt-realtime-2.1` supports audio input/output and tool use. The current Speech guide lists `ash` for `gpt-4o-mini-tts`, and the Realtime conversations guide lists `cedar` as a current Realtime voice. CloudWise intentionally keeps these identities separate: `storyNarratorVoice: ash` and `cloudConversationVoice: cedar`. The defaults live in `src/features/cloudVoice/config/voiceRoles.ts`; the backend resolves the two environment overrides into separate role-specific fields. See the official [GPT-Realtime-2.1 model page](https://developers.openai.com/api/docs/models/gpt-realtime-2.1), [WebRTC guide](https://developers.openai.com/api/docs/guides/realtime-webrtc), [Realtime conversations guide](https://developers.openai.com/api/docs/guides/realtime-conversations), and [text-to-speech guide](https://developers.openai.com/api/docs/guides/text-to-speech).
 
 Model and voice identifiers are server-owned. Never expose them together with a secret in an `EXPO_PUBLIC_` variable, and never put `OPENAI_API_KEY` in browser or Expo code.
 
@@ -100,19 +101,27 @@ The guided flow persists the compact reflection, a `voice` personal-response sou
 
 ## Story narration flow
 
-1. **Read to Me** passes only the exact current scene text and a stable `wisdomId:sceneId` cache key.
+1. **Listen to the Story** passes only the scene's exact authored `narrationText` and a stable `wisdomId:sceneId` cache key.
 2. When AI narration is enabled, the browser posts that text to `/api/cloud-voice/narration`.
-3. The backend asks `gpt-4o-mini-tts` to read the text exactly as written with Cloud's voice instructions and streams the upstream bytes without first buffering the complete response.
+3. The backend asks `gpt-4o-mini-tts` and the Ash Story narrator to read the text exactly as written with warm, thoughtful storyteller instructions, then streams the upstream bytes without first buffering the complete response.
 4. The web client reads the response into an in-memory Blob for broad browser compatibility, then plays it and reuses the Blob URL for that scene during the current mounted session.
 5. If the backend is absent, unconfigured, or fails, the service immediately tries browser `speechSynthesis`. Unsupported native platforms keep the existing unavailable state.
 
 Pause, resume, replay, scene changes, and cancellation are preserved. Narration stops when the scene changes, the screen unmounts, or a voice conversation starts. Cached generated audio is revoked on cleanup and is never written to persistent storage. The current web client buffers the streamed response before playback; true progressive playback through `MediaSource`, PCM, or WAV is a future latency improvement.
 
-## Voice identity and personality
+## Authored story and currency
 
-The reusable prompt and TTS instructions describe Cloud as youthful, warm, curious, calm, friendly, clear, and natural, with the energy of a thoughtful ten-year-old. Cloud uses moderate speed, short pauses, breathing room, clear pronunciation, and gentle emotion. Cloud must never sound babyish, exaggerated, like a cartoon announcer, or like an adult lecturer.
+**Three Ways to Use Money** contains eight authored scenes and 458 spoken words, with 55–63 words per scene. At a warm child-facing pace of roughly 130–150 words per minute, it runs for about 3–4 minutes. The display copy and spoken copy are authored separately only where currency pronunciation differs; narration still reads the complete authored `narrationText` without rewriting it.
 
-Cloud asks one short question at a time, normally speaks one or two short sentences, responds to the child's actual answer, avoids automatic praise and long lectures, offers one concrete example for "I don't know," and never marks a personal feeling correct or incorrect. Cloud never claims to be human, Leo, a real friend, sibling, teacher, parent, therapist, or a real child. The MVP deliberately does not send the child's name to the voice prompt.
+`src/config/currency.ts` is the single currency configuration. The default is USD with a leading `$`, and its shared helpers render display text (`$90`), narration text (`ninety dollars`), and accessibility text (`90 dollars`). Guided totals and increments continue to come from `wisdom.decision.totalAmount` and `wisdom.decision.increment`.
+
+## Voice identities and personality
+
+The unseen Story narrator uses Ash for authored Wisdom stories. Its instructions call for a warm, calm, deep, reassuring, thoughtful natural storyteller with moderate pacing, meaningful pauses, and expression that never becomes theatrical. It never introduces itself as Cloud and must not sound like a lecturer, announcer, cartoon character, or sales voice.
+
+Cloud uses Cedar only for direct Realtime conversation. The reusable prompt describes Cloud as youthful, warm, curious, calm, friendly, clear, and natural, with the energy of a thoughtful ten-year-old. Cloud uses moderate speed, short pauses, breathing room, clear pronunciation, and gentle emotion. Cloud must never sound babyish, exaggerated, like a cartoon announcer, or like an adult lecturer.
+
+Cloud asks at most one short question at a time and normally speaks one or two short sentences. After every meaningful answer, Cloud's first sentence must acknowledge a concrete decision, reason, object, or goal from what the child actually said before asking the next question. Generic praise-only replies are explicitly rejected; for example, a child saving 30 dollars for headphones because they can wait receives a response grounded in the amount, headphones, or reason. Safety and privacy responses override normal grounding. Cloud also avoids long lectures, offers one concrete example for "I don't know," and never marks a personal feeling correct or incorrect. Cloud never claims to be human, Leo, a real friend, sibling, teacher, parent, therapist, or a real child. The MVP deliberately does not send the child's name to the voice prompt.
 
 ## Disclosure and parent approval
 
@@ -120,7 +129,7 @@ Child-facing disclosure:
 
 > Cloud is an AI guide with an AI-made voice. Do not share your full name, address, school, phone number, or passwords.
 
-The shorter AI-voice disclosure is also visible beside narration controls and inside the development Family settings. `voiceFeaturesApprovedByParent` defaults to `false`, is persisted locally in schema v6, and must be true before a microphone session can start.
+The Story control separately discloses that its narrator voice is AI-generated. The Cloud AI-voice disclosure also appears inside the development Family settings. `voiceFeaturesApprovedByParent` defaults to `false`, is persisted locally in schema v6, and must be true before a microphone session can start.
 
 In development, open **Family** and press **Approve Voice Preview**. The browser console helper `globalThis.__cloudwiseApproveVoice(true)` is also available in development; pass `false` to remove approval. This is a test control only. It is not authenticated parent identity, production consent, or final onboarding.
 
@@ -161,10 +170,10 @@ Copy `.env.example` to the ignored `.env` file. Keep secrets out of source contr
 | --- | --- |
 | `OPENAI_API_KEY` | Blank placeholder. Required only for live OpenAI calls. |
 | `OPENAI_REALTIME_MODEL` | `gpt-realtime-2.1` |
-| `OPENAI_REALTIME_VOICE` | `cedar` |
+| `OPENAI_REALTIME_VOICE` | `cedar`; Cloud's Realtime conversation voice. |
 | `OPENAI_REALTIME_TRANSCRIPTION_MODEL` | `gpt-4o-mini-transcribe` |
 | `OPENAI_TTS_MODEL` | `gpt-4o-mini-tts` |
-| `OPENAI_TTS_VOICE` | `cedar` |
+| `OPENAI_TTS_VOICE` | `ash`; the separate Story narrator voice. |
 | `CLOUD_VOICE_SERVER_HOST` | `127.0.0.1` |
 | `CLOUD_VOICE_SERVER_PORT` | `8787` |
 | `CLOUD_VOICE_ALLOWED_ORIGIN` | `http://localhost:8083` (exactly one origin) |

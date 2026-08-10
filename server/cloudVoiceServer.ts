@@ -10,6 +10,7 @@ import {
   buildCloudVoicePrompt,
   buildSaveWisdomReflectionTool,
 } from '../src/features/cloudVoice/core/prompt';
+import { defaultVoiceRoleConfig } from '../src/features/cloudVoice/config/voiceRoles';
 import type { CloudVoiceWisdomContext } from '../src/features/cloudVoice/core/types';
 
 const REALTIME_PATH = '/api/cloud-voice/realtime-session';
@@ -98,10 +99,10 @@ export type CloudVoiceServerConfig = Readonly<{
   port: number;
   allowedOrigin: string;
   realtimeModel: string;
-  realtimeVoice: string;
+  cloudConversationVoice: string;
   realtimeTranscriptionModel: string;
   ttsModel: string;
-  ttsVoice: string;
+  storyNarratorVoice: string;
   bodyTimeoutMs: number;
   upstreamTimeoutMs: number;
   maxSdpBytes: number;
@@ -191,10 +192,10 @@ export function loadCloudVoiceConfig(
       'gpt-realtime-2.1',
       MODEL_IDENTIFIER_PATTERN,
     ),
-    realtimeVoice: readIdentifierSetting(
+    cloudConversationVoice: readIdentifierSetting(
       'OPENAI_REALTIME_VOICE',
       environment.OPENAI_REALTIME_VOICE,
-      'cedar',
+      defaultVoiceRoleConfig.cloudConversationVoice,
       VOICE_IDENTIFIER_PATTERN,
     ),
     realtimeTranscriptionModel: readIdentifierSetting(
@@ -209,10 +210,10 @@ export function loadCloudVoiceConfig(
       'gpt-4o-mini-tts',
       MODEL_IDENTIFIER_PATTERN,
     ),
-    ttsVoice: readIdentifierSetting(
+    storyNarratorVoice: readIdentifierSetting(
       'OPENAI_TTS_VOICE',
       environment.OPENAI_TTS_VOICE,
-      'cedar',
+      defaultVoiceRoleConfig.storyNarratorVoice,
       VOICE_IDENTIFIER_PATTERN,
     ),
     bodyTimeoutMs: readIntegerSetting(
@@ -411,7 +412,7 @@ async function handleNarrationRequest(
       headers: upstreamHeaders,
       body: JSON.stringify({
         model: config.ttsModel,
-        voice: config.ttsVoice,
+        voice: config.storyNarratorVoice,
         input: text,
         instructions: buildNarrationInstructions(),
         response_format: 'mp3',
@@ -472,7 +473,7 @@ function buildRealtimeSession(
         },
       },
       output: {
-        voice: config.realtimeVoice,
+        voice: config.cloudConversationVoice,
         speed: 1,
       },
     },
@@ -514,9 +515,10 @@ function toSharedWisdomContext(
 function buildNarrationInstructions(): string {
   return [
     'Read the input exactly as written. Do not add, remove, explain, or rewrite any words.',
-    'Use Cloud’s synthetic voice: youthful, warm, curious, calm, friendly, clear, and natural, with the energy of a thoughtful ten-year-old.',
-    'Use moderate speed, short pauses, clear pronunciation, natural breathing room, and gentle emotion.',
-    'Never sound babyish, exaggerated, like a cartoon announcer, or like an adult teacher giving a lecture.',
+    'Read this as a warm, thoughtful storyteller speaking to a child. Use natural emotion, clear pronunciation, moderate pacing, and short pauses around important decisions.',
+    'Keep the voice calm, deep, reassuring, and expressive without sounding theatrical.',
+    'Do not sound like a lecturer, announcer, cartoon character, or sales voice.',
+    'You are the unseen Story narrator, not Cloud. Never introduce yourself or claim to be Cloud.',
   ].join(' ');
 }
 

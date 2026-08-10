@@ -163,11 +163,11 @@ describe('Cloud voice prompt and tool contract', () => {
     wisdomId: 'three-ways-to-use-money',
     wisdomTitle: 'Three Ways to Use Money',
     storySummary: 'Leo can spend, save, or help.',
-    currentStoryScene: 'Leo has 90 kr and pauses before the shop.',
+    currentStoryScene: 'Leo has 90 dollars and pauses before the shop.',
     reflectionGoal: 'Connect waiting with a personal money choice.',
     childAgeBand: '8-10',
     previousAnswer: 'My full name is Private Child.',
-    moneyDecision: 'Spend, save, and give 90 kr.',
+    moneyDecision: 'Spend, save, and give 90 dollars.',
     takeaway: 'Balance depends on what matters.',
     authoredChoiceIds: ['save-for-later', 'help-someone', 'bad id'],
     maximumConversationTurns: 99,
@@ -185,6 +185,66 @@ describe('Cloud voice prompt and tool contract', () => {
     assert.match(prompt, /save_wisdom_reflection/);
     assert.match(prompt, /save-for-later/);
     assert.doesNotMatch(prompt, /Private Child|bad id/);
+  });
+
+  it('grounds a meaningful money answer in concrete details before one follow-up', () => {
+    const prompt = buildCloudVoicePrompt(context);
+    const childAnswer =
+      'I would save 30 dollars for headphones because I can wait.';
+    const groundedResponse =
+      'You’d save 30 dollars for the headphones because you can wait. What could help you remember your saving plan?';
+
+    assert.match(prompt, /RESPONSE GROUNDING/);
+    assert.ok(prompt.includes(`Example child: “${childAnswer}”`));
+    assert.ok(prompt.includes(`Good Cloud response: “${groundedResponse}”`));
+    assert.match(
+      prompt,
+      /first sentence must acknowledge at least one concrete detail.*before asking the next question/i,
+    );
+    assert.match(
+      prompt,
+      /decision first, then their reason, then a concrete object or goal/i,
+    );
+    assert.match(prompt, /whole response to one or two short sentences/i);
+    assert.match(prompt, /without repeating the child’s whole answer/i);
+    assert.equal(groundedResponse.match(/\?/g)?.length, 1);
+    assert.match(groundedResponse, /30 dollars/);
+    assert.match(groundedResponse, /headphones/);
+    assert.match(groundedResponse, /because you can wait/i);
+  });
+
+  it('explicitly rejects generic praise and multiple questions', () => {
+    const prompt = buildCloudVoicePrompt(context);
+    const genericPraise =
+      'That’s a thoughtful answer! What else could you do?';
+    const multipleQuestions =
+      'Would you save the money? Why can you wait?';
+
+    assert.ok(prompt.includes(`Not acceptable: “${genericPraise}”`));
+    assert.ok(prompt.includes(`Not acceptable: “${multipleQuestions}”`));
+    assert.match(
+      prompt,
+      /Generic praise followed by a question also fails this rule/i,
+    );
+    assert.match(prompt, /no more than one question/i);
+    assert.equal(multipleQuestions.match(/\?/g)?.length, 2);
+  });
+
+  it('keeps privacy and safety responses above the grounding pattern', () => {
+    const prompt = buildCloudVoicePrompt(context);
+    const groundingIndex = prompt.indexOf('RESPONSE GROUNDING');
+    const safetyIndex = prompt.indexOf('PRIVACY AND SAFETY');
+
+    assert.ok(groundingIndex >= 0);
+    assert.ok(safetyIndex > groundingIndex);
+    assert.match(
+      prompt,
+      /Privacy and safety instructions override this grounding pattern/i,
+    );
+    assert.match(
+      prompt,
+      /For a serious safety concern, stop the normal Wisdom conversation/i,
+    );
   });
 
   it('constrains optional authored choices in the function tool', () => {

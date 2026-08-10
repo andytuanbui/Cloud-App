@@ -327,7 +327,7 @@ function baseRealtimeOptions(
     context: {
       wisdomTitle: 'Three Ways to Use Money',
       storySummary: 'Leo can spend, save, or help.',
-      currentStoryScene: 'Leo pauses before spending 90 kr.',
+      currentStoryScene: 'Leo pauses before spending 90 dollars.',
       reflectionGoal: 'Connect waiting with a personal choice.',
       childAgeBand: '8-10',
       previousAnswer: 'Waiting can feel difficult.',
@@ -445,7 +445,7 @@ describe('WebRealtimeVoiceService', () => {
     assert.deepEqual(decoded, {
       wisdomTitle: 'Three Ways to Use Money',
       storySummary: 'Leo can spend, save, or help.',
-      currentStoryScene: 'Leo pauses before spending 90 kr.',
+      currentStoryScene: 'Leo pauses before spending 90 dollars.',
       reflectionGoal: 'Connect waiting with a personal choice.',
       childAgeBand: '8-10',
       previousAnswer: 'Waiting can feel difficult.',
@@ -1068,7 +1068,7 @@ function cloudSessionOptions(
       wisdomId: 'three-ways-to-use-money',
       wisdomTitle: 'Three Ways to Use Money',
       storySummary: 'Leo can spend, save, or help.',
-      currentStoryScene: 'Leo pauses before spending 90 kr.',
+      currentStoryScene: 'Leo pauses before spending 90 dollars.',
       reflectionGoal: 'Connect waiting with a personal choice.',
       childAgeBand: '8-10',
       authoredChoiceIds: ['sometimes', 'not-sure'],

@@ -1,6 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
+import {
+  formatCurrencyAccessibility,
+  formatCurrencyDisplay,
+} from '../../config/currency';
 import type { WisdomContent } from '../../content/wisdoms';
 import { appColors, radii, shadows, space, spacing, typography } from '../../theme';
 import { AppText } from '../ui';
@@ -30,6 +34,9 @@ export function MoneyWisdomIdentityCard({
   wisdom: WisdomContent;
 }) {
   const compact = mode === 'compact';
+  const totalAmount = wisdom.format === 'guided-story-v1'
+    ? wisdom.decision.totalAmount
+    : 0;
 
   return (
     <View
@@ -48,12 +55,13 @@ export function MoneyWisdomIdentityCard({
       />
       <View accessible={false} pointerEvents="none" style={styles.identityGlow} />
       <View
-        accessible={false}
+        accessibilityLabel={formatCurrencyAccessibility(totalAmount)}
+        accessible
         pointerEvents="none"
         style={[styles.identityCoin, compact && styles.compactCoin]}
       >
         <AppText style={[styles.identityCoinValue, compact && styles.compactCoinValue]} tone="inverse" variant="screenTitle">
-          90 kr
+          {formatCurrencyDisplay(totalAmount)}
         </AppText>
       </View>
       <View style={styles.topRow}>

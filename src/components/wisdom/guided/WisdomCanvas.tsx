@@ -216,12 +216,16 @@ export function StageHeading({
   eyebrow,
   inverse = false,
   supporting,
+  supportingAccessibilityLabel,
   title,
+  titleAccessibilityLabel,
 }: {
   eyebrow: string;
   inverse?: boolean;
   supporting?: string;
+  supportingAccessibilityLabel?: string;
   title: string;
+  titleAccessibilityLabel?: string;
 }) {
   return (
     <View style={styles.stageHeading}>
@@ -229,6 +233,7 @@ export function StageHeading({
         {eyebrow}
       </AppText>
       <AppText
+        accessibilityLabel={titleAccessibilityLabel}
         accessibilityRole="header"
         style={styles.stageTitle}
         tone={inverse ? 'inverse' : 'primary'}
@@ -238,6 +243,7 @@ export function StageHeading({
       </AppText>
       {supporting ? (
         <AppText
+          accessibilityLabel={supportingAccessibilityLabel}
           style={styles.stageSupporting}
           tone={inverse ? 'inverse' : 'secondary'}
           variant="body"

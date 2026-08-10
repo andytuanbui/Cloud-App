@@ -30,7 +30,7 @@ function sessionOptions(
       wisdomId: 'three-ways-to-use-money',
       wisdomTitle: 'Three Ways to Use Money',
       storySummary: 'Leo can spend, save, or help.',
-      currentStoryScene: 'Leo pauses before spending 90 kr.',
+      currentStoryScene: 'Leo pauses before spending 90 dollars.',
       reflectionGoal: 'Connect waiting with a personal choice.',
       childAgeBand: '8-10',
       authoredChoiceIds: ['save-for-later', 'spend-now'],
@@ -130,6 +130,29 @@ describe('MockCloudVoiceService', () => {
       'connecting',
       'listening',
     ]);
+  });
+
+  it('grounds the first response in a concrete decision before one question', () => {
+    const { clock, session } = connectedSession();
+
+    assert.equal(
+      session.submitChildUtterance(
+        'I would save 30 dollars for headphones because I can wait.',
+        'save-for-later',
+      ),
+      true,
+    );
+    clock.advanceBy(FAST_TIMINGS.childSpeakingMs + FAST_TIMINGS.thinkingMs);
+
+    const cloudResponse = session
+      .getSnapshot()
+      .transcript.findLast((entry) => entry.role === 'cloud')?.text;
+    assert.equal(
+      cloudResponse,
+      'You’d save 30 dollars for the headphones because you can wait. What could help you remember your saving plan?',
+    );
+    assert.equal(cloudResponse?.match(/\?/g)?.length, 1);
+    assert.doesNotMatch(cloudResponse ?? '', /great job|thoughtful answer/i);
   });
 
   it('preserves the last valid authored choice when later turns omit it', async () => {

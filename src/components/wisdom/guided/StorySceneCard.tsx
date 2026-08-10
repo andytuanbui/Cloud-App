@@ -10,6 +10,7 @@ export function StorySceneCard({
   sceneCount,
   sceneNumber,
   text,
+  textAccessibilityLabel,
   title,
 }: {
   illustration: ReactNode;
@@ -18,6 +19,7 @@ export function StorySceneCard({
   sceneCount: number;
   sceneNumber: number;
   text: string;
+  textAccessibilityLabel?: string;
   title?: string;
 }) {
   const hasDistinctIllustrationLabel = Boolean(illustrationAccessibilityLabel && illustrationAccessibilityLabel !== title);
@@ -58,6 +60,7 @@ export function StorySceneCard({
           </AppText>
         ) : null}
         <AppText
+          accessibilityLabel={textAccessibilityLabel}
           accessibilityRole={title ? undefined : 'header'}
           style={styles.sceneText}
           variant={title ? 'body' : 'sectionTitle'}

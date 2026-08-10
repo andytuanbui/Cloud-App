@@ -63,10 +63,10 @@ export function NarrationControls({
           />
         ) : (
           <SecondaryButton
-            accessibilityLabel="Read this story scene aloud"
+            accessibilityLabel="Listen to this story scene"
             disabled={unavailable || !onRead}
             icon="volume-medium-outline"
-            label="Read to Me"
+            label="Listen to the Story"
             onPress={onRead ?? noOp}
             style={styles.control}
           />
@@ -82,7 +82,7 @@ export function NarrationControls({
       </View>
 
       <AppText style={styles.disclosure} tone="muted" variant="caption">
-        Cloud is an AI guide. When available, this read-aloud voice is AI-generated.
+        When available, the Story narrator’s voice is AI-generated.
       </AppText>
 
       {unavailable ? (

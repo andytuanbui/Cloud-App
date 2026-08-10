@@ -7,6 +7,7 @@ import type {
 } from '../content/wisdoms';
 
 export const DEFAULT_PERSONAL_RESPONSE_MAX_LENGTH = 120;
+const PERSONAL_REFERENCE_MAX_WORDS = 16;
 
 export type AdaptiveReflectionResponseInput = {
   selectedReflectionAnswerId: string;
@@ -355,7 +356,7 @@ function buildTypedPersonalReference(value: string): string {
   const phrase = shortenPersonalPhrase(value);
   const converted = toSecondPersonPhrase(phrase);
   return converted
-    ? `${ensureSentence(converted)} That mattered to you.`
+    ? ensureSentence(converted)
     : 'You shared something that mattered to you.';
 }
 
@@ -369,19 +370,28 @@ function buildTypedSummarySentence(value: string): string {
 
 function shortenPersonalPhrase(value: string): string {
   const firstSentence = normalizePersonalResponse(value).split(/[.!?]/, 1)[0];
-  const words = firstSentence.split(' ').filter(Boolean).slice(0, 10);
+  const words = firstSentence
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, PERSONAL_REFERENCE_MAX_WORDS);
   return stripTerminalPunctuation(words.join(' '));
 }
 
 function toSecondPersonPhrase(value: string): string {
+  const beginsInFirstPerson = /^(?:I\b|My\b)/i.test(value);
   let reference = value.replace(/^I am\b/i, 'You are');
   reference = reference.replace(/^I['’]m\b/i, "You're");
   reference = reference.replace(/^I was\b/i, 'You were');
   reference = reference.replace(/^I\b/i, 'You');
   reference = reference.replace(/^My\b/i, 'Your');
+  reference = reference.replace(/\bI am\b/gi, 'you are');
+  reference = reference.replace(/\bI['’]m\b/gi, "you're");
+  reference = reference.replace(/\bI was\b/gi, 'you were');
+  reference = reference.replace(/\bI\b/gi, 'you');
+  reference = reference.replace(/\bmy\b/gi, 'your');
 
-  if (reference !== value) return reference;
-  return value ? `You mentioned ${lowercaseFirst(value)}` : '';
+  if (beginsInFirstPerson) return reference;
+  return reference ? `You mentioned ${lowercaseFirst(reference)}` : '';
 }
 
 function lowercaseFirst(value: string): string {

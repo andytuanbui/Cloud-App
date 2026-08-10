@@ -24,6 +24,11 @@ import {
   SecondaryButton,
   SurfaceCard,
 } from '../../components/ui';
+import {
+  currencyConfig,
+  formatCurrencyAccessibility,
+  formatCurrencyDisplay,
+} from '../../config/currency';
 import { cloudGuideAssets } from '../../content/characterAssets';
 import type {
   GuidedReflectionChoice,
@@ -271,7 +276,7 @@ export function ThreeWaysGuidedWisdomScreen({
   };
 
   const readScene = async () => {
-    const started = await narrationService.read(scene.text, {
+    const started = await narrationService.read(scene.narrationText, {
       cacheKey: `${wisdom.id}:${scene.id}`,
       onStateChange: setNarrationStatus,
       onComplete: () => setNarrationStatus('idle'),
@@ -343,8 +348,8 @@ export function ThreeWaysGuidedWisdomScreen({
     void cloudVoice.startConversation({
       wisdomId: wisdom.id,
       wisdomTitle: wisdom.title,
-      storySummary: wisdom.storyScenes.map((storyScene) => storyScene.text).join(' '),
-      currentStoryScene: wisdom.storyScenes[wisdom.storyScenes.length - 1]?.text ?? '',
+      storySummary: wisdom.storyScenes.map((storyScene) => storyScene.narrationText).join(' '),
+      currentStoryScene: wisdom.storyScenes[wisdom.storyScenes.length - 1]?.narrationText ?? '',
       reflectionGoal: wisdom.reflection.question,
       childAgeBand: getChildAgeBand(profile.age),
       previousAnswer: session.personalResponse
@@ -470,11 +475,17 @@ export function ThreeWaysGuidedWisdomScreen({
           </View>
           <View style={styles.storyCanvas}>
             <StorySceneCard
-              illustration={<StoryMomentArtwork sceneIndex={sceneIndex} />}
+              illustration={(
+                <StoryMomentArtwork
+                  sceneIndex={sceneIndex}
+                  totalAmount={wisdom.decision.totalAmount}
+                />
+              )}
               illustrationAccessibilityLabel={scene.visualLabel}
               sceneCount={wisdom.storyScenes.length}
               sceneNumber={sceneIndex + 1}
               text={scene.text}
+              textAccessibilityLabel={scene.narrationText}
               title={scene.visualLabel}
             />
             <NarrationControls
@@ -609,13 +620,19 @@ export function ThreeWaysGuidedWisdomScreen({
             <View style={styles.moneyBoardHeading}>
               <StageHeading
                 eyebrow="Your Choice"
-                title="How should Leo divide 90 kr?"
-                supporting="Move money in 10 kr steps. The amounts do not need to be equal."
+                supporting={`Move money in ${formatCurrencyDisplay(wisdom.decision.increment)} steps. The amounts do not need to be equal.`}
+                supportingAccessibilityLabel={`Move money in ${formatCurrencyAccessibility(wisdom.decision.increment)} steps. The amounts do not need to be equal.`}
+                title={`How should Leo divide ${formatCurrencyDisplay(wisdom.decision.totalAmount)}?`}
+                titleAccessibilityLabel={`How should Leo divide ${formatCurrencyAccessibility(wisdom.decision.totalAmount)}?`}
               />
             </View>
-            <View accessible={false} style={styles.moneyBoardTotal}>
-              <AppText style={styles.moneyBoardTotalValue} variant="screenTitle">
-                {`${wisdom.decision.totalAmount} kr`}
+            <View
+              accessibilityLabel={formatCurrencyAccessibility(wisdom.decision.totalAmount)}
+              accessible
+              style={styles.moneyBoardTotal}
+            >
+              <AppText accessible={false} style={styles.moneyBoardTotalValue} variant="screenTitle">
+                {formatCurrencyDisplay(wisdom.decision.totalAmount)}
               </AppText>
             </View>
           </View>
@@ -628,6 +645,7 @@ export function ThreeWaysGuidedWisdomScreen({
                   amount={amount}
                   disabled={Boolean(session.moneyResponse)}
                   icon={categoryIcons[category.id]}
+                  increment={wisdom.decision.increment}
                   key={category.id}
                   label={category.label}
                   maxAmount={Math.min(wisdom.decision.totalAmount, amount + available)}
@@ -650,13 +668,25 @@ export function ThreeWaysGuidedWisdomScreen({
               <Ionicons accessible={false} color={appColors.wisdomGoldBright} name="sparkles" size={spacing.s15} />
             </View>
             <AppText tone={planValidation.isValid ? 'inverse' : 'secondary'} variant="label">Money placed</AppText>
-            <AppText accessibilityLiveRegion="polite" tone={planValidation.isValid ? 'inverse' : 'primary'} variant="sectionTitle">
-              {planValidation.total} of {wisdom.decision.totalAmount} kr
+            <AppText
+              accessibilityLabel={`${formatCurrencyAccessibility(planValidation.total)} of ${formatCurrencyAccessibility(wisdom.decision.totalAmount)}`}
+              accessibilityLiveRegion="polite"
+              tone={planValidation.isValid ? 'inverse' : 'primary'}
+              variant="sectionTitle"
+            >
+              {formatCurrencyDisplay(planValidation.total)} of {formatCurrencyDisplay(wisdom.decision.totalAmount)}
             </AppText>
-            <AppText style={styles.totalHint} tone={planValidation.isValid ? 'inverse' : 'secondary'} variant="supporting">
+            <AppText
+              accessibilityLabel={planValidation.isValid
+                ? `Every ${currencyConfig.spokenCurrencySingular} has a place.`
+                : `${formatCurrencyAccessibility(wisdom.decision.totalAmount - planValidation.total)} still needs a place.`}
+              style={styles.totalHint}
+              tone={planValidation.isValid ? 'inverse' : 'secondary'}
+              variant="supporting"
+            >
               {planValidation.isValid
-                ? 'Every krone has a place.'
-                : `${wisdom.decision.totalAmount - planValidation.total} kr still needs a place.`}
+                ? `Every ${currencyConfig.spokenCurrencySingular} has a place.`
+                : `${formatCurrencyDisplay(wisdom.decision.totalAmount - planValidation.total)} still needs a place.`}
             </AppText>
           </LinearGradient>
           {!session.moneyResponse ? (
@@ -783,7 +813,7 @@ function WelcomeStep({
         style={styles.welcomeCanvas}
       >
         <WisdomHeroCanvas
-          artworkAccessibilityLabel="90 kr beside football cards, headphones, and a wrapped gift for Mia"
+          artworkAccessibilityLabel={`${formatCurrencyAccessibility(wisdom.decision.totalAmount)} beside football cards, headphones, and a wrapped gift for Mia`}
           height={296}
           style={styles.welcomeStage}
         >
@@ -833,20 +863,29 @@ function WelcomeStep({
                   name="cash-outline"
                   size={spacing.s52}
                 />
-                <AppText style={styles.welcomeCoinLabel} tone="inverse" variant="caption">
-                  90 kr
+                <AppText
+                  accessibilityLabel={formatCurrencyAccessibility(wisdom.decision.totalAmount)}
+                  style={styles.welcomeCoinLabel}
+                  tone="inverse"
+                  variant="caption"
+                >
+                  {formatCurrencyDisplay(wisdom.decision.totalAmount)}
                 </AppText>
               </View>
             </View>
           </View>
 
           <View style={styles.welcomeHeadline}>
-            <View style={styles.welcomeHeadlineRow}>
+            <View
+              accessibilityLabel={`Leo has ${formatCurrencyAccessibility(wisdom.decision.totalAmount)}.`}
+              accessible
+              style={styles.welcomeHeadlineRow}
+            >
               <AppText style={styles.welcomeHeadlineText} tone="inverse" variant="screenTitle">
                 Leo has{' '}
               </AppText>
               <AppText style={styles.welcomeAmountNumber} tone="inverse" variant="screenTitle">
-                90 kr.
+                {formatCurrencyDisplay(wisdom.decision.totalAmount)}.
               </AppText>
             </View>
           </View>
@@ -901,11 +940,22 @@ function WelcomeStep({
 }
 
 function LastPlanCard({ session }: { session: GuidedWisdomSession }) {
+  const accessibilityLabel = [
+    `${formatCurrencyAccessibility(session.spendAmount)} for football cards`,
+    `${formatCurrencyAccessibility(session.saveAmount)} for headphones`,
+    `${formatCurrencyAccessibility(session.giveAmount)} for Mia`,
+  ].join(', ');
+
   return (
     <SurfaceCard style={styles.lastPlanCard} tone="soft">
       <AppText variant="cardTitle">Your last plan</AppText>
-      <AppText style={styles.lastPlanAmounts} tone="secondary" variant="body">
-        {session.spendAmount} kr for football cards · {session.saveAmount} kr for headphones · {session.giveAmount} kr for Mia
+      <AppText
+        accessibilityLabel={accessibilityLabel}
+        style={styles.lastPlanAmounts}
+        tone="secondary"
+        variant="body"
+      >
+        {formatCurrencyDisplay(session.spendAmount)} for football cards · {formatCurrencyDisplay(session.saveAmount)} for headphones · {formatCurrencyDisplay(session.giveAmount)} for Mia
       </AppText>
       {session.selectedTakeaway?.text ? (
         <AppText style={styles.lastPlanTakeaway} tone="brand" variant="supporting">
@@ -917,22 +967,28 @@ function LastPlanCard({ session }: { session: GuidedWisdomSession }) {
 }
 
 /**
- * Leo's six story beats, composed object-led.
+ * Leo's eight story beats, composed object-led.
  *
  * Leo has no artwork yet (see src/content/characterAssets.ts) and Cloud's
  * artwork must not stand in for him, so each scene is carried by the objects
  * that matter in the story: the money, the cards, the headphones, the gift.
  */
-function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
-  if (sceneIndex === 0) {
+function StoryMomentArtwork({
+  sceneIndex,
+  totalAmount,
+}: {
+  sceneIndex: number;
+  totalAmount: number;
+}) {
+  if (sceneIndex <= 1) {
     return (
       <LinearGradient colors={[appColors.wisdomNight, appColors.wisdomNightDeep]} style={styles.storyMoment}>
         <View accessible={false} style={styles.storyGoldOrb} />
-        <StoryVisualLabel label="MONEY AND FOOTBALL CARDS" />
+        <StoryVisualLabel label={sceneIndex === 0 ? 'MONEY AND THREE POSSIBILITIES' : 'FOOTBALL CARDS NOW'} />
         <View style={styles.sceneStage}>
           <View style={styles.amountDisc}>
             <AppText style={styles.amountDiscValue} tone="inverse" variant="screenTitle">
-              90 kr
+              {formatCurrencyDisplay(totalAmount)}
             </AppText>
           </View>
           <View accessible={false} style={styles.cardFan}>
@@ -946,7 +1002,7 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
       </LinearGradient>
     );
   }
-  if (sceneIndex === 1) {
+  if (sceneIndex === 2) {
     return (
       <LinearGradient colors={['#A97127', appColors.wisdomNight]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <StoryVisualLabel label="SAVING FOR SOMETHING BIGGER" />
@@ -959,13 +1015,19 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
             <View style={styles.goalTrack}>
               <View style={styles.goalFill} />
             </View>
-            <AppText tone="inverse" variant="supporting">120 kr still to save</AppText>
+            <AppText
+              accessibilityLabel={`${formatCurrencyAccessibility(120)} goal`}
+              tone="inverse"
+              variant="supporting"
+            >
+              {formatCurrencyDisplay(120)} goal
+            </AppText>
           </View>
         </View>
       </LinearGradient>
     );
   }
-  if (sceneIndex === 2) {
+  if (sceneIndex === 3) {
     return (
       <LinearGradient colors={['#5A3B22', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <View accessible={false} style={styles.storyGoldOrb} />
@@ -987,7 +1049,7 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
       </LinearGradient>
     );
   }
-  if (sceneIndex === 3) {
+  if (sceneIndex === 4) {
     return (
       <LinearGradient colors={[appColors.wisdomNightSoft, appColors.wisdomNightDeep]} style={[styles.storyMoment, styles.threeProps]}>
         <StoryVisualLabel label="THREE WAYS TO USE MONEY" />
@@ -997,7 +1059,7 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
       </LinearGradient>
     );
   }
-  if (sceneIndex === 4) {
+  if (sceneIndex === 5) {
     return (
       <LinearGradient colors={['#493E61', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <StoryVisualLabel label="A SMALL PAUSE" />
@@ -1017,10 +1079,10 @@ function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
   }
   return (
     <LinearGradient colors={[appColors.wisdomNight, '#276657']} style={[styles.storyMoment, styles.planProps]}>
-      <StoryVisualLabel label="A PLAN WITH ROOM FOR EACH CHOICE" />
-      <PlanProp amount="40" icon="football-outline" label="Cards" />
-      <PlanProp amount="30" icon="headset-outline" label="Headphones" />
-      <PlanProp amount="20" icon="gift-outline" label="Mia" />
+      <StoryVisualLabel label={sceneIndex === 6 ? 'A PLAN WITH ROOM FOR EACH CHOICE' : 'THREE CHOICES, THREE RESULTS'} />
+      <PlanProp amount={30} icon="football-outline" label="Cards" />
+      <PlanProp amount={40} icon="headset-outline" label="Headphones" />
+      <PlanProp amount={20} icon="gift-outline" label="Mia" />
     </LinearGradient>
   );
 }
@@ -1043,11 +1105,11 @@ function PropTile({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label
   );
 }
 
-function PlanProp({ amount, icon, label }: { amount: string; icon: keyof typeof Ionicons.glyphMap; label: string }) {
+function PlanProp({ amount, icon, label }: { amount: number; icon: keyof typeof Ionicons.glyphMap; label: string }) {
   return (
-    <View style={styles.planProp}>
+    <View accessibilityLabel={`${label}: ${formatCurrencyAccessibility(amount)}`} accessible style={styles.planProp}>
       <Ionicons color={appColors.wisdomGoldBright} name={icon} size={spacing.s24} />
-      <AppText style={styles.planAmount} tone="inverse" variant="cardTitle">{amount} kr</AppText>
+      <AppText accessible={false} style={styles.planAmount} tone="inverse" variant="cardTitle">{formatCurrencyDisplay(amount)}</AppText>
       <AppText tone="inverse" variant="caption">{label}</AppText>
     </View>
   );
@@ -1184,9 +1246,9 @@ function CompletionStep({
           <AppText accessibilityRole="header" tone="inverse" variant="cardTitle">Your plan</AppText>
         </View>
         <View style={styles.planSummaryGrid}>
-          <PlanSummaryTile icon="football-outline" label="Football cards" value={`${session.spendAmount} kr`} />
-          <PlanSummaryTile icon="headset-outline" label="Headphones" value={`${session.saveAmount} kr`} />
-          <PlanSummaryTile icon="gift-outline" label="Mia’s birthday" value={`${session.giveAmount} kr`} />
+          <PlanSummaryTile amount={session.spendAmount} icon="football-outline" label="Football cards" />
+          <PlanSummaryTile amount={session.saveAmount} icon="headset-outline" label="Headphones" />
+          <PlanSummaryTile amount={session.giveAmount} icon="gift-outline" label="Mia’s birthday" />
         </View>
         {session.selectedTakeaway?.text ? (
           <View style={styles.takeawaySummary}>
@@ -1206,20 +1268,20 @@ function CompletionStep({
 }
 
 function PlanSummaryTile({
+  amount,
   icon,
   label,
-  value,
 }: {
+  amount: number;
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
-  value: string;
 }) {
   return (
-    <View accessibilityLabel={`${label}: ${value}`} accessible style={styles.planSummaryTile}>
+    <View accessibilityLabel={`${label}: ${formatCurrencyAccessibility(amount)}`} accessible style={styles.planSummaryTile}>
       <View accessible={false} style={styles.planSummaryTileIcon}>
         <Ionicons accessible={false} color={appColors.primary} name={icon} size={spacing.s20} />
       </View>
-      <AppText style={styles.planSummaryTileValue} tone="inverse" variant="cardTitle">{value}</AppText>
+      <AppText accessible={false} style={styles.planSummaryTileValue} tone="inverse" variant="cardTitle">{formatCurrencyDisplay(amount)}</AppText>
       <AppText style={styles.planSummaryTileLabel} tone="inverse" variant="caption">{label}</AppText>
     </View>
   );
