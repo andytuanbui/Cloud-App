@@ -79,7 +79,14 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
   'WIS-MONEY-001-LIBRARY-CARD': 'cloud-home-garden',
 };
 
-/** Asset ids that do not yet have their own artwork. */
+/**
+ * Asset ids whose registry binding is a borrowed image rather than their own.
+ *
+ * This is a record of the temporary bindings above, not a runtime switch: what
+ * decides whether artwork is drawn is the manifest status, read through
+ * `hasFinalCanvasArtwork`. The six story scenes are absent because their
+ * bindings are their own approved scene images.
+ */
 export const assetIdsSharingFallbackArtwork: readonly CanvasAssetId[] = [
   'WIS-MONEY-001-WELCOME-HERO',
   'WIS-MONEY-001-TALK-WITH-CLOUD',

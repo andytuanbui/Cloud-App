@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
 import {
   isWisdomLearned,
   type ScheduledWisdom,
@@ -40,6 +41,15 @@ export function LibraryWisdomCard({
   const learned = isWisdomLearned(item.progress);
   const started = Boolean(item.progress);
   const [focused, setFocused] = useState(false);
+  // Home's compact card and the Library card are separate canvases, so the
+  // surface decides which one this instance resolves. Neither reuses the
+  // other's artwork unless the manifest ever says so.
+  const compactCardAssetId: CanvasAssetId | undefined =
+    item.wisdom.id === 'three-ways-to-use-money'
+      ? surface === 'home'
+        ? 'WIS-MONEY-001-HOME-CARD-COMPACT'
+        : 'WIS-MONEY-001-LIBRARY-CARD'
+      : undefined;
 
   if (learned && item.wisdom.id === 'three-ways-to-use-money') {
     return (
@@ -56,11 +66,7 @@ export function LibraryWisdomCard({
         ]}
       >
         <MoneyWisdomIdentityCard
-          assetId={
-            surface === 'home'
-              ? 'WIS-MONEY-001-HOME-CARD-COMPACT'
-              : 'WIS-MONEY-001-LIBRARY-CARD'
-          }
+          assetId={compactCardAssetId}
           completionLabel={completionLabel}
           focused={focused}
           mode="compact"
@@ -80,8 +86,12 @@ export function LibraryWisdomCard({
       ]}
     >
       <View style={styles.topRow}>
-        <View style={styles.artworkWrap} testID="canvas-band-WIS-MONEY-001-LIBRARY-CARD">
-          <WisdomArtworkStage mode="compact" wisdom={item.wisdom} />
+        <View style={styles.artworkWrap}>
+          <WisdomArtworkStage
+            assetId={compactCardAssetId}
+            mode="compact"
+            wisdom={item.wisdom}
+          />
           {learned ? (
             <View accessible={false} style={styles.artworkCheck}>
               <Ionicons

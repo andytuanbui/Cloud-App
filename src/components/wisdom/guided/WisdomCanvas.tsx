@@ -10,7 +10,9 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import type { CanvasAssetId } from '../../../features/wisdomCanvas/assetIds';
 import { appColors, radii, shadows, space, spacing, typography } from '../../../theme';
+import { CanvasArtworkLayer } from '../CanvasArtworkLayer';
 import { AppText } from '../../ui';
 
 /**
@@ -44,6 +46,7 @@ export function WisdomHeroCanvas({
   artwork,
   artworkAccessibilityLabel,
   artworkStyle,
+  assetId,
   children,
   colors = wisdomNightGradient,
   glow = 'gold',
@@ -54,6 +57,13 @@ export function WisdomHeroCanvas({
   artwork?: ImageSourcePropType;
   artworkAccessibilityLabel?: string;
   artworkStyle?: StyleProp<ImageStyle>;
+  /**
+   * The canvas this hero's artwork region corresponds to. When the manifest
+   * marks the asset `final`, its illustration is drawn here through the shared
+   * resolver; until then nothing is drawn and the hero keeps its gradient.
+   * `artwork` stays available for surfaces outside the canvas system.
+   */
+  assetId?: CanvasAssetId;
   children?: ReactNode;
   colors?: readonly [string, string, ...string[]];
   glow?: 'gold' | 'green' | 'none';
@@ -67,7 +77,7 @@ export function WisdomHeroCanvas({
       accessibilityLabel={artworkAccessibilityLabel}
       accessible={Boolean(artworkAccessibilityLabel)}
       style={[styles.hero, { height }, style]}
-      testID={testID}
+      testID={testID ?? (assetId ? `canvas-band-${assetId}` : undefined)}
     >
       <LinearGradient
         colors={colors}
@@ -85,6 +95,7 @@ export function WisdomHeroCanvas({
           <View accessible={false} pointerEvents="none" style={styles.glowSmall} />
         </>
       ) : null}
+      {assetId ? <CanvasArtworkLayer assetId={assetId} style={artworkStyle} /> : null}
       {artwork ? (
         <Image
           accessible={false}

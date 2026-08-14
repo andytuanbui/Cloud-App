@@ -24,8 +24,14 @@ import {
   SecondaryButton,
   SurfaceCard,
 } from '../../components/ui';
+import { CanvasArtworkLayer } from '../../components/wisdom/CanvasArtworkLayer';
 import { WisdomCanvasBand } from '../../components/wisdom/WisdomCanvasBand';
 import { cloudGuideAssets } from '../../content/characterAssets';
+import {
+  type CanvasAssetId,
+  storySceneCanvasAssetIds,
+} from '../../features/wisdomCanvas/assetIds';
+import { hasFinalCanvasArtwork } from '../../features/wisdomCanvas/manifest';
 import { formatPlacedOfTotal, formatUnits } from '../../features/guidedWisdom/allocation';
 import type { GuidedWisdomDefinition } from '../../features/guidedWisdom/types';
 import type {
@@ -388,7 +394,13 @@ export function GuidedWisdomScreen({
           </View>
           <View style={styles.storyCanvas}>
             <StorySceneCard
-              illustration={<StoryMomentArtwork sceneIndex={sceneIndex} />}
+              assetId={storySceneCanvasAssetIds[scene.id]}
+              illustration={
+                <StoryMomentArtwork
+                  assetId={storySceneCanvasAssetIds[scene.id]}
+                  sceneIndex={sceneIndex}
+                />
+              }
               illustrationAccessibilityLabel={scene.visualLabel}
               sceneCount={wisdom.storyScenes.length}
               sceneNumber={sceneIndex + 1}
@@ -682,6 +694,10 @@ function WelcomeStep({
   const problemLines = wisdom.introduction.split(/\n\s*\n/).filter(Boolean);
   const closingQuestion = problemLines[problemLines.length - 1];
   const supportingLines = problemLines.slice(1, -1);
+  // The glass props stand in for the Welcome illustration. They step aside
+  // once the illustration itself arrives; the headline still states the amount,
+  // so nothing the child needs to read lives only in the props.
+  const showPlaceholderProps = !hasFinalCanvasArtwork('WIS-MONEY-001-WELCOME-HERO');
   return (
     <>
       <LinearGradient
@@ -692,6 +708,7 @@ function WelcomeStep({
       >
         <WisdomHeroCanvas
           artworkAccessibilityLabel="90 kr beside football cards, headphones, and a wrapped gift for Mia"
+          assetId="WIS-MONEY-001-WELCOME-HERO"
           height={296}
           style={styles.welcomeStage}
           testID="canvas-band-WIS-MONEY-001-WELCOME-HERO"
@@ -710,6 +727,7 @@ function WelcomeStep({
             </View>
           </View>
 
+          {showPlaceholderProps ? (
           <View accessible={false} pointerEvents="none" style={styles.welcomeObjects}>
             <View style={styles.welcomeBadgeColumn}>
               <WisdomObjectBadge
@@ -748,6 +766,7 @@ function WelcomeStep({
               </View>
             </View>
           </View>
+          ) : null}
 
           <View style={styles.welcomeHeadline}>
             <View style={styles.welcomeHeadlineRow}>
@@ -826,13 +845,28 @@ function LastPlanCard({ session }: { session: GuidedWisdomSession }) {
 }
 
 /**
- * Leo's six story beats, composed object-led.
+ * Leo's six story beats.
  *
- * Leo has no artwork yet (see src/content/characterAssets.ts) and Cloud's
- * artwork must not stand in for him, so each scene is carried by the objects
- * that matter in the story: the money, the cards, the headphones, the gift.
+ * Each scene has its own canvas asset id. Once that scene's illustration is
+ * delivered it is drawn edge to edge in the same container; until then the
+ * scene keeps its approved object-led composition, because Leo has no artwork
+ * yet (see src/content/characterAssets.ts) and Cloud's artwork must not stand
+ * in for him. The six are never collapsed into one asset.
  */
-function StoryMomentArtwork({ sceneIndex }: { sceneIndex: number }) {
+function StoryMomentArtwork({
+  assetId,
+  sceneIndex,
+}: {
+  assetId?: CanvasAssetId;
+  sceneIndex: number;
+}) {
+  if (assetId && hasFinalCanvasArtwork(assetId)) {
+    return (
+      <View accessible={false} style={styles.storyMomentArtwork}>
+        <CanvasArtworkLayer assetId={assetId} />
+      </View>
+    );
+  }
   if (sceneIndex === 0) {
     return (
       <LinearGradient colors={[appColors.wisdomNight, appColors.wisdomNightDeep]} style={styles.storyMoment}>
@@ -989,6 +1023,11 @@ function PracticeStep({
   wisdom: GuidedStoryWisdomContent;
 }) {
   const practiceAction = getPracticeAction({ moneyPlan: plan, context: wisdom });
+  // Practice used to draw `cloudHero` unconditionally, which meant the region
+  // could never show its own canvas. The Practice illustration now owns the
+  // region; Cloud and the glass symbols are only the placeholder standing in
+  // for it, and step aside the moment the real artwork is delivered.
+  const hasPracticeArtwork = hasFinalCanvasArtwork('WIS-MONEY-001-PRACTICE-HERO');
   return (
     <LinearGradient
       colors={[appColors.wisdomNight, '#3C7568']}
@@ -1003,17 +1042,22 @@ function PracticeStep({
         style={styles.practiceVisual}
         testID="canvas-band-WIS-MONEY-001-PRACTICE-HERO"
       >
-        <View accessible={false} style={styles.practiceGlow} />
-        <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.practiceLeo} />
-        <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolPause]}>
-          <Ionicons color={appColors.wisdomGoldBright} name="pause" size={spacing.s24} />
-        </View>
-        <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolMoney]}>
-          <Ionicons color={appColors.primary} name="cash-outline" size={spacing.s24} />
-        </View>
-        <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolPeople]}>
-          <Ionicons color={appColors.primary} name="people-outline" size={spacing.s24} />
-        </View>
+        <CanvasArtworkLayer assetId="WIS-MONEY-001-PRACTICE-HERO" />
+        {hasPracticeArtwork ? null : (
+          <>
+            <View accessible={false} style={styles.practiceGlow} />
+            <Image accessible={false} resizeMode="contain" source={cloudHero} style={styles.practiceLeo} />
+            <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolPause]}>
+              <Ionicons color={appColors.wisdomGoldBright} name="pause" size={spacing.s24} />
+            </View>
+            <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolMoney]}>
+              <Ionicons color={appColors.primary} name="cash-outline" size={spacing.s24} />
+            </View>
+            <View accessible={false} style={[styles.practiceSymbol, styles.practiceSymbolPeople]}>
+              <Ionicons color={appColors.primary} name="people-outline" size={spacing.s24} />
+            </View>
+          </>
+        )}
       </View>
       <View style={styles.practiceCard}>
         <View accessible={false} style={styles.practiceIcon}>
@@ -1320,6 +1364,14 @@ const styles = StyleSheet.create({
   lastPlanCard: { padding: space.md },
   lastPlanAmounts: { marginTop: space.sm },
   lastPlanTakeaway: { marginTop: space.sm },
+  // Same container as `storyMoment`, so a delivered scene illustration fills
+  // exactly the region the object-led composition occupied.
+  storyMomentArtwork: {
+    minHeight: 286,
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+  },
   storyMoment: {
     alignItems: 'center',
     flexDirection: 'row',

@@ -1,6 +1,9 @@
 import { Image, StyleSheet, View } from 'react-native';
 import type { WisdomContent } from '../../content/wisdoms';
+import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
+import { hasFinalCanvasArtwork } from '../../features/wisdomCanvas/manifest';
 import { appColors, radii } from '../../theme';
+import { CanvasArtworkLayer } from './CanvasArtworkLayer';
 
 const artworkBackgrounds: Record<string, string> = {
   'needs-vs-wants': appColors.warmGoldSoft,
@@ -11,9 +14,17 @@ const artworkBackgrounds: Record<string, string> = {
 const moneyScene = require('../../../assets/cloud/cloud-neighborhood-home.png');
 
 export function WisdomArtworkStage({
+  assetId,
   mode = 'feature',
   wisdom,
 }: {
+  /**
+   * The card canvas this artwork region belongs to, for Wisdoms that are in
+   * the Canvas system. When that asset's illustration is delivered it takes
+   * the region over; until then the region keeps the existing approved image
+   * for the Wisdom, so the card looks unchanged.
+   */
+  assetId?: CanvasAssetId;
   mode?: 'feature' | 'compact';
   wisdom: WisdomContent;
 }) {
@@ -22,6 +33,7 @@ export function WisdomArtworkStage({
   const pauseCaptionFreeCrop = wisdom.id === 'pause-before-you-answer';
   const source =
     wisdom.id === 'three-ways-to-use-money' ? moneyScene : wisdom.artwork;
+  const hasArtwork = Boolean(assetId) && hasFinalCanvasArtwork(assetId as string);
 
   return (
     <View
@@ -31,19 +43,23 @@ export function WisdomArtworkStage({
         compact && styles.compactStage,
         { backgroundColor: artworkBackgrounds[wisdom.id] ?? appColors.surfaceSoft },
       ]}
+      testID={assetId ? `canvas-band-${assetId}` : undefined}
     >
-      <Image
-        accessible={false}
-        resizeMode="cover"
-        source={source}
-        style={[
-          styles.coverImage,
-          needsLabelFreeCrop && styles.needsFeatureCrop,
-          needsLabelFreeCrop && compact && styles.needsCompactCrop,
-          pauseCaptionFreeCrop && styles.pauseFeatureCrop,
-          pauseCaptionFreeCrop && compact && styles.pauseCompactCrop,
-        ]}
-      />
+      {hasArtwork ? null : (
+        <Image
+          accessible={false}
+          resizeMode="cover"
+          source={source}
+          style={[
+            styles.coverImage,
+            needsLabelFreeCrop && styles.needsFeatureCrop,
+            needsLabelFreeCrop && compact && styles.needsCompactCrop,
+            pauseCaptionFreeCrop && styles.pauseFeatureCrop,
+            pauseCaptionFreeCrop && compact && styles.pauseCompactCrop,
+          ]}
+        />
+      )}
+      {assetId ? <CanvasArtworkLayer assetId={assetId} /> : null}
     </View>
   );
 }

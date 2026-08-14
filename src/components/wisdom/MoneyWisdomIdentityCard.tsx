@@ -2,7 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 import type { WisdomContent } from '../../content/wisdoms';
+import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
+import { hasFinalCanvasArtwork } from '../../features/wisdomCanvas/manifest';
 import { appColors, radii, shadows, space, spacing, typography } from '../../theme';
+import { CanvasArtworkLayer } from './CanvasArtworkLayer';
 import { AppText } from '../ui';
 
 /**
@@ -28,15 +31,20 @@ export function MoneyWisdomIdentityCard({
   /**
    * Which canvas this card's artwork region corresponds to. The feature and
    * compact Home cards and the Library card are three separate assets, so the
-   * id has to come from the surface rendering the card.
+   * id has to come from the surface rendering the card. Each resolves its own
+   * artwork; none of them borrows another's.
    */
-  assetId?: string;
+  assetId?: CanvasAssetId;
   completionLabel?: string;
   focused?: boolean;
   mode?: 'feature' | 'compact';
   wisdom: WisdomContent;
 }) {
   const compact = mode === 'compact';
+  // The coin and the three object orbs are the object-led placeholder for this
+  // card's canvas. They give way to the card's own illustration, and only to
+  // that one — an id with no delivered artwork keeps the placeholder.
+  const hasArtwork = Boolean(assetId) && hasFinalCanvasArtwork(assetId as string);
 
   return (
     <View
@@ -54,19 +62,26 @@ export function MoneyWisdomIdentityCard({
         start={{ x: 0, y: 0 }}
         style={StyleSheet.absoluteFillObject}
       />
-      <View accessible={false} pointerEvents="none" style={styles.identityGlow} />
-      <View
-        accessible={false}
-        pointerEvents="none"
-        style={[styles.identityCoin, compact && styles.compactCoin]}
-      >
-        <AppText style={[styles.identityCoinValue, compact && styles.compactCoinValue]} tone="inverse" variant="screenTitle">
-          90 kr
-        </AppText>
-      </View>
+      {assetId ? <CanvasArtworkLayer assetId={assetId} /> : null}
+      {hasArtwork ? null : (
+        <>
+          <View accessible={false} pointerEvents="none" style={styles.identityGlow} />
+          <View
+            accessible={false}
+            pointerEvents="none"
+            style={[styles.identityCoin, compact && styles.compactCoin]}
+          >
+            <AppText style={[styles.identityCoinValue, compact && styles.compactCoinValue]} tone="inverse" variant="screenTitle">
+              90 kr
+            </AppText>
+          </View>
+        </>
+      )}
       <View style={styles.topRow}>
         <View accessible={false} style={styles.objectCluster}>
-          {identityProps.map((icon) => (
+          {hasArtwork
+            ? null
+            : identityProps.map((icon) => (
             <View key={icon} style={[styles.objectOrb, compact && styles.compactObjectOrb]}>
               <Ionicons
                 color={appColors.primary}

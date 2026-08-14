@@ -8,5 +8,15 @@
 export * from './types';
 export * from './assetIds';
 export * from './validation';
-export { canvasManifestByAssetId, getCanvasMetadata, threeWaysCanvasManifest } from './manifest';
-export { resolveCanvasImage, tryResolveCanvasImage } from './registry';
+export {
+  canvasManifestByAssetId,
+  getCanvasMetadata,
+  hasFinalCanvasArtwork,
+  threeWaysCanvasManifest,
+} from './manifest';
+export {
+  resolveCanvasImage,
+  resolveFinalCanvasImage,
+  tryResolveCanvasImage,
+} from './registry';
+export * from './renderPaths';

@@ -19,3 +19,21 @@ export function getCanvasMetadata(
 ): CanvasAssetMetadata | undefined {
   return canvasManifestByAssetId[assetId as CanvasAssetId];
 }
+
+/**
+ * Whether this asset's own final illustration has been delivered.
+ *
+ * This is the single switch every Wisdom surface asks before drawing artwork.
+ * While an asset is `awaiting-final-art` the surface keeps its approved
+ * placeholder treatment — the wisdom-night gradient and its object-led props —
+ * because the registry's temporary binding for that id is a nearby existing
+ * image, not the artwork the canvas was specified for. Drawing that stand-in
+ * would misrepresent the design and, worse, put an unrelated character in
+ * front of a child.
+ *
+ * When the real PNG lands, the manifest entry flips to `final` and every
+ * surface bound to that id starts rendering it with no further code change.
+ */
+export function hasFinalCanvasArtwork(assetId: string): boolean {
+  return getCanvasMetadata(assetId)?.status === 'final';
+}

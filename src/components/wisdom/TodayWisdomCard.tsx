@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { WisdomContent } from '../../content/wisdoms';
+import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
 import type { WisdomProgress } from '../../state/types';
 import { isWisdomLearned } from '../../state/useDailyWisdoms';
 import { appColors, radii, shadows, space, spacing } from '../../theme';
@@ -27,6 +28,10 @@ export function TodayWisdomCard({
   const learned = isWisdomLearned(progress);
   const started = Boolean(progress);
   const [focused, setFocused] = useState(false);
+  // Only Wisdoms in the Canvas system have a card asset. The feature card is
+  // its own canvas — it never shares the compact one's artwork.
+  const homeCardAssetId: CanvasAssetId | undefined =
+    wisdom.id === 'three-ways-to-use-money' ? 'WIS-MONEY-001-HOME-CARD' : undefined;
 
   if (learned && wisdom.id === 'three-ways-to-use-money') {
     return (
@@ -61,8 +66,8 @@ export function TodayWisdomCard({
       ]}
     >
       <View style={styles.clip}>
-        <View style={styles.artworkWrap} testID="canvas-band-WIS-MONEY-001-HOME-CARD">
-          <WisdomArtworkStage wisdom={wisdom} />
+        <View style={styles.artworkWrap}>
+          <WisdomArtworkStage assetId={homeCardAssetId} wisdom={wisdom} />
           {learned ? (
             <View accessible={false} style={styles.artworkCheck}>
               <Ionicons

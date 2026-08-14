@@ -1,11 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { ReactNode } from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
 import {
-  assetIdsSharingFallbackArtwork,
-  type CanvasAssetId,
-} from '../../features/wisdomCanvas/assetIds';
-import { canvasManifestByAssetId } from '../../features/wisdomCanvas/manifest';
+  canvasManifestByAssetId,
+  hasFinalCanvasArtwork,
+} from '../../features/wisdomCanvas/manifest';
 import { tryResolveCanvasImage } from '../../features/wisdomCanvas/registry';
 import type { CanvasFitMode } from '../../features/wisdomCanvas/types';
 import { appColors, radii, space, typography } from '../../theme';
@@ -50,8 +50,10 @@ export function WisdomCanvas({
   // Assets still waiting on final art borrow a nearby approved image so the
   // registry always resolves. Drawing that stand-in inside a fixed band would
   // crop it badly and misrepresent the design, so the band shows the approved
-  // gradient until the real canvas lands.
-  const awaitingFinalArt = assetIdsSharingFallbackArtwork.includes(assetId);
+  // gradient until the real canvas lands. The manifest status is the switch —
+  // it is the same one every other Wisdom surface reads, so a delivered canvas
+  // turns on everywhere at once rather than in whichever list was remembered.
+  const awaitingFinalArt = !hasFinalCanvasArtwork(assetId);
 
   if (!source || awaitingFinalArt) {
     // Missing artwork is a content error. In development it is made obvious;

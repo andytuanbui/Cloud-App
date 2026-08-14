@@ -5,6 +5,7 @@ import {
   canvasSourceKeyByAssetId,
   isCanvasAssetId,
 } from './assetIds';
+import { hasFinalCanvasArtwork } from './manifest';
 
 /**
  * React Native canvas image registry.
@@ -42,6 +43,22 @@ export function tryResolveCanvasImage(
   assetId: string,
 ): ImageSourcePropType | undefined {
   if (!isCanvasAssetId(assetId)) return undefined;
+  return resolveCanvasImage(assetId);
+}
+
+/**
+ * The one resolver every Wisdom surface calls.
+ *
+ * Returns the asset's own final illustration, or `undefined` while the
+ * manifest still marks it `awaiting-final-art`. `undefined` is the normal
+ * case today and means "keep the approved placeholder treatment" — it is not
+ * an error, and callers must not substitute a portrait of their own.
+ */
+export function resolveFinalCanvasImage(
+  assetId: string,
+): ImageSourcePropType | undefined {
+  if (!isCanvasAssetId(assetId)) return undefined;
+  if (!hasFinalCanvasArtwork(assetId)) return undefined;
   return resolveCanvasImage(assetId);
 }
 

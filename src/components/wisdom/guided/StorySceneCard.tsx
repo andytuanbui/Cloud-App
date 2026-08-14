@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import type { CanvasAssetId } from '../../../features/wisdomCanvas/assetIds';
 import { appColors, radii, space, spacing } from '../../../theme';
 import { AppText, SurfaceCard } from '../../ui';
 
 export function StorySceneCard({
+  assetId,
   illustration,
   illustrationAccessibilityLabel,
   illustrationContainerStyle,
@@ -12,6 +14,11 @@ export function StorySceneCard({
   text,
   title,
 }: {
+  /**
+   * The canvas asset for this scene. Each of the six scenes has its own id, so
+   * the container is identified per scene rather than by a shared story id.
+   */
+  assetId?: CanvasAssetId;
   illustration: ReactNode;
   illustrationAccessibilityLabel?: string;
   illustrationContainerStyle?: StyleProp<ViewStyle>;
@@ -30,7 +37,7 @@ export function StorySceneCard({
         accessible={hasDistinctIllustrationLabel}
         importantForAccessibility={hasDistinctIllustrationLabel ? 'auto' : 'no-hide-descendants'}
         style={[styles.illustration, illustrationContainerStyle]}
-        testID="canvas-band-WIS-MONEY-001-STORY-SCENE"
+        testID={assetId ? `canvas-band-${assetId}` : 'canvas-band-WIS-MONEY-001-STORY-SCENE'}
       >
         {illustration}
       </View>
