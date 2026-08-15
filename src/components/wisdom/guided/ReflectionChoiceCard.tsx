@@ -12,6 +12,7 @@ export function ReflectionChoiceCard({
   onPress,
   selected,
   supportingText,
+  testID,
 }: {
   accessibilityLabel?: string;
   disabled?: boolean;
@@ -20,6 +21,8 @@ export function ReflectionChoiceCard({
   onPress: () => void;
   selected: boolean;
   supportingText?: string;
+  /** Stable hook for automated layout measurement. Inert on native. */
+  testID?: string;
 }) {
   const [focused, setFocused] = useState(false);
 
@@ -39,6 +42,7 @@ export function ReflectionChoiceCard({
         pressed && !disabled && styles.pressed,
         disabled && styles.disabled,
       ]}
+      testID={testID}
     >
       <View style={[styles.indicator, selected && styles.indicatorSelected]}>
         <Ionicons

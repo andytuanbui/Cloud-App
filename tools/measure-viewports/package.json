@@ -1,0 +1,13 @@
+{
+  "name": "cloudwise-measure-viewports",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Automated Wisdom Canvas layout measurement against a running Expo web build. Isolated from the app's own dependency tree on purpose.",
+  "scripts": {
+    "measure": "node run.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.49.1"
+  }
+}

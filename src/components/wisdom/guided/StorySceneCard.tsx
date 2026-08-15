@@ -99,7 +99,12 @@ const styles = StyleSheet.create({
     borderRadius: radii.large,
     borderWidth: 1,
     marginHorizontal: space.sm,
-    marginTop: -space.xl,
+    // Must never be negative. This card used to sit at `marginTop: -space.xl`,
+    // which pulled it over the bottom 24 px of the illustration region: the
+    // container measured 287 but an illustrator could only ever see 263 of it.
+    // The card now starts below the artwork, so the declared 287 and the
+    // visible 287 are the same number.
+    marginTop: 0,
     padding: space.lg,
     position: 'relative',
   },

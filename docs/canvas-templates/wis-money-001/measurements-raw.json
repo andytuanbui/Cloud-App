@@ -1,0 +1,2704 @@
+{
+  "capturedAt": "2026-08-15T14:38:15.766Z",
+  "baseUrl": "http://localhost:8082",
+  "method": "Playwright Chromium, real viewport, getBoundingClientRect on the live DOM. Stage identity asserted via guided-stage-<stage> before every reading. The automation profile is seeded onto the programme day this Wisdom is scheduled; no app scheduling or learning behaviour is modified.",
+  "scheduledDayOffset": 2,
+  "runs": [
+    {
+      "requested": {
+        "width": 375,
+        "height": 812
+      },
+      "actual": {
+        "width": 375,
+        "height": 812
+      },
+      "stages": [
+        {
+          "stage": "story-scene-01",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-01",
+              "canvasWidth": 315,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Continue",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 787,
+            "bottom": 843,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Previous",
+            "Continue"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 837,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 92,
+          "scrollTop": 0
+        },
+        {
+          "stage": "story-scene-06",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-06",
+              "canvasWidth": 315,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 739,
+              "bottom": 795,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 739,
+              "bottom": 795,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 837,
+              "bottom": 893,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Talk with Cloud",
+              "top": 837,
+              "bottom": 893,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 837,
+            "bottom": 893,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Previous",
+            "Talk with Cloud"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 887,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 142,
+          "scrollTop": 0
+        },
+        {
+          "stage": "talk-before-answering",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 335,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 593,
+              "bottom": 661,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 669,
+              "bottom": 737,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 745,
+              "bottom": 813,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 821,
+              "bottom": 889,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-talk-choice-not-sure",
+            "label": "I am not sure",
+            "top": 821,
+            "bottom": 889,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "No",
+            "I am not sure"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 879,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 134,
+          "scrollTop": 0
+        },
+        {
+          "stage": "talk-after-answering",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 335,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 593,
+              "bottom": 661,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 669,
+              "bottom": 737,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 745,
+              "bottom": 813,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 821,
+              "bottom": 889,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-game-item",
+              "label": "I wanted a game item",
+              "top": 1115,
+              "bottom": 1163,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-toy",
+              "label": "I wanted a toy",
+              "top": 1171,
+              "bottom": 1219,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-sweets",
+              "label": "I wanted some sweets",
+              "top": 1227,
+              "bottom": 1275,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-something-bigger",
+              "label": "I wanted to save for something bigger",
+              "top": 1283,
+              "bottom": 1343,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-cannot-remember",
+              "label": "I cannot remember",
+              "top": 1351,
+              "bottom": 1399,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-submit",
+              "label": "Tell Cloud",
+              "top": 1574,
+              "bottom": 1630,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-talk-continue",
+              "label": "Make Your Choice",
+              "top": 1874,
+              "bottom": 1930,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-talk-continue",
+            "label": "Make Your Choice",
+            "top": 1874,
+            "bottom": 1930,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "No",
+            "I am not sure",
+            "I wanted a game item",
+            "I wanted a toy",
+            "I wanted some sweets",
+            "I wanted to save for something bigger",
+            "I cannot remember",
+            "Tell Cloud",
+            "Make Your Choice"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1920,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 1175,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-on-entry",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 335,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1122,
+              "bottom": 1178,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1122,
+            "bottom": 1178,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1168,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 423,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-fully-allocated",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 335,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1122,
+              "bottom": 1178,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1122,
+            "bottom": 1178,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1168,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 423,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-after-cloud-responds",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 335,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 580,
+              "bottom": 624,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 750,
+              "bottom": 794,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 925,
+              "bottom": 969,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": null,
+              "label": "Change My Plan",
+              "top": 1380,
+              "bottom": 1436,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-keep",
+              "label": "Keep My Plan",
+              "top": 1380,
+              "bottom": 1436,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Change My Plan",
+            "top": 1380,
+            "bottom": 1436,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "Change My Plan",
+            "Keep My Plan"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1426,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 681,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-on-entry",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 335,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 552,
+              "bottom": 641,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 552,
+              "bottom": 620,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 893,
+              "bottom": 949,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-takeaway-response-submit",
+            "label": "See What Cloud Remembered",
+            "top": 893,
+            "bottom": 949,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "See What Cloud Remembered"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 939,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 194,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-after-choosing",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 335,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 552,
+              "bottom": 641,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 552,
+              "bottom": 620,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 893,
+              "bottom": 949,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-takeaway-continue",
+              "label": "Try It in Real Life",
+              "top": 1223,
+              "bottom": 1279,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-takeaway-continue",
+            "label": "Try It in Real Life",
+            "top": 1223,
+            "bottom": 1279,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "See What Cloud Remembered",
+            "Try It in Real Life"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1269,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 524,
+          "scrollTop": 0
+        },
+        {
+          "stage": "practice",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-PRACTICE-HERO",
+              "canvasWidth": 301,
+              "canvasHeight": 196,
+              "canvasTop": 169,
+              "canvasBottom": 365,
+              "firstContentBelowY": 365,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 196
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-practice-complete",
+              "label": "I’ll Try This",
+              "top": 703,
+              "bottom": 759,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-practice-complete",
+            "label": "I’ll Try This",
+            "top": 703,
+            "bottom": 759,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": true,
+          "scrollContentHeight": 749,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 4,
+          "scrollTop": 0
+        },
+        {
+          "stage": "completion",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-COMPLETION-HERO",
+              "canvasWidth": 301,
+              "canvasHeight": 220,
+              "canvasTop": 112,
+              "canvasBottom": 332,
+              "firstContentBelowY": 332,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 220
+            }
+          ],
+          "interactive": [
+            {
+              "testId": "guided-cta-completion-exit",
+              "label": "Back to Home",
+              "top": 964,
+              "bottom": 1020,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-completion-exit",
+            "label": "Back to Home",
+            "top": 964,
+            "bottom": 1020,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Back to Home"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1010,
+          "scrollViewportHeight": 745,
+          "scrollOverflowPx": 265,
+          "scrollTop": 0
+        }
+      ],
+      "notes": [
+        "seeded programme day 2",
+        "entered via wisdom-card-today-open-three-ways-to-use-money"
+      ]
+    },
+    {
+      "requested": {
+        "width": 390,
+        "height": 844
+      },
+      "actual": {
+        "width": 390,
+        "height": 844
+      },
+      "stages": [
+        {
+          "stage": "story-scene-01",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-01",
+              "canvasWidth": 330,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Continue",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 787,
+            "bottom": 843,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": true,
+          "scrollContentHeight": 837,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 60,
+          "scrollTop": 0
+        },
+        {
+          "stage": "story-scene-06",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-06",
+              "canvasWidth": 330,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 713,
+              "bottom": 769,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 713,
+              "bottom": 769,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 811,
+              "bottom": 867,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Talk with Cloud",
+              "top": 811,
+              "bottom": 867,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 811,
+            "bottom": 867,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Previous",
+            "Talk with Cloud"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 861,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 84,
+          "scrollTop": 0
+        },
+        {
+          "stage": "talk-before-answering",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 350,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 593,
+              "bottom": 661,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 669,
+              "bottom": 737,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 745,
+              "bottom": 813,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 821,
+              "bottom": 889,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-talk-choice-not-sure",
+            "label": "I am not sure",
+            "top": 821,
+            "bottom": 889,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "I am not sure"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 879,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 102,
+          "scrollTop": 0
+        },
+        {
+          "stage": "talk-after-answering",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 350,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 593,
+              "bottom": 661,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 669,
+              "bottom": 737,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 745,
+              "bottom": 813,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 821,
+              "bottom": 889,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-game-item",
+              "label": "I wanted a game item",
+              "top": 1091,
+              "bottom": 1139,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-toy",
+              "label": "I wanted a toy",
+              "top": 1147,
+              "bottom": 1195,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-sweets",
+              "label": "I wanted some sweets",
+              "top": 1203,
+              "bottom": 1251,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-something-bigger",
+              "label": "I wanted to save for something bigger",
+              "top": 1259,
+              "bottom": 1307,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-cannot-remember",
+              "label": "I cannot remember",
+              "top": 1315,
+              "bottom": 1363,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-submit",
+              "label": "Tell Cloud",
+              "top": 1538,
+              "bottom": 1594,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-talk-continue",
+              "label": "Make Your Choice",
+              "top": 1814,
+              "bottom": 1870,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-talk-continue",
+            "label": "Make Your Choice",
+            "top": 1814,
+            "bottom": 1870,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "I am not sure",
+            "I wanted a game item",
+            "I wanted a toy",
+            "I wanted some sweets",
+            "I wanted to save for something bigger",
+            "I cannot remember",
+            "Tell Cloud",
+            "Make Your Choice"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1860,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 1083,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-on-entry",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 350,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1112,
+              "bottom": 1168,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1112,
+            "bottom": 1168,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1158,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 381,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-fully-allocated",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 350,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1112,
+              "bottom": 1168,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1112,
+            "bottom": 1168,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1158,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 381,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-after-cloud-responds",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 350,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 575,
+              "bottom": 619,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 745,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 915,
+              "bottom": 959,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": null,
+              "label": "Change My Plan",
+              "top": 1346,
+              "bottom": 1402,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-keep",
+              "label": "Keep My Plan",
+              "top": 1346,
+              "bottom": 1402,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Change My Plan",
+            "top": 1346,
+            "bottom": 1402,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "Change My Plan",
+            "Keep My Plan"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1392,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 615,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-on-entry",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 350,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 552,
+              "bottom": 641,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 552,
+              "bottom": 620,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 893,
+              "bottom": 949,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-takeaway-response-submit",
+            "label": "See What Cloud Remembered",
+            "top": 893,
+            "bottom": 949,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "See What Cloud Remembered"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 939,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 162,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-after-choosing",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 350,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 552,
+              "bottom": 641,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 552,
+              "bottom": 620,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 649,
+              "bottom": 738,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 893,
+              "bottom": 949,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-takeaway-continue",
+              "label": "Try It in Real Life",
+              "top": 1223,
+              "bottom": 1279,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-takeaway-continue",
+            "label": "Try It in Real Life",
+            "top": 1223,
+            "bottom": 1279,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "See What Cloud Remembered",
+            "Try It in Real Life"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1269,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 492,
+          "scrollTop": 0
+        },
+        {
+          "stage": "practice",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-PRACTICE-HERO",
+              "canvasWidth": 316,
+              "canvasHeight": 196,
+              "canvasTop": 169,
+              "canvasBottom": 365,
+              "firstContentBelowY": 365,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 196
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-practice-complete",
+              "label": "I’ll Try This",
+              "top": 703,
+              "bottom": 759,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-practice-complete",
+            "label": "I’ll Try This",
+            "top": 703,
+            "bottom": 759,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": false,
+          "scrollContentHeight": null,
+          "scrollViewportHeight": null,
+          "scrollOverflowPx": 0,
+          "scrollTop": null
+        },
+        {
+          "stage": "completion",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-COMPLETION-HERO",
+              "canvasWidth": 316,
+              "canvasHeight": 220,
+              "canvasTop": 112,
+              "canvasBottom": 332,
+              "firstContentBelowY": 332,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 220
+            }
+          ],
+          "interactive": [
+            {
+              "testId": "guided-cta-completion-exit",
+              "label": "Back to Home",
+              "top": 940,
+              "bottom": 996,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-completion-exit",
+            "label": "Back to Home",
+            "top": 940,
+            "bottom": 996,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Back to Home"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 986,
+          "scrollViewportHeight": 777,
+          "scrollOverflowPx": 209,
+          "scrollTop": 0
+        }
+      ],
+      "notes": [
+        "seeded programme day 2",
+        "entered via wisdom-card-today-open-three-ways-to-use-money"
+      ]
+    },
+    {
+      "requested": {
+        "width": 430,
+        "height": 932
+      },
+      "actual": {
+        "width": 430,
+        "height": 932
+      },
+      "stages": [
+        {
+          "stage": "story-scene-01",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-01",
+              "canvasWidth": 370,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 665,
+              "bottom": 721,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 665,
+              "bottom": 721,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 763,
+              "bottom": 819,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Continue",
+              "top": 763,
+              "bottom": 819,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 763,
+            "bottom": 819,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": false,
+          "scrollContentHeight": null,
+          "scrollViewportHeight": null,
+          "scrollOverflowPx": 0,
+          "scrollTop": null
+        },
+        {
+          "stage": "story-scene-06",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-STORY-SCENE-06",
+              "canvasWidth": 370,
+              "canvasHeight": 287,
+              "canvasTop": 162,
+              "canvasBottom": 449,
+              "firstContentBelowY": 449,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 287
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Read this story scene aloud",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Replay this story scene",
+              "top": 689,
+              "bottom": 745,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": null,
+              "label": "Previous",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-story-next",
+              "label": "Talk with Cloud",
+              "top": 787,
+              "bottom": 843,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Previous",
+            "top": 787,
+            "bottom": 843,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": false,
+          "scrollContentHeight": null,
+          "scrollViewportHeight": null,
+          "scrollOverflowPx": 0,
+          "scrollTop": null
+        },
+        {
+          "stage": "talk-before-answering",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 390,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 569,
+              "bottom": 637,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 645,
+              "bottom": 713,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 721,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 797,
+              "bottom": 865,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-talk-choice-not-sure",
+            "label": "I am not sure",
+            "top": 797,
+            "bottom": 865,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": false,
+          "scrollContentHeight": null,
+          "scrollViewportHeight": null,
+          "scrollOverflowPx": 0,
+          "scrollTop": null
+        },
+        {
+          "stage": "talk-after-answering",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TALK-WITH-CLOUD",
+              "canvasWidth": 390,
+              "canvasHeight": 240,
+              "canvasTop": 87,
+              "canvasBottom": 327,
+              "firstContentBelowY": 339,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 240
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-yes-many-times",
+              "label": "Yes, many times",
+              "top": 569,
+              "bottom": 637,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-sometimes",
+              "label": "Sometimes",
+              "top": 645,
+              "bottom": 713,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-no",
+              "label": "No",
+              "top": 721,
+              "bottom": 789,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-choice-not-sure",
+              "label": "I am not sure",
+              "top": 797,
+              "bottom": 865,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-talk-response-suggestion-game-item",
+              "label": "I wanted a game item",
+              "top": 1067,
+              "bottom": 1115,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-toy",
+              "label": "I wanted a toy",
+              "top": 1067,
+              "bottom": 1115,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-sweets",
+              "label": "I wanted some sweets",
+              "top": 1123,
+              "bottom": 1171,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-something-bigger",
+              "label": "I wanted to save for something bigger",
+              "top": 1179,
+              "bottom": 1227,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-suggestion-cannot-remember",
+              "label": "I cannot remember",
+              "top": 1235,
+              "bottom": 1283,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-talk-response-submit",
+              "label": "Tell Cloud",
+              "top": 1458,
+              "bottom": 1514,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-talk-continue",
+              "label": "Make Your Choice",
+              "top": 1710,
+              "bottom": 1766,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-talk-continue",
+            "label": "Make Your Choice",
+            "top": 1710,
+            "bottom": 1766,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "I wanted a game item",
+            "I wanted a toy",
+            "I wanted some sweets",
+            "I wanted to save for something bigger",
+            "I cannot remember",
+            "Tell Cloud",
+            "Make Your Choice"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1756,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 891,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-on-entry",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 390,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1088,
+              "bottom": 1144,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1088,
+            "bottom": 1144,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1134,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 269,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-fully-allocated",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 390,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-evaluate",
+              "label": "See What Cloud Thinks",
+              "top": 1088,
+              "bottom": 1144,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-choice-evaluate",
+            "label": "See What Cloud Thinks",
+            "top": 1088,
+            "bottom": 1144,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "See What Cloud Thinks"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1134,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 269,
+          "scrollTop": 0
+        },
+        {
+          "stage": "your-choice-after-cloud-responds",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-CHOICE-BACKGROUND",
+              "canvasWidth": 390,
+              "canvasHeight": 190,
+              "canvasTop": 87,
+              "canvasBottom": 277,
+              "firstContentBelowY": 289,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 190
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-decrease",
+              "label": "Remove 10 kr from Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-spend-increase",
+              "label": "Add 10 kr to Spend now",
+              "top": 551,
+              "bottom": 595,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-decrease",
+              "label": "Remove 10 kr from Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-save-increase",
+              "label": "Add 10 kr to Save for later",
+              "top": 721,
+              "bottom": 765,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-stepper-give-decrease",
+              "label": "Remove 10 kr from Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-stepper-give-increase",
+              "label": "Add 10 kr to Give or help",
+              "top": 891,
+              "bottom": 935,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": null,
+              "label": "Change My Plan",
+              "top": 1322,
+              "bottom": 1378,
+              "belowFirstViewport": true
+            },
+            {
+              "testId": "guided-cta-choice-keep",
+              "label": "Keep My Plan",
+              "top": 1322,
+              "bottom": 1378,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": null,
+            "label": "Change My Plan",
+            "top": 1322,
+            "bottom": 1378,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Remove 10 kr from Give or help",
+            "Add 10 kr to Give or help",
+            "Change My Plan",
+            "Keep My Plan"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1368,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 503,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-on-entry",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 390,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 528,
+              "bottom": 596,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 528,
+              "bottom": 596,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 604,
+              "bottom": 672,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 604,
+              "bottom": 672,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 827,
+              "bottom": 883,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-takeaway-response-submit",
+            "label": "See What Cloud Remembered",
+            "top": 827,
+            "bottom": 883,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": true,
+          "scrollContentHeight": 873,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 8,
+          "scrollTop": 0
+        },
+        {
+          "stage": "takeaway-after-choosing",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-TAKEAWAY-BACKGROUND",
+              "canvasWidth": 390,
+              "canvasHeight": 170,
+              "canvasTop": 87,
+              "canvasBottom": 257,
+              "firstContentBelowY": 269,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 170
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-not-spend-everything",
+              "label": "I do not need to spend everything",
+              "top": 528,
+              "bottom": 596,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-future-goals",
+              "label": "Saving helps future goals",
+              "top": 528,
+              "bottom": 596,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-help-others",
+              "label": "Money can help other people",
+              "top": 604,
+              "bottom": 672,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-suggestion-what-matters",
+              "label": "Balance depends on what matters",
+              "top": 604,
+              "bottom": 672,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-takeaway-response-submit",
+              "label": "See What Cloud Remembered",
+              "top": 827,
+              "bottom": 883,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-takeaway-continue",
+              "label": "Try It in Real Life",
+              "top": 1131,
+              "bottom": 1187,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-takeaway-continue",
+            "label": "Try It in Real Life",
+            "top": 1131,
+            "bottom": 1187,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Try It in Real Life"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 1177,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 312,
+          "scrollTop": 0
+        },
+        {
+          "stage": "practice",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-PRACTICE-HERO",
+              "canvasWidth": 356,
+              "canvasHeight": 196,
+              "canvasTop": 169,
+              "canvasBottom": 365,
+              "firstContentBelowY": 365,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 196
+            }
+          ],
+          "interactive": [
+            {
+              "testId": null,
+              "label": "Go back",
+              "top": 11,
+              "bottom": 55,
+              "belowFirstViewport": false
+            },
+            {
+              "testId": "guided-cta-practice-complete",
+              "label": "I’ll Try This",
+              "top": 677,
+              "bottom": 733,
+              "belowFirstViewport": false
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-practice-complete",
+            "label": "I’ll Try This",
+            "top": 677,
+            "bottom": 733,
+            "belowFirstViewport": false
+          },
+          "belowFirstViewport": [],
+          "scrollRequired": false,
+          "scrollContentHeight": null,
+          "scrollViewportHeight": null,
+          "scrollOverflowPx": 0,
+          "scrollTop": null
+        },
+        {
+          "stage": "completion",
+          "viewport": {
+            "width": 430,
+            "height": 932
+          },
+          "bands": [
+            {
+              "assetId": "WIS-MONEY-001-COMPLETION-HERO",
+              "canvasWidth": 356,
+              "canvasHeight": 220,
+              "canvasTop": 112,
+              "canvasBottom": 332,
+              "firstContentBelowY": 332,
+              "occlusionPx": 0,
+              "visibleArtworkHeight": 220
+            }
+          ],
+          "interactive": [
+            {
+              "testId": "guided-cta-completion-exit",
+              "label": "Back to Home",
+              "top": 899,
+              "bottom": 955,
+              "belowFirstViewport": true
+            }
+          ],
+          "lowestInteractive": {
+            "testId": "guided-cta-completion-exit",
+            "label": "Back to Home",
+            "top": 899,
+            "bottom": 955,
+            "belowFirstViewport": true
+          },
+          "belowFirstViewport": [
+            "Back to Home"
+          ],
+          "scrollRequired": true,
+          "scrollContentHeight": 945,
+          "scrollViewportHeight": 865,
+          "scrollOverflowPx": 80,
+          "scrollTop": 0
+        }
+      ],
+      "notes": [
+        "seeded programme day 2",
+        "entered via wisdom-card-today-open-three-ways-to-use-money"
+      ]
+    }
+  ]
+}

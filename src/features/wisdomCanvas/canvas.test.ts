@@ -289,7 +289,7 @@ describe('rejected reference artwork is quarantined', () => {
     for (const asset of manifest.assets) {
       assert.ok(asset.aspectRatio > 1, `${asset.assetId} must be a landscape band`);
     }
-    // The shorter the band, the wider its ratio. Takeaway (180) is the
+    // The shorter the band, the wider its ratio. Takeaway (170) is the
     // shortest stage band, Talk (240) the tallest.
     assert.ok(
       byId['WIS-MONEY-001-TAKEAWAY-BACKGROUND'].aspectRatio >

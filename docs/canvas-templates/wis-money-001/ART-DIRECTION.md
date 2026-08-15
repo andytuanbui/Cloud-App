@@ -122,8 +122,8 @@ this.
 | Welcome hero | 296 | Object-led opening |
 | Story scene ×6 | 287 | One shared container, all six scenes |
 | Talk with Cloud | 240 | Cloud at left, calm space at right |
-| Your Choice | 210 | The three money objects, evenly weighted |
-| Takeaway | 180 | Quiet reflective space, no character |
+| Your Choice | 190 | The three money objects, evenly weighted |
+| Takeaway | 170 | Quiet reflective space, no character |
 | Practice hero | 196 | Cloud beside the practice symbols |
 | Completion hero | 220 | Cloud, warm, celebratory but calm |
 | Home card feature | 238 | Cloud plus the money objects |

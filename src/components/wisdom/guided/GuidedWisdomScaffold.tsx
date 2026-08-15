@@ -70,7 +70,14 @@ export function GuidedWisdomScaffold({
   }, [stage]);
 
   return (
-    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.screen}>
+    // `guided-stage-<stage>` is the ground truth an automated measurement run
+    // checks before it records anything, so a Home card can never be recorded
+    // as Story, or Story as Talk.
+    <SafeAreaView
+      edges={['top', 'bottom', 'left', 'right']}
+      style={styles.screen}
+      testID={`guided-stage-${stage}`}
+    >
       <View style={styles.headerShell}>
         <View style={styles.header}>
           <View style={styles.headerSlot}>

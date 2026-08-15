@@ -25,6 +25,7 @@ export function PersonalResponseInput({
   submitLabel = 'Share with Cloud',
   suggestionsLabel = 'You could say',
   suggestions,
+  testIDPrefix = 'guided-response',
   value,
 }: {
   compact?: boolean;
@@ -42,6 +43,11 @@ export function PersonalResponseInput({
   submitLabel?: string;
   suggestionsLabel?: string;
   suggestions: readonly PersonalResponseSuggestion[];
+  /**
+   * Namespaces the automation hooks, because this component appears twice in
+   * the Wisdom — once in Talk and once in Takeaway. Inert on native.
+   */
+  testIDPrefix?: string;
   value: string;
 }) {
   const [focused, setFocused] = useState(false);
@@ -76,6 +82,7 @@ export function PersonalResponseInput({
                 pressed && !disabled && styles.suggestionPressed,
                 disabled && styles.disabled,
               ]}
+              testID={`${testIDPrefix}-suggestion-${suggestion.id}`}
             >
               <Ionicons
                 accessible={false}
@@ -131,6 +138,7 @@ export function PersonalResponseInput({
         label={submitLabel}
         onPress={() => onSubmit(trimmedValue)}
         style={styles.submit}
+        testID={`${testIDPrefix}-submit`}
       />
     </View>
   );

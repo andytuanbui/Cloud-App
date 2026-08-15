@@ -24,10 +24,16 @@ export const canvasBandHeights: Record<CanvasAssetId, number> = {
   'WIS-MONEY-001-STORY-SCENE-06': 287,
   'WIS-MONEY-001-PRACTICE-HERO': 196,
 
-  // Stabilised in this task. Previously these grew with stage content.
+  // Stabilised bands. Previously these grew with stage content.
+  //
+  // Choice and Takeaway were tuned down (210 → 190, 180 → 170) after the real
+  // device viewports were measured: both stages carry a tall dynamic region
+  // below the band, and the shorter band lifts the allocation total and the
+  // primary CTA closer to the first viewport. Talk stays at 240 — measurement
+  // showed all four answers reachable, so there was no reason to shrink it.
   'WIS-MONEY-001-TALK-WITH-CLOUD': 240,
-  'WIS-MONEY-001-CHOICE-BACKGROUND': 210,
-  'WIS-MONEY-001-TAKEAWAY-BACKGROUND': 180,
+  'WIS-MONEY-001-CHOICE-BACKGROUND': 190,
+  'WIS-MONEY-001-TAKEAWAY-BACKGROUND': 170,
   'WIS-MONEY-001-COMPLETION-HERO': 220,
 
   // Cards are already fixed by their own card styles.

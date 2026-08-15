@@ -64,6 +64,7 @@ export function LibraryWisdomCard({
           styles.learnedPressable,
           pressed && styles.cardPressed,
         ]}
+        testID={`wisdom-card-${surface}-${item.wisdom.id}`}
       >
         <MoneyWisdomIdentityCard
           assetId={compactCardAssetId}

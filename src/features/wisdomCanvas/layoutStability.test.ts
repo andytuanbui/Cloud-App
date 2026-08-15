@@ -38,6 +38,14 @@ const bandSource = readFileSync(
   path.join(process.cwd(), 'src/components/wisdom/WisdomCanvasBand.tsx'),
   'utf8',
 );
+const storySceneCardSource = readFileSync(
+  path.join(process.cwd(), 'src/components/wisdom/guided/StorySceneCard.tsx'),
+  'utf8',
+);
+const measurementsDoc = readFileSync(
+  path.join(process.cwd(), 'docs/canvas-templates/wis-money-001/MEASUREMENTS.md'),
+  'utf8',
+);
 const manifest = JSON.parse(
   readFileSync(
     path.join(
@@ -75,10 +83,10 @@ describe('band heights are fixed constants', () => {
     }
   });
 
-  it('matches the brief: Talk 240, Your Choice 210, Takeaway 180, Completion 220', () => {
+  it('matches the brief: Talk 240, Your Choice 190, Takeaway 170, Completion 220', () => {
     assert.equal(canvasBandHeights['WIS-MONEY-001-TALK-WITH-CLOUD'], 240);
-    assert.equal(canvasBandHeights['WIS-MONEY-001-CHOICE-BACKGROUND'], 210);
-    assert.equal(canvasBandHeights['WIS-MONEY-001-TAKEAWAY-BACKGROUND'], 180);
+    assert.equal(canvasBandHeights['WIS-MONEY-001-CHOICE-BACKGROUND'], 190);
+    assert.equal(canvasBandHeights['WIS-MONEY-001-TAKEAWAY-BACKGROUND'], 170);
     assert.equal(canvasBandHeights['WIS-MONEY-001-COMPLETION-HERO'], 220);
   });
 
@@ -153,6 +161,75 @@ describe('stage artwork does not move with stage content', () => {
     assert.ok(!/\bheight=/.test(completion), 'Completion band height must not be overridden');
     // Recognition text is dynamic, so it must live in its own region below.
     assert.match(screenSource, /styles\.completionCopy/);
+  });
+});
+
+/**
+ * Reads a single named entry out of a `StyleSheet.create({ … })` literal.
+ *
+ * Occlusion is a source-level fact: a sibling card with a negative `marginTop`
+ * is drawn over the bottom of the artwork region above it, so the container
+ * measures its declared height while the illustrator only ever sees less.
+ */
+function styleBlock(source: string, name: string): string {
+  const start = source.indexOf(`\n  ${name}: {`);
+  assert.ok(start >= 0, `style "${name}" not found`);
+  const end = source.indexOf('\n  },', start);
+  assert.ok(end > start, `style "${name}" is not terminated`);
+  // Comments in these blocks quote the old negative values on purpose, so they
+  // are stripped before the declarations are checked.
+  return source
+    .slice(start, end)
+    .split('\n')
+    .filter((line) => !line.trim().startsWith('//'))
+    .join('\n');
+}
+
+describe('artwork regions are not covered by the card below them', () => {
+  it('does not pull the Story body card over the Story illustration', () => {
+    const body = styleBlock(storySceneCardSource, 'body');
+    assert.ok(
+      !/marginTop:\s*-/.test(body),
+      'StorySceneCard.body must not use a negative marginTop; it hid 24 px of Story artwork',
+    );
+    assert.match(body, /marginTop:\s*0/);
+  });
+
+  it('does not pull the Practice card over the Practice hero', () => {
+    const card = styleBlock(screenSource, 'practiceCard');
+    assert.ok(
+      !/marginTop:\s*-/.test(card),
+      'practiceCard must not use a negative marginTop; it hid 20 px of Practice artwork',
+    );
+    assert.match(card, /marginTop:\s*0/);
+  });
+
+  it('keeps the declared Story and Practice heights, now fully visible', () => {
+    // The fix was structural, not a resize: the containers still measure the
+    // heights the pack was specified at, and all of both is now visible.
+    assert.equal(canvasBandHeights['WIS-MONEY-001-STORY-SCENE-01'], 287);
+    assert.equal(canvasBandHeights['WIS-MONEY-001-PRACTICE-HERO'], 196);
+  });
+});
+
+describe('measurements are recorded for the real device viewports', () => {
+  it('reports 375×812, 390×844 and 430×932', () => {
+    for (const viewport of ['375 × 812', '390 × 844', '430 × 932']) {
+      assert.ok(
+        measurementsDoc.includes(viewport),
+        `MEASUREMENTS.md does not report ${viewport}`,
+      );
+    }
+  });
+
+  it('reports the visible artwork area, not just the container', () => {
+    assert.match(measurementsDoc, /visible artwork/i);
+    assert.match(measurementsDoc, /overlap/i);
+  });
+
+  it('no longer quotes the superseded Choice and Takeaway band heights', () => {
+    assert.ok(!/× 210\b/.test(measurementsDoc), 'Choice still documented at 210');
+    assert.ok(!/× 180\b/.test(measurementsDoc), 'Takeaway still documented at 180');
   });
 });
 

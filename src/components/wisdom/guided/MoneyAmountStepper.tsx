@@ -111,6 +111,7 @@ export function MoneyAmountStepper({
             pressed && canDecrease && styles.stepButtonPressed,
             !canDecrease && styles.stepButtonDisabled,
           ]}
+          testID={`guided-stepper-${tone}-decrease`}
         >
           <Ionicons color={appColors.primary} name="remove" size={spacing.s20} />
         </Pressable>
@@ -134,6 +135,7 @@ export function MoneyAmountStepper({
             pressed && canIncrease && styles.stepButtonPressed,
             !canIncrease && styles.stepButtonDisabled,
           ]}
+          testID={`guided-stepper-${tone}-increase`}
         >
           <Ionicons color={appColors.primary} name="add" size={spacing.s20} />
         </Pressable>

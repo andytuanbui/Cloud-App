@@ -21,6 +21,11 @@ type Props = {
   accessibilityLabel?: string;
   icon?: IconName;
   style?: StyleProp<ViewStyle>;
+  /**
+   * Stable hook for automated layout measurement. Renders as `data-testid` on
+   * web and is inert on native; it changes nothing a child sees.
+   */
+  testID?: string;
 };
 
 function AppButton({
@@ -31,6 +36,7 @@ function AppButton({
   accessibilityLabel,
   icon,
   style,
+  testID,
   variant,
 }: Props & { variant: ButtonVariant }) {
   const [focused, setFocused] = useState(false);
@@ -56,6 +62,7 @@ function AppButton({
         isDisabled && styles.disabled,
         style,
       ]}
+      testID={testID}
     >
       {loading ? (
         <ActivityIndicator color={inverse ? appColors.onPrimary : appColors.primary} />

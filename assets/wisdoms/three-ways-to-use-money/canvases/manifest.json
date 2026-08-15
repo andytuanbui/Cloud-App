@@ -329,8 +329,8 @@
       "filename": "WIS-MONEY-001-choice-background-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 630,
-      "aspectRatio": 1.8571,
+      "sourceHeight": 570,
+      "aspectRatio": 2.0526,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,
@@ -360,8 +360,8 @@
       "filename": "WIS-MONEY-001-takeaway-background-v1.png",
       "version": 1,
       "sourceWidth": 1170,
-      "sourceHeight": 540,
-      "aspectRatio": 2.1667,
+      "sourceHeight": 510,
+      "aspectRatio": 2.2941,
       "fitMode": "cover",
       "focalPoint": {
         "x": 0.5,

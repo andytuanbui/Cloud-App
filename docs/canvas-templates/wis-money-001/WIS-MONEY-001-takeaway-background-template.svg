@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="543" viewBox="0 0 900 543">
-<rect width="900" height="543" fill="#FFF8EA"/>
-<rect x="1" y="1" width="898" height="413" fill="none" stroke="#10333A" stroke-width="2"/>
-<rect x="27" y="21" width="846" height="373" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
-<text x="33" y="386" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
-<rect x="27" y="33" width="846" height="349" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="35" y="53" font-family="sans-serif" font-size="15" fill="#846126">unrestricted safe area</text>
-<circle cx="450" cy="199" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
-<circle cx="450" cy="199" r="3" fill="#10333A"/>
-<text x="472" y="204" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.48</text>
-<rect x="0" y="421" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
-<text x="16" y="445" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-TAKEAWAY-BACKGROUND</text>
-<text x="16" y="467" font-family="sans-serif" font-size="14" fill="#FFF8EA">Fixed reflection band (180 px)  |  source 1170x540  |  ratio 2.1667  |  fit cover</text>
-<text x="16" y="489" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led and character-free. Cloud lives in the app layer.</text>
-<text x="16" y="511" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+<rect width="900" height="520" fill="#FFF8EA"/>
+<rect x="1" y="1" width="898" height="390" fill="none" stroke="#10333A" stroke-width="2"/>
+<rect x="27" y="20" width="846" height="352" fill="none" stroke="#EFB63D" stroke-width="2" stroke-dasharray="10 6"/>
+<text x="33" y="364" font-family="sans-serif" font-size="14" fill="#EFB63D">bleed / visible crop boundary</text>
+<rect x="27" y="31" width="846" height="329" fill="#846126" fill-opacity="0.10" stroke="#846126" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="35" y="51" font-family="sans-serif" font-size="15" fill="#846126">unrestricted safe area</text>
+<circle cx="450" cy="188" r="16" fill="none" stroke="#10333A" stroke-width="3"/>
+<circle cx="450" cy="188" r="3" fill="#10333A"/>
+<text x="472" y="193" font-family="sans-serif" font-size="14" fill="#10333A">focal point 0.5 , 0.48</text>
+<rect x="0" y="398" width="900" height="116" fill="#10333A" fill-opacity="0.92"/>
+<text x="16" y="422" font-family="sans-serif" font-size="16" fill="#FFF8EA">WIS-MONEY-001-TAKEAWAY-BACKGROUND</text>
+<text x="16" y="444" font-family="sans-serif" font-size="14" fill="#FFF8EA">Fixed reflection band (170 px)  |  source 1170x510  |  ratio 2.2941  |  fit cover</text>
+<text x="16" y="466" font-family="sans-serif" font-size="14" fill="#FFF8EA">Character: Object-led and character-free. Cloud lives in the app layer.</text>
+<text x="16" y="488" font-family="sans-serif" font-size="14" fill="#FFF8EA">TEXT-FREE: no words, numbers, currency or interface labels in final art</text>
 </svg>

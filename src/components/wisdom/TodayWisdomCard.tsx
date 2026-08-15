@@ -46,6 +46,7 @@ export function TodayWisdomCard({
           styles.moneyIdentityWrap,
           pressed && styles.cardPressed,
         ]}
+        testID={`wisdom-card-today-${wisdom.id}`}
       >
         <MoneyWisdomIdentityCard
           assetId="WIS-MONEY-001-HOME-CARD"
@@ -139,6 +140,7 @@ export function TodayWisdomCard({
               label={started ? 'Continue Wisdom' : 'Start Wisdom'}
               onPress={onOpen}
               style={styles.action}
+              testID={`wisdom-card-today-open-${wisdom.id}`}
             />
           )}
         </View>
@@ -160,6 +162,7 @@ export function TodayWisdomCard({
         styles.learnedPressable,
         pressed && styles.cardPressed,
       ]}
+      testID={`wisdom-card-today-${wisdom.id}`}
     >
       {card}
     </Pressable>

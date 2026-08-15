@@ -129,7 +129,11 @@ export function ProfileSetupScreen() {
                 />
               </View>
               <View style={styles.action}>
-                <PrimaryButton label="Set up profile" onPress={() => setStep('name')} />
+                <PrimaryButton
+                  label="Set up profile"
+                  onPress={() => setStep('name')}
+                  testID="setup-cta-begin"
+                />
               </View>
             </View>
           )}
@@ -160,7 +164,11 @@ export function ProfileSetupScreen() {
                 />
               </SurfaceCard>
               <View style={styles.action}>
-                <PrimaryButton label="Continue" onPress={advanceName} />
+                <PrimaryButton
+                  label="Continue"
+                  onPress={advanceName}
+                  testID="setup-cta-name-continue"
+                />
               </View>
             </View>
           )}
@@ -192,6 +200,7 @@ export function ProfileSetupScreen() {
                   disabled={!isValidProfileAge(age)}
                   label="Continue"
                   onPress={() => setStep('ready')}
+                  testID="setup-cta-age-continue"
                 />
               </View>
             </View>
@@ -225,7 +234,11 @@ export function ProfileSetupScreen() {
                 />
               </View>
               <View style={styles.action}>
-                <PrimaryButton label="Open CloudWise" onPress={openCloudWise} />
+                <PrimaryButton
+                  label="Open CloudWise"
+                  onPress={openCloudWise}
+                  testID="setup-cta-open"
+                />
                 <View style={styles.secondaryAction}>
                   <SecondaryButton label="Change details" onPress={() => setStep('name')} />
                 </View>

@@ -430,6 +430,7 @@ export function GuidedWisdomScreen({
                   else updateSession({ currentStoryScene: sceneIndex + 1 });
                 }}
                 style={styles.pairedButton}
+                testID="guided-cta-story-next"
               />
             </View>
           </View>
@@ -464,6 +465,7 @@ export function GuidedWisdomScreen({
                   label={choice.label}
                   onPress={() => selectReflection(choice)}
                   selected={selectedReflection?.id === choice.id}
+                  testID={`guided-talk-choice-${choice.id}`}
                 />
               </View>
             ))}
@@ -483,6 +485,7 @@ export function GuidedWisdomScreen({
                   selectedSuggestionId={personalSuggestionId}
                   submitLabel="Tell Cloud"
                   suggestions={selectedReflection.suggestedResponses}
+                  testIDPrefix="guided-talk-response"
                   value={personalDraft}
                 />
               </View>
@@ -494,7 +497,11 @@ export function GuidedWisdomScreen({
                 <CloudResponseCard text={session.adaptiveResponse} />
               </View>
               <View style={styles.action}>
-                <PrimaryButton label="Make Your Choice" onPress={() => moveTo('choice')} />
+                <PrimaryButton
+                  label="Make Your Choice"
+                  onPress={() => moveTo('choice')}
+                  testID="guided-cta-talk-continue"
+                />
               </View>
             </>
           ) : null}
@@ -572,7 +579,12 @@ export function GuidedWisdomScreen({
           </LinearGradient>
           {!session.moneyResponse ? (
             <View style={styles.action}>
-              <PrimaryButton disabled={!planValidation.isValid} label="See What Cloud Thinks" onPress={evaluatePlan} />
+              <PrimaryButton
+                disabled={!planValidation.isValid}
+                label="See What Cloud Thinks"
+                onPress={evaluatePlan}
+                testID="guided-cta-choice-evaluate"
+              />
             </View>
           ) : (
             <View style={styles.responseBlock}>
@@ -598,6 +610,7 @@ export function GuidedWisdomScreen({
                     planDecision: session.planDecision === 'changed' ? 'changed' : 'kept',
                   })}
                   style={styles.pairedButton}
+                  testID="guided-cta-choice-keep"
                 />
               </View>
             </View>
@@ -641,6 +654,7 @@ export function GuidedWisdomScreen({
               suggestionIcons={takeawayChoiceIcons}
               suggestions={wisdom.takeaway.choices}
               suggestionsLabel="Choose a thought"
+              testIDPrefix="guided-takeaway-response"
               value={takeawayDraft}
             />
           </View>
@@ -648,7 +662,11 @@ export function GuidedWisdomScreen({
             <>
               <MemoryCard text={session.personalizedSummary} />
               <View style={styles.action}>
-                <PrimaryButton label="Try It in Real Life" onPress={() => moveTo('practice')} />
+                <PrimaryButton
+                  label="Try It in Real Life"
+                  onPress={() => moveTo('practice')}
+                  testID="guided-cta-takeaway-continue"
+                />
               </View>
             </>
           ) : null}
@@ -810,6 +828,7 @@ function WelcomeStep({
               icon="book-outline"
               label={isLearned ? 'Review the Story' : wisdom.startButtonLabel}
               onPress={onStart}
+              testID="guided-cta-welcome-start"
             />
           </View>
         </View>
@@ -1072,7 +1091,12 @@ function PracticeStep({
         <CloudResponseCard text={wisdom.practice.encouragement} />
       </View>
       <View style={styles.action}>
-        <PrimaryButton icon="checkmark-circle-outline" label="I’ll Try This" onPress={onComplete} />
+        <PrimaryButton
+          icon="checkmark-circle-outline"
+          label="I’ll Try This"
+          onPress={onComplete}
+          testID="guided-cta-practice-complete"
+        />
       </View>
     </LinearGradient>
   );
@@ -1155,7 +1179,12 @@ function CompletionStep({
         ) : null}
       </View>
       <View style={styles.action}>
-        <PrimaryButton icon="home" label="Back to Home" onPress={onExit} />
+        <PrimaryButton
+          icon="home"
+          label="Back to Home"
+          onPress={onExit}
+          testID="guided-cta-completion-exit"
+        />
       </View>
     </LinearGradient>
   );
@@ -1534,7 +1563,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     marginHorizontal: space.sm,
-    marginTop: -space.lg,
+    // Must never be negative. This card used to sit at `marginTop: -space.lg`,
+    // which covered the bottom 20 px of the Practice hero: the container
+    // measured 196 but only 176 of it was ever visible. The card now starts
+    // below the artwork, so the declared 196 and the visible 196 agree.
+    marginTop: 0,
     padding: space.md,
     position: 'relative',
   },
