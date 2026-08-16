@@ -70,8 +70,17 @@ crop boundary before finalising a composition.
 
 ## Story visual plan
 
-Six scenes, one shared container — measured 331.3 × 286.7 at 390 (ratio
-1.1556) and identical for all six scenes at 375, 390 and 430.
+Six scenes, one shared container — measured 330 × 287 at 390 (ratio 1.1498),
+identical for all six scenes at 375, 390 and 430. Source export is
+**1170 × 903** (1.2957). Design to these nominal figures; earlier fractional
+readings (331.3 × 286.7) were browser rounding, not a different layout.
+
+**Reading the manifest `character` field.** All six Story entries carry
+`character: "none"`. That is binding on composition, not a ban on Leo: it means
+**no full standing character is required and the scene must read object-led at
+a glance**. Leo may appear as hands, forearms, a partial figure or an
+over-the-shoulder framing, but the objects must carry the meaning. Nothing
+labelled `character: "none"` may be built around a full-body character portrait.
 
 **Scene 01 — `leo-wants-the-cards-now`**
 Football cards waiting at the shop, with Leo's hand holding money or a small
@@ -136,6 +145,29 @@ all drawn by the application in a sibling region **below** the artwork.
 The compact Home card and the Library card share a shape but are **different
 pictures**. Do not deliver one file for both, and do not crop one from the
 other: the Home card is guide-led and the Library card is object-led.
+
+### The three card canvases have a second, smaller crop
+
+The band heights above are the **learned** state. Before the child has finished
+the Wisdom, the same three card assets are drawn into a different, much smaller
+region — read from the style constants in source, not measured at runtime:
+
+| Asset | Learned region | Before learned | Component |
+| --- | --- | --- | --- |
+| `WIS-MONEY-001-HOME-CARD` | full width × 238 | full width × **132** | `WisdomArtworkStage` feature |
+| `WIS-MONEY-001-HOME-CARD-COMPACT` | full width × 154 | **80 × 84** thumbnail | `WisdomArtworkStage` compact |
+| `WIS-MONEY-001-LIBRARY-CARD` | full width × 154 | **80 × 84** thumbnail | `WisdomArtworkStage` compact |
+
+Both regions use `resizeMode: cover` and centre the image, so a 2.5325 source
+placed in an 80 × 84 box keeps only the middle ~38% of its width. **This is the
+first thing a child sees, before the learned card ever appears.**
+
+Practical rule for the two compact cards: the subject that identifies the
+Wisdom must survive a centred square crop. Put one clear hero object — or
+Cloud's face, on the Home compact card — inside the **middle 40% of the width**,
+vertically centred. Treat the outer thirds as supporting atmosphere only. The
+same applies less severely to the feature Home card, whose 1.6387 source loses
+roughly the top and bottom sixth in the 132 region.
 
 ## Before delivering
 

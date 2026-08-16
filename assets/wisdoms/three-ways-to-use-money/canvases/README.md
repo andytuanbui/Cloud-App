@@ -49,12 +49,18 @@ art is replaced.
 
 ## Safe-area system
 
-Each manifest entry lists normalized (0–1) rectangles the application draws
-over. Purposes: `title`, `body`, `controls`, `amount`, `progress`, `character`,
-`unrestricted`.
+Each manifest entry lists normalized (0–1) rectangles. **They are not all the
+same kind of rectangle** — read the `purpose` before composing:
 
-Keep faces and key objects **out of** safe areas. `focalPoint` marks what must
-stay visible when a container forces a crop.
+| Purpose | Meaning for the illustrator |
+| --- | --- |
+| `title`, `body`, `controls`, `amount`, `progress` | **Keep clear.** The app draws text or controls here. No face, no key object, no busy detail. |
+| `character` | **Place here.** This zone is reserved *for* the subject; it is where the character or hero object belongs. |
+| `unrestricted` | Free. Nothing is drawn over it and nothing is required in it. |
+
+So on `TALK-WITH-CLOUD`, Cloud belongs *inside* the `character` rectangle at
+the left, not outside it. `focalPoint` marks what must stay visible when a
+container forces a crop.
 
 Enable `showSafeAreas` on `WisdomCanvas` during development to see the outlines.
 It is off by default and additionally gated on `__DEV__`.
@@ -87,8 +93,10 @@ These are binding. A pack that breaks them will be rejected.
 
 **Do not force one image ratio across the pack.** Each canvas is generated for
 the real container it appears in; the required `sourceWidth`, `sourceHeight`
-and `aspectRatio` are in `manifest.json` per asset. Your Choice is portrait;
-Home and Library cards are wide. A single 16:9 export is not acceptable.
+and `aspectRatio` are in `manifest.json` per asset. Ratios currently run from
+1.2957 (Story scene) to 2.5325 (compact cards). Story and Welcome are the
+tallest; Your Choice, Takeaway and the compact cards are wide, shallow bands.
+A single 16:9 export is not acceptable.
 
 ## Replacing an image
 
@@ -138,8 +146,9 @@ image imports so Node tests can read it.
 
 **No approved final artwork exists.** Every entry is `awaiting-final-art` and
 the app still composes its own visuals, so the approved appearance is
-unchanged. Eight IDs temporarily share an existing approved image; the six
-story scenes keep their own approved artwork.
+unchanged. Nine IDs temporarily share an existing approved image — see
+`assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` —
+while the six story scenes keep their own approved artwork.
 
 Canvas Pack **v1 was delivered and rejected** — see
 `docs/visual-references/wis-money-001-v1-rejected/REVIEW.md`. Nothing in that
