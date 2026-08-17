@@ -47,6 +47,7 @@ export const canvasSourceKeys = [
   // Delivered Canvas Pack artwork. These keys point at the pack folder itself,
   // not at a borrowed image from assets/cloud.
   'wis-money-001-talk-with-cloud',
+  'wis-money-001-story-scene-04',
 ] as const;
 
 export type CanvasSourceKey = (typeof canvasSourceKeys)[number];
@@ -65,11 +66,17 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
   // rendering from this file. Approved 2026-08-17 and `final` in the manifest,
   // so it is the one canvas the app actually draws today.
   'WIS-MONEY-001-TALK-WITH-CLOUD': 'wis-money-001-talk-with-cloud',
-  // Story scenes keep their approved per-scene artwork exactly as shipped.
+  // STORY-SCENE-04 is the pack's second approved canvas and the **object
+  // master**: the football cards, Mia's gift and the headphones take their
+  // shape, colourway, detailing and relative scale from this file wherever
+  // they reappear. Approved 2026-08-17 and `final` in the manifest, so it is
+  // bound to its own PNG in the pack folder rather than to a borrowed image.
+  'WIS-MONEY-001-STORY-SCENE-04': 'wis-money-001-story-scene-04',
+  // The other five story scenes keep their existing bindings exactly as
+  // shipped, and stay `awaiting-final-art` until their own art is approved.
   'WIS-MONEY-001-STORY-SCENE-01': 'cat-money',
   'WIS-MONEY-001-STORY-SCENE-02': 'cloud-thinking',
   'WIS-MONEY-001-STORY-SCENE-03': 'cloud-helps-friend',
-  'WIS-MONEY-001-STORY-SCENE-04': 'cloud-neighborhood-home',
   'WIS-MONEY-001-STORY-SCENE-05': 'cat-thinking',
   'WIS-MONEY-001-STORY-SCENE-06': 'cloud-hero-wave',
   // No dedicated artwork exists for these yet. They share a nearby approved
@@ -100,8 +107,9 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
  *    must go on drawing the placeholder. Listed here. No asset is in this state
  *    right now; `TALK-WITH-CLOUD` passed through it and has since been approved.
  * 3. **Approved final** — `status: 'final'`. Not listed here, and the only
- *    state in which the delivered artwork reaches a child. `TALK-WITH-CLOUD` is
- *    the first and so far only asset here.
+ *    state in which the delivered artwork reaches a child. `TALK-WITH-CLOUD`
+ *    (the Character Master) and `STORY-SCENE-04` (the object master) are the
+ *    two assets in this state.
  *
  * Delivering a file does not remove an id from this list; only approval does.
  *
@@ -109,12 +117,14 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
  * is drawn is the manifest status, read through `hasFinalCanvasArtwork`. The
  * list exists so the two can be checked against each other — `canvas.test.ts`
  * asserts that nothing approved is listed and nothing delivered-but-unapproved
- * is missing. The six story scenes are absent because their bindings are their
- * own approved scene images.
+ * is missing. The six story scenes are absent: `STORY-SCENE-04` because it is
+ * approved `final` and draws its own PNG, the other five because they keep
+ * their existing per-scene bindings rather than the shared placeholder.
  */
 export const assetIdsSharingFallbackArtwork: readonly CanvasAssetId[] = [
-  // `TALK-WITH-CLOUD` is deliberately absent: it is approved `final` and draws
-  // its own artwork. Everything below is still waiting on art of its own.
+  // `TALK-WITH-CLOUD` and `STORY-SCENE-04` are deliberately absent: both are
+  // approved `final` and draw their own artwork. Everything below is still
+  // waiting on art of its own.
   'WIS-MONEY-001-WELCOME-HERO',
   'WIS-MONEY-001-CHOICE-BACKGROUND',
   'WIS-MONEY-001-TAKEAWAY-BACKGROUND',

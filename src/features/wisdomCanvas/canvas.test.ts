@@ -96,6 +96,12 @@ describe('story scenes', () => {
   });
 
   it('keeps the approved per-scene artwork bindings', () => {
+    // Scene 04 is approved and bound to its own PNG in the pack folder. The
+    // other five keep the bindings they shipped with.
+    assert.equal(
+      canvasSourceKeyByAssetId['WIS-MONEY-001-STORY-SCENE-04'],
+      'wis-money-001-story-scene-04',
+    );
     assert.equal(canvasSourceKeyByAssetId['WIS-MONEY-001-STORY-SCENE-01'], 'cat-money');
     assert.equal(canvasSourceKeyByAssetId['WIS-MONEY-001-STORY-SCENE-03'], 'cloud-helps-friend');
     assert.equal(canvasSourceKeyByAssetId['WIS-MONEY-001-STORY-SCENE-06'], 'cloud-hero-wave');
@@ -141,15 +147,18 @@ describe('manifest', () => {
     }
   });
 
-  it('has approved exactly one asset: the anchor', () => {
-    // TALK-WITH-CLOUD is the pack anchor: it locks Cloud's face, hair, body
-    // proportions, expression language, outfit and rendering for every other
-    // Cloud-bearing canvas. The revised delivery was visually approved, so it
-    // is the first and only asset in the pack that renders.
-    assert.deepEqual(finalAssets.map((a) => a.assetId), [
+  it('has approved exactly the two master assets', () => {
+    // TALK-WITH-CLOUD is the pack anchor and Character Master: it locks
+    // Cloud's face, hair, body proportions, expression language, outfit and
+    // rendering for every other Cloud-bearing canvas.
+    // STORY-SCENE-04 is the object master: it locks the football cards, Mia's
+    // gift and the headphones for every canvas they reappear on.
+    // Both were visually approved; nothing else in the pack renders yet.
+    assert.deepEqual(finalAssets.map((a) => a.assetId).sort(), [
+      'WIS-MONEY-001-STORY-SCENE-04',
       'WIS-MONEY-001-TALK-WITH-CLOUD',
     ]);
-    assert.equal(pendingAssets.length, 14);
+    assert.equal(pendingAssets.length, 13);
   });
 
   it('keeps every unapproved asset from rendering', () => {
@@ -452,6 +461,106 @@ describe('the approved anchor is the one canvas that renders', () => {
   });
 });
 
+describe('the approved object master', () => {
+  // STORY-SCENE-04 (`leo-sees-three-choices`) is the pack's second approved
+  // canvas. It carries no character at all — its job is to fix the three
+  // recurring objects, so every later canvas draws the same football cards,
+  // the same gift for Mia and the same headphones.
+  const objectMasterId = 'WIS-MONEY-001-STORY-SCENE-04' as const;
+  const objectMaster = manifest.assets.find((a) => a.assetId === objectMasterId);
+  if (!objectMaster) throw new Error('the object master is missing from the manifest');
+
+  it('is backed by a 1170 x 903 RGB PNG with no alpha', () => {
+    const png = readFileSync(path.join(packDir, objectMaster.filename));
+    assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.equal(png.readUInt32BE(16), 1170, 'width');
+    assert.equal(png.readUInt32BE(20), 903, 'height');
+    assert.equal(png.readUInt8(24), 8, 'bit depth');
+    assert.equal(png.readUInt8(25), 2, 'colour type must be 2, truecolour RGB with no alpha');
+    assert.equal(png.includes(Buffer.from('tRNS')), false, 'no transparency chunk');
+    assert.equal(objectMaster.sourceWidth, 1170);
+    assert.equal(objectMaster.sourceHeight, 903);
+  });
+
+  it('is approved final, so the Story stage draws it instead of the placeholder', () => {
+    assert.equal(objectMaster.status, 'final');
+    assert.equal(
+      hasFinalCanvasArtwork(objectMasterId),
+      true,
+      'the one switch every surface reads must report the object master as approved',
+    );
+    assert.equal(
+      assetIdsSharingFallbackArtwork.includes(objectMasterId),
+      false,
+      'an approved canvas must not still be listed as showing a placeholder',
+    );
+  });
+
+  it('is wired to its own artwork in the pack folder, not a borrowed image', () => {
+    assert.ok(filesOnDisk.includes(objectMaster.filename));
+    assert.equal(canvasSourceKeyByAssetId[objectMasterId], 'wis-money-001-story-scene-04');
+    assert.ok(canvasSourceKeys.includes('wis-money-001-story-scene-04'));
+
+    const registrySource = readFileSync(
+      path.join(process.cwd(), 'src/features/wisdomCanvas/registry.ts'),
+      'utf8',
+    );
+    assert.ok(
+      registrySource.includes(`'wis-money-001-story-scene-04': require(`),
+      'the source key must be bound in the registry',
+    );
+    assert.ok(
+      registrySource.includes(objectMaster.filename),
+      'the registry must require the same filename the manifest names',
+    );
+  });
+
+  it('keeps all three objects inside the crop at every story band width', () => {
+    // Bounding boxes measured off the approved PNG, normalised to its
+    // 1170 x 903 source. The story band is fixed at 287 tall and measures
+    // 315 / 330 / 370 wide at 375 / 390 / 430 — see MEASUREMENTS.md.
+    const objects = [
+      { name: 'football cards', x0: 0.096, x1: 0.401 },
+      { name: "Mia's gift", x0: 0.402, x1: 0.594 },
+      { name: 'headphones', x0: 0.609, x1: 0.879 },
+    ];
+    const bandHeight = 287;
+    const bandWidths = [315, 330, 370];
+    const pct = (value: unknown) =>
+      typeof value === 'string' ? Number.parseFloat(value) : Number(value ?? 0);
+    const inset = focalCoverInset(objectMaster.focalPoint);
+
+    for (const side of [inset.left, inset.right, inset.top, inset.bottom]) {
+      assert.ok(pct(side) <= 0, `inset ${String(side)} must never be positive`);
+    }
+
+    for (const bandWidth of bandWidths) {
+      const boxX = (pct(inset.left) / 100) * bandWidth;
+      const boxY = (pct(inset.top) / 100) * bandHeight;
+      const boxW = bandWidth * (1 - pct(inset.left) / 100 - pct(inset.right) / 100);
+      const boxH = bandHeight * (1 - pct(inset.top) / 100 - pct(inset.bottom) / 100);
+
+      const scale = Math.max(boxW / objectMaster.sourceWidth, boxH / objectMaster.sourceHeight);
+      const imgX = boxX + (boxW - objectMaster.sourceWidth * scale) / 2;
+      const visibleX0 = -imgX / scale / objectMaster.sourceWidth;
+      const visibleX1 = (bandWidth - imgX) / scale / objectMaster.sourceWidth;
+
+      for (const object of objects) {
+        assert.ok(
+          object.x0 > visibleX0 && object.x1 < visibleX1,
+          `${bandWidth}: ${object.name} (${object.x0}-${object.x1}) is cropped by the visible window ${visibleX0.toFixed(3)}-${visibleX1.toFixed(3)}`,
+        );
+      }
+    }
+  });
+
+  it('carries no character, so nothing here can drift into Cloud or Leo', () => {
+    assert.equal(objectMaster.character, 'none');
+    assert.equal(objectMaster.textFree, true);
+    assert.equal(objectMaster.storySceneId, 'leo-sees-three-choices');
+  });
+});
+
 describe('rejected reference artwork is quarantined', () => {
   const rejectedDir = path.join(
     process.cwd(),
@@ -503,9 +612,13 @@ describe('rejected reference artwork is quarantined', () => {
     );
   });
 
-  it('keeps every production asset except the approved anchor awaiting final art', () => {
+  it('keeps every production asset except the two approved masters awaiting final art', () => {
+    const approved = new Set([
+      'WIS-MONEY-001-TALK-WITH-CLOUD',
+      'WIS-MONEY-001-STORY-SCENE-04',
+    ]);
     for (const asset of manifest.assets) {
-      if (asset.assetId === 'WIS-MONEY-001-TALK-WITH-CLOUD') {
+      if (approved.has(asset.assetId)) {
         assert.equal(asset.status, 'final', asset.assetId);
         continue;
       }

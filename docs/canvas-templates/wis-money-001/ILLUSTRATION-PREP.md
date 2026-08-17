@@ -1,7 +1,7 @@
 # WIS-MONEY-001 — Illustration Prep Report
 
 Wisdom: **Three Ways to Use Money** (`three-ways-to-use-money`)
-Pack: 15 canvases, all layout-stable and render-path complete. **1 approved `final`** (`TALK-WITH-CLOUD`, the anchor / Character Master, approved 2026-08-17); the other **14 remain `awaiting-final-art`**.
+Pack: 15 canvases, all layout-stable and render-path complete. **2 approved `final`** — `TALK-WITH-CLOUD` (the anchor / Character Master) and `STORY-SCENE-04` (the object master), both approved 2026-08-17; the other **13 remain `awaiting-final-art`**.
 Prepared against commit `f801421` on `claude/wisdom-canvas-viewport-tuning`.
 
 Sources of truth, in priority order:
@@ -84,7 +84,7 @@ outfit variation.
 - The child inside this story. Roughly the reader's age.
 - Must be **unmistakably not Cloud**: different hair, different clothing, no navy-hoodie silhouette, **never the cloud emblem**. This single rule sank pack v1.
 - Prefer hands, forearms, partial figures, over-the-shoulder framing. Where objects can carry the meaning, use objects.
-- Whatever Leo looks like in scene 05 must be identical in 06, 02 and 03. Lock him once.
+- **Leo is locked in `LEO-CHARACTER.md`** (this folder) — age read, hair, face, proportions, clothing, expression language and the one-second separation test from Cloud. Every scene inherits him from that document, not from another scene: 02 and 03 are drawn *before* 05, so no single image can be the Leo reference.
 
 ### Mia
 
@@ -101,6 +101,8 @@ These are the spine of the Wisdom. They must be recognisably the *same three thi
 | **Wrapped birthday gift** | Give / help someone | 1, 4, 5, 7, 8, 13, 14, 15 |
 
 Same silhouette, same colourway, same scale relationship each time. A child should recognise the headphones from the Welcome hero when they reappear on the Library card.
+
+**The object master is `WIS-MONEY-001-story-scene-04-v1.png`, approved 2026-08-17.** All three are defined there and measured there — see `GENERATION-PROMPT-STORY-SCENE-04.md`. Match that file rather than re-deriving the objects per canvas. Relative height, as delivered: headphones 1.41 × the gift, the card group 1.23 ×, the gift 1.00.
 
 Supporting object: a **savings container** (part-filled jar or tin) in scene 02. It must read "part of the way there" purely through fill level — no markings.
 
@@ -147,9 +149,11 @@ No new hues. Soft cinematic children's illustration. Calm, **low-contrast** ligh
 | Container class | Horizontal crop 375 → 430 | Bottom hidden? |
 |---|---|---|
 | Full-width bands (1, 8, 9, 10, 13) | up to **14%** | **No** — 0 px overlap, fully visible |
-| Story scenes ×6 | up to **14%** | **No** — 0 px overlap (was 24 px, fixed in `f801421`) |
-| Practice hero | up to **14%** | **No** — 0 px overlap (was 20 px, fixed in `f801421`) |
+| Story scenes ×6 | up to **15.3%** | **No** — 0 px overlap (was 24 px, fixed in `f801421`) |
+| Practice hero | up to **15.6%** | **No** — 0 px overlap (was 20 px, fixed in `f801421`) |
 | Compact cards (14, 15) | up to **14%** learned; **~62%** before learned | No |
+
+Story and Practice are **inset** stages — 315 and 301 wide at 375, against 335 for a full-width band — so they crop slightly harder than the 14% rule of thumb. For a Story scene that means keeping everything meaningful inside **x 0.077 → 0.923**; the general 14% figure is correct for every full-width band.
 
 **Every band bottom is now fully visible.** Story's first content below the band sits at y 449 against a band bottom of y 449; Practice at y 365 against 365. Nothing is drawn over any artwork's bottom edge. Compose to the full declared height.
 
@@ -214,7 +218,7 @@ One sequence, first to last. The logic: lock the two things everything else inhe
 | # | Asset | Why here |
 |---|---|---|
 | 1 | `TALK-WITH-CLOUD` | **Anchor A — Cloud. ✅ APPROVED 2026-08-17, `final`.** The largest, calmest, most generous Cloud frame in the pack, and now the **Character Master**: everything Cloud-bearing inherits his facial identity, hair silhouette, body proportions, age read and rendering from this file. Match it — do not reinterpret Cloud per asset. |
-| 2 | `STORY-SCENE-04` | **Anchor B — the three objects.** All three at once, evenly weighted, no character to distract. Every subsequent object appearance is measured against this file. |
+| 2 | `STORY-SCENE-04` | **Anchor B — the three objects. ✅ APPROVED 2026-08-17, `final`.** All three at once, evenly weighted, no character to distract, and now the **object master**: every subsequent appearance of the football cards, Mia's gift or the headphones is matched to this file. Measured object bounds are in `GENERATION-PROMPT-STORY-SCENE-04.md` → *As delivered*. |
 | 3 | `STORY-SCENE-01` | Isolates the football cards from Anchor B. Adds Leo's hand — the lowest-risk way to establish Leo. |
 | 4 | `STORY-SCENE-02` | Isolates the headphones; introduces the savings container. |
 | 5 | `STORY-SCENE-03` | Isolates the gift; introduces Mia. Only scene she appears in, so it is self-contained. |
@@ -246,6 +250,6 @@ Four documentation-level inconsistencies were found. **All four have been fixed 
 
 One smaller drift also corrected: ART-DIRECTION's stale fractional Story container figures (331.3 × 286.7 → the nominal 330 × 287).
 
-**Placeholder-list count — verified against code, 2026-08-17.** `assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` lists **eight** asset IDs, matching the canvas README. The list records every asset that must still show the approved placeholder, which is every asset not approved `final`. `WIS-MONEY-001-TALK-WITH-CLOUD` was briefly listed while it was delivered but under review, and left the list when it was approved — delivering a file does not remove an ID, only approval does. The **six** story scenes were never listed; they keep their own approved artwork. 8 placeholders + 6 story scenes + 1 approved anchor = the full fifteen.
+**Placeholder-list count — verified against code, 2026-08-17.** `assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` lists **eight** asset IDs, matching the canvas README. The list records every asset that must still show the approved placeholder, which is every asset not approved `final`. `WIS-MONEY-001-TALK-WITH-CLOUD` was briefly listed while it was delivered but under review, and left the list when it was approved — delivering a file does not remove an ID, only approval does. The **six** story scenes were never listed: `STORY-SCENE-04` is now approved `final` and draws its own PNG, and the other five keep their existing per-scene bindings. 8 placeholders + 5 unapproved story scenes + 2 approved masters = the full fifteen.
 
 **NO BLOCKERS — READY FOR ILLUSTRATION PRODUCTION**

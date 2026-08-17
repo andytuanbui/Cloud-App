@@ -75,6 +75,16 @@ Cloud**: different hair, different clothing, no navy-hoodie silhouette, and
 never the cloud emblem. Where Leo's meaning can be carried by objects, hands or
 an over-the-shoulder framing, prefer that.
 
+**Leo's positive definition is `LEO-CHARACTER.md` in this folder** — age read,
+hair, face, proportions, clothing, expression language and the one-second
+separation test from Cloud. It is binding on every Story scene, and it is the
+reference Leo is inherited from; no single scene is his master image.
+
+**The three recurring objects are locked by
+`GENERATION-PROMPT-STORY-SCENE-04.md`** — the football cards, the headphones and
+the wrapped gift, with the shape, colours, details and relative scale that must
+not change on any later canvas.
+
 **Mia** appears only in the birthday context, Story scene 03.
 
 Character faces must never be cropped by the container. Check each template's

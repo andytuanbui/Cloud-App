@@ -181,16 +181,21 @@ describe('production artwork is landing one asset at a time', () => {
     assert.deepEqual(pack.sort(), ['README.md', 'manifest.json', ...delivered].sort());
   });
 
-  it('has approved exactly the anchor', () => {
-    // The revised anchor was visually approved, so it is the only asset in the
-    // pack that renders. The other fourteen keep their placeholder treatment.
+  it('has approved exactly the two masters', () => {
+    // The anchor (Cloud's Character Master) and the object master were both
+    // visually approved, so they are the only assets in the pack that render.
+    // The other thirteen keep their placeholder treatment.
     assert.deepEqual(
-      manifest.assets.filter((a) => a.status === 'final').map((a) => a.assetId),
-      ['WIS-MONEY-001-TALK-WITH-CLOUD'],
+      manifest.assets.filter((a) => a.status === 'final').map((a) => a.assetId).sort(),
+      ['WIS-MONEY-001-STORY-SCENE-04', 'WIS-MONEY-001-TALK-WITH-CLOUD'],
     );
     assert.ok(
       delivered.includes('WIS-MONEY-001-talk-with-cloud-v1.png'),
       'the approved anchor artwork must be in the pack folder',
+    );
+    assert.ok(
+      delivered.includes('WIS-MONEY-001-story-scene-04-v1.png'),
+      'the approved object master artwork must be in the pack folder',
     );
   });
 });

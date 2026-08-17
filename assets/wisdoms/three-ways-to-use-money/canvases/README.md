@@ -161,11 +161,12 @@ image imports so Node tests can read it.
 
 ## Current status
 
-**One of fifteen is final: `WIS-MONEY-001-TALK-WITH-CLOUD`.** The revised
-anchor was visually approved on 2026-08-17 and its manifest status is `final`,
-so it is the one canvas in this pack the application actually draws.
+**Two of fifteen are final: `WIS-MONEY-001-TALK-WITH-CLOUD` and
+`WIS-MONEY-001-STORY-SCENE-04`.** Both were visually approved on 2026-08-17 and
+both are `final` in the manifest, so they are the two canvases in this pack the
+application actually draws.
 
-It is the pack **anchor** and the **Character Master** for Cloud: every other
+`TALK-WITH-CLOUD` is the pack **anchor** and the **Character Master** for Cloud: every other
 Cloud-bearing canvas takes his facial identity, hair silhouette, body
 proportions, expression language, hoodie, emblem and rendering from this file.
 Its composition is locked: Cloud in the left third, face near
@@ -179,13 +180,23 @@ been moved out to
 `docs/visual-references/wis-money-001-talk-with-cloud-superseded/`; nothing in
 the application loads it, and it must not come back into this folder.
 
-The other **fourteen entries remain `awaiting-final-art`** and are unchanged:
+`WIS-MONEY-001-STORY-SCENE-04` is the **object master**: 1170 × 903, RGB, no
+alpha, and no character of any kind. The football cards, Mia's gift and the
+headphones take their shape, colourway, detailing and relative scale from this
+file wherever they reappear — scenes 01, 02, 03, 05, 06, the Welcome hero, both
+Home cards and the Library card. Its brief, and the object bounds measured off
+the approved file, are in
+`docs/canvas-templates/wis-money-001/GENERATION-PROMPT-STORY-SCENE-04.md`. It is
+bound to the source key `wis-money-001-story-scene-04`.
+
+The other **thirteen entries remain `awaiting-final-art`** and are unchanged:
 the app still composes its own visuals for them, so their approved appearance
 is untouched. **Eight IDs keep showing a placeholder** — see
 `assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` —
-because nothing of their own has been drawn. `TALK-WITH-CLOUD` has left that
-list now that it is approved, and the six story scenes were never in it: they
-keep their own approved artwork.
+because nothing of their own has been drawn. `TALK-WITH-CLOUD` and
+`STORY-SCENE-04` have both left that list now that they are approved, and the
+other five story scenes were never in it: they keep their existing per-scene
+bindings.
 
 Canvas Pack **v1 was delivered and rejected** — see
 `docs/visual-references/wis-money-001-v1-rejected/REVIEW.md`. Nothing in that
