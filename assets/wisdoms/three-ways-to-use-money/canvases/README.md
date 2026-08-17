@@ -70,6 +70,23 @@ It is off by default and additionally gated on `__DEV__`.
 These are binding. A pack that breaks them will be rejected.
 
 - **Cloud is the CloudWise guide.** See `docs/CLOUD_CHARACTER.md`.
+- **Cloud's age read is fixed**: clearly a child, reading **close to 11** —
+  slightly mature proportions, less baby-ish face and body, calm confidence, an
+  intelligent and emotionally safe presence. Never a teenager or an adult, never
+  back to baby-like proportions. See `docs/CLOUD_CHARACTER.md` →
+  *Character direction — CURRENT*.
+- **Cloud is one character, not an interpretation per image.** Facial identity,
+  black hair silhouette language, body proportions and rendering style do not
+  drift between canvases.
+- **Cloud's outfit rule is fixed** — see `docs/CLOUD_CHARACTER.md` →
+  *Outfit direction — FINAL*. The deep navy hoodie with the cloud emblem is the
+  base outfit and the visual foundation. The emblem is never removed, the navy
+  base is never swapped for another main colour, and outfit variation is allowed
+  only as a small contextual layer on top of that base. Face, hair, proportions,
+  expression language and rendering style never change. Every Cloud canvas in
+  this pack uses the base outfit with no added layer, and the anchor
+  (`TALK-WITH-CLOUD`) carries the classic navy hoodie only — no extra layer, no
+  major outfit variation.
 - Cloud may appear in **Talk with Cloud, Practice, Completion, and selected
   guide-led cards**.
 - **Cloud must never represent Leo.**
@@ -144,11 +161,31 @@ image imports so Node tests can read it.
 
 ## Current status
 
-**No approved final artwork exists.** Every entry is `awaiting-final-art` and
-the app still composes its own visuals, so the approved appearance is
-unchanged. Nine IDs temporarily share an existing approved image — see
+**One of fifteen is final: `WIS-MONEY-001-TALK-WITH-CLOUD`.** The revised
+anchor was visually approved on 2026-08-17 and its manifest status is `final`,
+so it is the one canvas in this pack the application actually draws.
+
+It is the pack **anchor** and the **Character Master** for Cloud: every other
+Cloud-bearing canvas takes his facial identity, hair silhouette, body
+proportions, expression language, hoodie, emblem and rendering from this file.
+Its composition is locked: Cloud in the left third, face near
+**x 0.22 / y 0.42**, open calm space to the right, hand gesture directed inward
+toward that space, **1170 × 720**, no text inside the illustration.
+
+`WIS-MONEY-001-talk-with-cloud-v1.png` — 1170 × 720, RGB, no alpha — sits in
+this folder, bound to the source key `wis-money-001-talk-with-cloud` in
+`src/features/wisdomCanvas/assetIds.ts`. The earlier unapproved delivery has
+been moved out to
+`docs/visual-references/wis-money-001-talk-with-cloud-superseded/`; nothing in
+the application loads it, and it must not come back into this folder.
+
+The other **fourteen entries remain `awaiting-final-art`** and are unchanged:
+the app still composes its own visuals for them, so their approved appearance
+is untouched. **Eight IDs keep showing a placeholder** — see
 `assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` —
-while the six story scenes keep their own approved artwork.
+because nothing of their own has been drawn. `TALK-WITH-CLOUD` has left that
+list now that it is approved, and the six story scenes were never in it: they
+keep their own approved artwork.
 
 Canvas Pack **v1 was delivered and rejected** — see
 `docs/visual-references/wis-money-001-v1-rejected/REVIEW.md`. Nothing in that

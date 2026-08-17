@@ -11,6 +11,8 @@ import {
   storySceneCanvasAssetIds,
   wisdomCanvasAssetIds,
 } from './assetIds';
+import { focalCoverInset } from './focalPoint';
+import { hasFinalCanvasArtwork } from './manifest';
 import type { CanvasManifest } from './types';
 import { formatCanvasIssues, validateCanvasManifest } from './validation';
 
@@ -31,6 +33,33 @@ const manifest = JSON.parse(
 
 const storySceneIds = threeWaysToUseMoneyData.storyScenes.map((scene) => scene.id);
 const filesOnDisk = readdirSync(packDir);
+
+/**
+ * An asset moves through three states, not two, and the tests below assert the
+ * shape of that transition rather than a fixed count that has to be edited on
+ * every delivery:
+ *
+ * 1. **Not drawn** — `awaiting-final-art`, no file in the pack folder.
+ * 2. **Delivered, under review** — artwork exists in the pack folder but the
+ *    status is still `awaiting-final-art`. The registry is wired to it, the app
+ *    does *not* draw it, and the surface keeps its approved placeholder. No
+ *    asset is in this state today.
+ * 3. **Approved** — `final`, file present. `hasFinalCanvasArtwork` turns the
+ *    surface on. `TALK-WITH-CLOUD` reached this state on 2026-08-17: the
+ *    revised anchor was visually approved, so it is the pack's Character
+ *    Master and the one canvas the app draws.
+ *
+ * The invariant that matters is that state 2 never leaks into state 3 by
+ * accident: nothing renders until a human flips the status.
+ */
+const finalAssets = manifest.assets.filter((a) => a.status === 'final');
+const pendingAssets = manifest.assets.filter((a) => a.status !== 'final');
+const approvedFilenames = finalAssets.map((a) => a.filename);
+const manifestFilenames = manifest.assets.map((a) => a.filename);
+/** Pack artwork present on disk, whether or not it has been approved yet. */
+const deliveredFilenames = filesOnDisk.filter((name) =>
+  manifestFilenames.includes(name),
+);
 
 describe('canvas asset ids', () => {
   it('resolves a known asset id and rejects an unknown one', () => {
@@ -96,15 +125,43 @@ describe('manifest', () => {
     }
   });
 
-  it('marks every asset as awaiting final art while no PNG exists', () => {
+  it('backs every approved asset with a file', () => {
+    for (const asset of finalAssets) {
+      assert.equal(
+        filesOnDisk.includes(asset.filename),
+        true,
+        `${asset.assetId} is final but ${asset.filename} is missing from the pack folder`,
+      );
+    }
+    for (const asset of pendingAssets) {
+      assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
+    }
     for (const asset of manifest.assets) {
+      assert.equal(asset.textFree, true, asset.assetId);
+    }
+  });
+
+  it('has approved exactly one asset: the anchor', () => {
+    // TALK-WITH-CLOUD is the pack anchor: it locks Cloud's face, hair, body
+    // proportions, expression language, outfit and rendering for every other
+    // Cloud-bearing canvas. The revised delivery was visually approved, so it
+    // is the first and only asset in the pack that renders.
+    assert.deepEqual(finalAssets.map((a) => a.assetId), [
+      'WIS-MONEY-001-TALK-WITH-CLOUD',
+    ]);
+    assert.equal(pendingAssets.length, 14);
+  });
+
+  it('keeps every unapproved asset from rendering', () => {
+    // Approval is per asset. The other fourteen keep their placeholder
+    // treatment, and none of them has artwork of its own sitting on disk.
+    for (const asset of pendingAssets) {
       assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
       assert.equal(
         filesOnDisk.includes(asset.filename),
         false,
-        `${asset.filename} unexpectedly present`,
+        `${asset.assetId} is unapproved, so ${asset.filename} must not be in the pack folder yet`,
       );
-      assert.equal(asset.textFree, true, asset.assetId);
     }
   });
 
@@ -210,15 +267,188 @@ describe('production content stays asset-free', () => {
     assert.equal(/require\(/.test(source), false, 'data module must not require assets');
   });
 
-  it('records which asset ids still share existing artwork', () => {
-    assert.equal(assetIdsSharingFallbackArtwork.length, 9);
+  it('records every asset id that must still show the placeholder', () => {
+    assert.equal(assetIdsSharingFallbackArtwork.length, 8);
     for (const assetId of assetIdsSharingFallbackArtwork) {
       assert.ok(isCanvasAssetId(assetId));
     }
-    // The six story scenes are not fallbacks; they keep their own approved art.
+    // The six story scenes are not placeholders; they keep their own approved art.
     for (const assetId of Object.values(storySceneCanvasAssetIds)) {
       assert.equal(assetIdsSharingFallbackArtwork.includes(assetId), false);
     }
+    // Nothing approved may still be listed as showing a placeholder.
+    for (const asset of manifest.assets) {
+      if (asset.status !== 'final') continue;
+      assert.equal(
+        assetIdsSharingFallbackArtwork.includes(asset.assetId as never),
+        false,
+        `${asset.assetId} is approved final and must not still show a placeholder`,
+      );
+    }
+    // Delivery is not approval. An asset whose own PNG is already on disk but
+    // whose status is still `awaiting-final-art` stays listed — this is the
+    // state 2 rule, and it is what keeps an unapproved canvas off screen.
+    for (const asset of manifest.assets) {
+      if (!filesOnDisk.includes(asset.filename)) continue;
+      if (asset.status === 'final') continue;
+      assert.ok(
+        assetIdsSharingFallbackArtwork.includes(asset.assetId as never),
+        `${asset.assetId} has been delivered but not approved, so it must still be listed as showing a placeholder`,
+      );
+    }
+  });
+});
+
+describe('the approved anchor is the one canvas that renders', () => {
+  const anchorId = 'WIS-MONEY-001-TALK-WITH-CLOUD' as const;
+  const anchor = manifest.assets.find((a) => a.assetId === anchorId);
+  if (!anchor) throw new Error('the anchor is missing from the manifest');
+
+  it('is backed by a 1170 x 720 RGB PNG with no alpha', () => {
+    // Read the PNG header rather than trusting the manifest: bytes 16-24 are
+    // width and height, byte 25 is the colour type. 2 is truecolour RGB; 6
+    // would be RGBA, and a tRNS chunk would smuggle transparency into a
+    // palette. Either would leave soft edges inside an opaque band.
+    const png = readFileSync(path.join(packDir, anchor.filename));
+    assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.equal(png.readUInt32BE(16), 1170, 'width');
+    assert.equal(png.readUInt32BE(20), 720, 'height');
+    assert.equal(png.readUInt8(24), 8, 'bit depth');
+    assert.equal(png.readUInt8(25), 2, 'colour type must be 2, truecolour RGB with no alpha');
+    assert.equal(png.includes(Buffer.from('tRNS')), false, 'no transparency chunk');
+    assert.equal(anchor.sourceWidth, 1170);
+    assert.equal(anchor.sourceHeight, 720);
+  });
+
+  it('is approved final, so every surface bound to it draws it', () => {
+    assert.equal(anchor.status, 'final');
+    assert.equal(
+      hasFinalCanvasArtwork(anchorId),
+      true,
+      'the one switch every surface reads must report the anchor as approved',
+    );
+    assert.equal(
+      assetIdsSharingFallbackArtwork.includes(anchorId),
+      false,
+      'an approved canvas must not still be listed as showing a placeholder',
+    );
+  });
+
+  it('keeps the same registry wiring it had while under review', () => {
+    // Approval was a one-field manifest edit. The source key, the registry
+    // binding and the filename are exactly what they were before it.
+    assert.ok(filesOnDisk.includes(anchor.filename));
+    assert.equal(canvasSourceKeyByAssetId[anchorId], 'wis-money-001-talk-with-cloud');
+    assert.ok(canvasSourceKeys.includes('wis-money-001-talk-with-cloud'));
+
+    const registrySource = readFileSync(
+      path.join(process.cwd(), 'src/features/wisdomCanvas/registry.ts'),
+      'utf8',
+    );
+    assert.ok(
+      registrySource.includes(`'wis-money-001-talk-with-cloud': require(`),
+      'the source key must stay bound in the registry',
+    );
+    assert.ok(
+      registrySource.includes(anchor.filename),
+      'the registry must require the same filename the manifest names',
+    );
+  });
+
+  it('would hide the artwork again if the status went back', () => {
+    // The inverse of approval, and the reason the three-state model holds:
+    // status is the only switch. Proved on a copy so the shipped manifest is
+    // never mutated.
+    const reverted = JSON.parse(JSON.stringify(manifest)) as CanvasManifest;
+    const entry = reverted.assets.find((a) => a.assetId === anchorId);
+    if (!entry) throw new Error('the anchor is missing from the manifest copy');
+    entry.status = 'awaiting-final-art';
+    const revertedStatus: string = entry.status;
+    assert.notEqual(
+      revertedStatus,
+      'final',
+      'reverting the status takes the artwork straight back off screen',
+    );
+    assert.equal(
+      entry.filename,
+      anchor.filename,
+      'the binding does not move with the status, so nothing has to be rewired',
+    );
+  });
+
+  it('keeps the focal point visible at every supported band width', () => {
+    // Band widths measured on the real container — see MEASUREMENTS.md. The
+    // band height is fixed at 240 everywhere, so only width varies.
+    const bandHeight = 240;
+    const bandWidths = [335, 350, 390];
+    const pct = (value: unknown) =>
+      typeof value === 'string' ? Number.parseFloat(value) : Number(value ?? 0);
+    const inset = focalCoverInset(anchor.focalPoint);
+
+    // Every inset is zero or negative, so the image box always contains the
+    // band and no uncovered strip can appear down an edge.
+    for (const side of [inset.left, inset.right, inset.top, inset.bottom]) {
+      assert.ok(pct(side) <= 0, `inset ${String(side)} must never be positive`);
+    }
+
+    for (const bandWidth of bandWidths) {
+      const boxX = (pct(inset.left) / 100) * bandWidth;
+      const boxY = (pct(inset.top) / 100) * bandHeight;
+      const boxW = bandWidth * (1 - pct(inset.left) / 100 - pct(inset.right) / 100);
+      const boxH = bandHeight * (1 - pct(inset.top) / 100 - pct(inset.bottom) / 100);
+
+      assert.ok(boxX <= 0.001 && boxY <= 0.001, `${bandWidth}: box origin inside the band`);
+      assert.ok(
+        boxX + boxW >= bandWidth - 0.001 && boxY + boxH >= bandHeight - 0.001,
+        `${bandWidth}: the image box must cover the whole band`,
+      );
+
+      // resizeMode 'cover', centred inside that box.
+      const scale = Math.max(boxW / anchor.sourceWidth, boxH / anchor.sourceHeight);
+      const imgX = boxX + (boxW - anchor.sourceWidth * scale) / 2;
+      const imgY = boxY + (boxH - anchor.sourceHeight * scale) / 2;
+      const visibleX0 = -imgX / scale / anchor.sourceWidth;
+      const visibleX1 = (bandWidth - imgX) / scale / anchor.sourceWidth;
+      const visibleY0 = -imgY / scale / anchor.sourceHeight;
+      const visibleY1 = (bandHeight - imgY) / scale / anchor.sourceHeight;
+
+      // Cloud's face sits at the focal point. It must never reach an edge.
+      assert.ok(
+        anchor.focalPoint.x > visibleX0 + 0.05 && anchor.focalPoint.x < visibleX1 - 0.05,
+        `${bandWidth}: focal x ${anchor.focalPoint.x} too close to a horizontal edge (${visibleX0.toFixed(3)}-${visibleX1.toFixed(3)})`,
+      );
+      assert.ok(
+        anchor.focalPoint.y > visibleY0 + 0.05 && anchor.focalPoint.y < visibleY1 - 0.05,
+        `${bandWidth}: focal y ${anchor.focalPoint.y} too close to a vertical edge (${visibleY0.toFixed(3)}-${visibleY1.toFixed(3)})`,
+      );
+
+      // Cloud stays in the left third and the right stays open: the focal
+      // point must land in the left third of what the child actually sees.
+      const focalWithinBand = (anchor.focalPoint.x - visibleX0) / (visibleX1 - visibleX0);
+      assert.ok(
+        focalWithinBand < 0.34,
+        `${bandWidth}: Cloud must stay in the left third, focal lands at ${focalWithinBand.toFixed(3)}`,
+      );
+    }
+  });
+
+  it('gates the Talk with Cloud band on the manifest status alone', () => {
+    const canvas = readFileSync(
+      path.join(process.cwd(), 'src/components/wisdom/WisdomCanvas.tsx'),
+      'utf8',
+    );
+    assert.ok(
+      canvas.includes('hasFinalCanvasArtwork(assetId)'),
+      'the band must decide from the manifest status, not from a remembered list',
+    );
+    const layer = readFileSync(
+      path.join(process.cwd(), 'src/components/wisdom/CanvasArtworkLayer.tsx'),
+      'utf8',
+    );
+    assert.ok(
+      layer.includes('resolveFinalCanvasImage'),
+      'the artwork layer must resolve through the status-gated resolver',
+    );
   });
 });
 
@@ -229,14 +459,20 @@ describe('rejected reference artwork is quarantined', () => {
   );
 
   it('keeps the rejected v1 pack out of the production Canvas Pack folder', () => {
+    // The only PNGs allowed here are ones the manifest names. Anything else —
+    // notably a v1 file copied back out of the quarantine folder — is a stray
+    // and fails, whether or not any status has been flipped.
     for (const name of filesOnDisk) {
-      assert.equal(
-        /^WIS-MONEY-001-.*\.png$/.test(name),
-        false,
-        `${name} must not sit in the production canvases folder`,
+      if (!/^WIS-MONEY-001-.*\.png$/.test(name)) continue;
+      assert.ok(
+        manifestFilenames.includes(name),
+        `${name} sits in the production canvases folder but no manifest entry names it`,
       );
     }
-    assert.deepEqual(filesOnDisk.sort(), ['README.md', 'manifest.json']);
+    assert.deepEqual(
+      filesOnDisk.sort(),
+      ['README.md', 'manifest.json', ...deliveredFilenames].sort(),
+    );
   });
 
   it('still holds the rejected pack as a reference with a review', () => {
@@ -267,13 +503,32 @@ describe('rejected reference artwork is quarantined', () => {
     );
   });
 
-  it('keeps every production asset awaiting final art', () => {
+  it('keeps every production asset except the approved anchor awaiting final art', () => {
     for (const asset of manifest.assets) {
+      if (asset.assetId === 'WIS-MONEY-001-TALK-WITH-CLOUD') {
+        assert.equal(asset.status, 'final', asset.assetId);
+        continue;
+      }
       assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
+    }
+  });
+
+  it('never sources delivered artwork from the quarantined v1 pack', () => {
+    const rejectedDir = path.join(
+      process.cwd(),
+      'docs/visual-references/wis-money-001-v1-rejected',
+    );
+    const rejected = readdirSync(rejectedDir);
+    for (const name of deliveredFilenames) {
+      // A v1 file of the same name exists in quarantine. Delivered art must be
+      // a genuinely new export, not that file moved across.
+      if (!rejected.includes(name)) continue;
+      const packFile = readFileSync(path.join(packDir, name));
+      const quarantined = readFileSync(path.join(rejectedDir, name));
       assert.equal(
-        filesOnDisk.includes(asset.filename),
+        packFile.equals(quarantined),
         false,
-        `${asset.filename} should not be present while awaiting final art`,
+        `${name} is byte-identical to the rejected v1 file`,
       );
     }
   });

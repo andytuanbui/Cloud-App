@@ -161,16 +161,36 @@ describe('character roles', () => {
   });
 });
 
-describe('production artwork is still pending', () => {
-  it('keeps every asset awaiting final art', () => {
+describe('production artwork is landing one asset at a time', () => {
+  const manifestFilenames = manifest.assets.map((a) => a.filename);
+  /** Pack artwork on disk, whether or not its status has been approved. */
+  const delivered = readdirSync(packDir).filter((name) =>
+    manifestFilenames.includes(name),
+  );
+
+  it('keeps every asset text-free and everything undelivered awaiting art', () => {
     for (const asset of manifest.assets) {
-      assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
       assert.equal(asset.textFree, true, asset.assetId);
+      if (asset.status === 'final') continue;
+      assert.equal(asset.status, 'awaiting-final-art', asset.assetId);
     }
   });
 
-  it('has no final PNG artwork in the production canvas folder', () => {
+  it('holds only manifest-named artwork in the production canvas folder', () => {
     const pack = readdirSync(packDir);
-    assert.deepEqual(pack.sort(), ['README.md', 'manifest.json']);
+    assert.deepEqual(pack.sort(), ['README.md', 'manifest.json', ...delivered].sort());
+  });
+
+  it('has approved exactly the anchor', () => {
+    // The revised anchor was visually approved, so it is the only asset in the
+    // pack that renders. The other fourteen keep their placeholder treatment.
+    assert.deepEqual(
+      manifest.assets.filter((a) => a.status === 'final').map((a) => a.assetId),
+      ['WIS-MONEY-001-TALK-WITH-CLOUD'],
+    );
+    assert.ok(
+      delivered.includes('WIS-MONEY-001-talk-with-cloud-v1.png'),
+      'the approved anchor artwork must be in the pack folder',
+    );
   });
 });

@@ -25,6 +25,8 @@ const canvasImageBySourceKey: Record<CanvasSourceKey, ImageSourcePropType> = {
   'cloud-hero-wave': require('../../../assets/cloud/cloud-hero-wave.png'),
   'cloud-avatar': require('../../../assets/cloud/cloud-avatar.png'),
   'cloud-home-garden': require('../../../assets/cloud/cloud-home-garden.png'),
+  // Delivered Canvas Pack artwork, loaded from the pack folder itself.
+  'wis-money-001-talk-with-cloud': require('../../../assets/wisdoms/three-ways-to-use-money/canvases/WIS-MONEY-001-talk-with-cloud-v1.png'),
 };
 
 /** Resolves a canvas image by its stable asset id. */

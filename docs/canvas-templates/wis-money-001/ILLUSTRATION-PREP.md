@@ -1,7 +1,7 @@
 # WIS-MONEY-001 — Illustration Prep Report
 
 Wisdom: **Three Ways to Use Money** (`three-ways-to-use-money`)
-Pack: 15 canvases, all `awaiting-final-art`, all layout-stable and render-path complete.
+Pack: 15 canvases, all layout-stable and render-path complete. **1 approved `final`** (`TALK-WITH-CLOUD`, the anchor / Character Master, approved 2026-08-17); the other **14 remain `awaiting-final-art`**.
 Prepared against commit `f801421` on `claude/wisdom-canvas-viewport-tuning`.
 
 Sources of truth, in priority order:
@@ -45,12 +45,39 @@ Nine distinct ratios are in use. One export per asset. No shared ratio.
 
 ### Cloud
 
-- The CloudWise guide, **around 10 years old**, per `docs/CLOUD_CHARACTER.md`.
-- Navy hoodie carrying the **glowing cloud emblem**; signature sneakers.
-- Warm, curious, thoughtful. A companion, not a mascot.
+- The CloudWise guide. Clearly a child, reading **close to 11 years old** — slightly mature proportions, less baby-ish face and body, calm and confident. Per `docs/CLOUD_CHARACTER.md` → *Character direction — CURRENT*. Never a teenager, never an adult, never regressed to baby-like proportions.
+- Navy hoodie carrying the **cloud emblem** — the emblem must be present and visible, but **a glow is not required**; the approved anchor renders it as a clean pale mark. Signature sneakers.
+- Warm, curious, thoughtful, quietly confident. An intelligent, emotionally safe presence. A companion, not a mascot.
 - His companion **Nimbus**, a small cloud of light, is part of his canonical design. It is *not* referenced in any manifest entry — see §5.
 - Cloud appears in **exactly four** places: `TALK-WITH-CLOUD`, `PRACTICE-HERO`, `COMPLETION-HERO`, and the two Home cards. Nowhere else. **Never in a Story scene.**
 - His face is never cropped, at any supported width, on any surface.
+
+#### Outfit rule
+
+The full rule is in **`docs/CLOUD_CHARACTER.md` → Outfit direction — FINAL**.
+It is binding on every asset in this pack. In short:
+
+- Cloud has a **fixed core identity**: same facial identity, same black hair
+  silhouette language, same age read (a child close to 11), same body
+  proportions, same expression language, same cloud emblem, same premium soft
+  3D style, same deep navy core.
+- The **deep navy hoodie with the cloud emblem is the base outfit** and the
+  visual foundation. The emblem is never removed; the navy base is never
+  swapped for another main colour.
+- Outfit variation is allowed **only as a contextual layer on top of that
+  base** — weather, mood, activity or setting. A jacket or zip layer when it is
+  cold, a rain layer when it is wet, simpler styling for a reflective beat.
+  Secondary, never dominant.
+- No hairstyle, proportion or design-language changes. No new fashion look per
+  asset. Clothing must never produce a different character.
+- **Recognition test:** Cloud reads as Cloud in about one second, whatever the
+  outfit detail.
+
+Within this pack every Cloud surface is a calm indoor or neutral moment, so all
+four should sit at or very close to the **base outfit** — navy hoodie, emblem
+visible, no added layer. `TALK-WITH-CLOUD` is the anchor and carries no
+variation at all: classic navy hoodie only, no extra outfit layer, no major
+outfit variation.
 
 ### Leo
 
@@ -162,7 +189,7 @@ Centre-weighted, horizontally forgiving, vertically committed. Height is fixed e
 
 **7. `STORY-SCENE-06`** — Show: money arranged into **three unequal groups** or containers, largest to smallest. Avoid: written labels, amounts, category words, equal thirds, Cloud resemblance. Subject centred and low-contrast; if Leo's hands appear, hands only is safest.
 
-**8. `TALK-WITH-CLOUD`** — Show: Cloud, listening, three-quarter or seated, in the left 4–38%. Warm empty space at the right for the conversation to breathe into. Avoid: filling the right side, cropping Cloud's face, any object clutter. Subject at **0.22 / 0.42**, inside the `character` rectangle.
+**8. `TALK-WITH-CLOUD`** — Show: Cloud, listening, three-quarter or seated, in the left 4–38%, hand gesture directed **inward** toward the open space. Warm empty space at the right for the conversation to breathe into. Avoid: filling the right side, cropping Cloud's face, any object clutter, any embedded text. Subject at **0.22 / 0.42**, inside the `character` rectangle. This is the pack anchor: 1170 × 720, classic navy hoodie only, mature Cloud read per `docs/CLOUD_CHARACTER.md`.
 
 **9. `CHOICE-BACKGROUND`** — Show: a calm surface — soft table or board texture, warm light — that reads as "a place to decide". Avoid: characters, the three objects rendered in detail, any focal point that competes with the allocation UI below. Wide and shallow; keep it near-flat with a gentle centre lift.
 
@@ -186,7 +213,7 @@ One sequence, first to last. The logic: lock the two things everything else inhe
 
 | # | Asset | Why here |
 |---|---|---|
-| 1 | `TALK-WITH-CLOUD` | **Anchor A — Cloud.** The largest, calmest, most generous Cloud frame in the pack. Everything Cloud-bearing inherits his rendering from this one. Approve it before anything else is drawn. |
+| 1 | `TALK-WITH-CLOUD` | **Anchor A — Cloud. ✅ APPROVED 2026-08-17, `final`.** The largest, calmest, most generous Cloud frame in the pack, and now the **Character Master**: everything Cloud-bearing inherits his facial identity, hair silhouette, body proportions, age read and rendering from this file. Match it — do not reinterpret Cloud per asset. |
 | 2 | `STORY-SCENE-04` | **Anchor B — the three objects.** All three at once, evenly weighted, no character to distract. Every subsequent object appearance is measured against this file. |
 | 3 | `STORY-SCENE-01` | Isolates the football cards from Anchor B. Adds Leo's hand — the lowest-risk way to establish Leo. |
 | 4 | `STORY-SCENE-02` | Isolates the headphones; introduces the savings container. |
@@ -217,6 +244,8 @@ Four documentation-level inconsistencies were found. **All four have been fixed 
 | The three card assets have a **second, much smaller pre-learned crop** (132 tall, and 80 × 84 for both compact cards) that appeared in no brief. An illustrator composing only for 154 would lose ~62% of the width in the state the child sees first. | Documented in ART-DIRECTION with the middle-40% rule. |
 | Manifest sets `character: "none"` on all six Story scenes while ART-DIRECTION says Leo may appear in 02, 03, 05 and 06 — a direct contradiction on the exact axis that caused the v1 rejection. | ART-DIRECTION now defines `character: "none"` as *object-led, no full standing character required; Leo permitted as hands or partial figure*. The manifest data was left untouched. |
 
-Two smaller drifts also corrected: README's "Eight IDs temporarily share an existing approved image" (there are **nine**, per `assetIdsSharingFallbackArtwork`), and ART-DIRECTION's stale fractional Story container figures (331.3 × 286.7 → the nominal 330 × 287).
+One smaller drift also corrected: ART-DIRECTION's stale fractional Story container figures (331.3 × 286.7 → the nominal 330 × 287).
+
+**Placeholder-list count — verified against code, 2026-08-17.** `assetIdsSharingFallbackArtwork` in `src/features/wisdomCanvas/assetIds.ts` lists **eight** asset IDs, matching the canvas README. The list records every asset that must still show the approved placeholder, which is every asset not approved `final`. `WIS-MONEY-001-TALK-WITH-CLOUD` was briefly listed while it was delivered but under review, and left the list when it was approved — delivering a file does not remove an ID, only approval does. The **six** story scenes were never listed; they keep their own approved artwork. 8 placeholders + 6 story scenes + 1 approved anchor = the full fifteen.
 
 **NO BLOCKERS — READY FOR ILLUSTRATION PRODUCTION**

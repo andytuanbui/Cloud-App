@@ -1,5 +1,6 @@
 import { Image, ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
+import { focalCoverInset } from '../../features/wisdomCanvas/focalPoint';
 import { getCanvasMetadata } from '../../features/wisdomCanvas/manifest';
 import { resolveFinalCanvasImage } from '../../features/wisdomCanvas/registry';
 import type { CanvasFitMode } from '../../features/wisdomCanvas/types';
@@ -34,7 +35,8 @@ export function CanvasArtworkLayer({
   const metadata = getCanvasMetadata(assetId);
   const resolvedFit = fitMode ?? metadata?.fitMode ?? 'cover';
   // The focal point keeps the important part of the artwork visible when a
-  // fixed-height container forces a crop.
+  // fixed-height container forces a crop. Shared with `WisdomCanvas` so both
+  // pan identically and neither can expose an uncovered edge.
   const focal = metadata?.focalPoint ?? { x: 0.5, y: 0.5 };
 
   return (
@@ -44,9 +46,7 @@ export function CanvasArtworkLayer({
       source={source}
       style={[
         StyleSheet.absoluteFillObject,
-        resolvedFit === 'cover'
-          ? { left: `${(0.5 - focal.x) * 12}%`, top: `${(0.5 - focal.y) * 12}%` }
-          : null,
+        resolvedFit === 'cover' ? focalCoverInset(focal) : null,
         style,
       ]}
     />

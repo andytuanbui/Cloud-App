@@ -18,7 +18,7 @@ This is also the version that produced `prototypes/visual-direction-test.html`, 
 
 ## Iteration 3 — Cloud, the companion character (current direction)
 
-The current direction reintroduces an AI companion — now named **Cloud** — with a warm, illustrated character design (navy hoodie, gold star motif, friendly expressions) rather than the calm/editorial anti-mascot look from Iteration 2. The core loop was also refined:
+The current direction reintroduces an AI companion — now named **Cloud** — with a warm, illustrated character design (deep navy hoodie, **cloud emblem**, friendly expressions) rather than the calm/editorial anti-mascot look from Iteration 2. The gold star motif described here earlier was the abandoned "Lumi" identity and is superseded — `docs/CLOUD_CHARACTER.md` is the binding character spec. The core loop was also refined:
 
 - **Home screen answers one question** — "what should I learn today?" — rather than acting as a dashboard. One "Today's Wisdom" card, not a menu of everything.
 - **Four-step wisdom flow**: Read → Talk with Cloud → Reflection → Challenge. Only after all four steps does the next day's wisdom unlock.

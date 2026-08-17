@@ -2,6 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ReactNode } from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
+import { focalCoverInset } from '../../features/wisdomCanvas/focalPoint';
 import {
   canvasManifestByAssetId,
   hasFinalCanvasArtwork,
@@ -93,7 +94,8 @@ export function WisdomCanvas({
   }
 
   // The focal point keeps the important part of the artwork visible when the
-  // container forces a crop.
+  // container forces a crop. `focalCoverInset` grows the image box outward to
+  // pan it, so the band stays fully covered — see focalPoint.ts.
   const focal = metadata?.focalPoint ?? { x: 0.5, y: 0.5 };
 
   return (
@@ -108,9 +110,7 @@ export function WisdomCanvas({
         source={source}
         style={[
           StyleSheet.absoluteFillObject,
-          resolvedFit === 'cover'
-            ? { left: `${(0.5 - focal.x) * 12}%`, top: `${(0.5 - focal.y) * 12}%` }
-            : null,
+          resolvedFit === 'cover' ? focalCoverInset(focal) : null,
         ]}
       />
 

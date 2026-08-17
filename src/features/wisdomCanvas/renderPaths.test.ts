@@ -326,15 +326,34 @@ describe('there is one artwork-resolution system', () => {
   });
 
   it('keeps the manifest status as the only switch that reveals artwork', () => {
-    // Every asset is still awaiting art, so nothing renders yet and the
-    // placeholder treatment is what ships. When a status flips to 'final' the
-    // matching surface turns on with no further code change.
+    // Flipping a status to 'final' is what turns a surface on — no code change
+    // is involved. Any asset that is final must therefore have a render path,
+    // so the flip actually reaches a surface; every other asset stays
+    // 'awaiting-final-art' and keeps the approved placeholder treatment.
     for (const asset of manifest.assets) {
+      if (asset.status === 'final') {
+        assert.ok(
+          canvasRenderPaths[asset.assetId as keyof typeof canvasRenderPaths],
+          `${asset.assetId} is final but has no render path, so nothing draws it`,
+        );
+        continue;
+      }
       assert.equal(
         asset.status,
         'awaiting-final-art',
         `${asset.assetId} changed status; confirm its surface renders the delivered file`,
       );
     }
+  });
+
+  it('renders the delivered anchor through the shared canvas system', () => {
+    const talk = canvasRenderPaths['WIS-MONEY-001-TALK-WITH-CLOUD'];
+    assert.equal(talk.mechanism, 'canvas-band');
+    assert.equal(talk.surface, 'Talk with Cloud band');
+    // The Talk band must still go through the registry, not a direct require.
+    assert.ok(
+      !/require\([^)]*assets\/wisdoms/.test(source(talk.sourcePath)),
+      'the Talk band must resolve its artwork through the registry',
+    );
   });
 });

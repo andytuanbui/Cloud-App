@@ -44,6 +44,9 @@ export const canvasSourceKeys = [
   'cloud-hero-wave',
   'cloud-avatar',
   'cloud-home-garden',
+  // Delivered Canvas Pack artwork. These keys point at the pack folder itself,
+  // not at a borrowed image from assets/cloud.
+  'wis-money-001-talk-with-cloud',
 ] as const;
 
 export type CanvasSourceKey = (typeof canvasSourceKeys)[number];
@@ -56,6 +59,12 @@ export type CanvasSourceKey = (typeof canvasSourceKeys)[number];
  * so a missing binding is a compile error rather than a runtime blank.
  */
 export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = {
+  // Approved Canvas Pack artwork. TALK-WITH-CLOUD is the pack's anchor and the
+  // Character Master for Cloud: every other Cloud-bearing canvas takes his
+  // face, hair silhouette, proportions, expression language, hoodie, emblem and
+  // rendering from this file. Approved 2026-08-17 and `final` in the manifest,
+  // so it is the one canvas the app actually draws today.
+  'WIS-MONEY-001-TALK-WITH-CLOUD': 'wis-money-001-talk-with-cloud',
   // Story scenes keep their approved per-scene artwork exactly as shipped.
   'WIS-MONEY-001-STORY-SCENE-01': 'cat-money',
   'WIS-MONEY-001-STORY-SCENE-02': 'cloud-thinking',
@@ -67,7 +76,6 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
   // image so nothing resolves to nothing; the screens still compose their own
   // visuals, so the app looks unchanged.
   'WIS-MONEY-001-WELCOME-HERO': 'cat-money',
-  'WIS-MONEY-001-TALK-WITH-CLOUD': 'cloud-avatar',
   'WIS-MONEY-001-CHOICE-BACKGROUND': 'cat-money',
   'WIS-MONEY-001-TAKEAWAY-BACKGROUND': 'cloud-avatar',
   'WIS-MONEY-001-PRACTICE-HERO': 'cloud-hero-wave',
@@ -80,16 +88,34 @@ export const canvasSourceKeyByAssetId: Record<CanvasAssetId, CanvasSourceKey> = 
 };
 
 /**
- * Asset ids whose registry binding is a borrowed image rather than their own.
+ * Asset ids that must keep showing the approved placeholder treatment.
  *
- * This is a record of the temporary bindings above, not a runtime switch: what
- * decides whether artwork is drawn is the manifest status, read through
- * `hasFinalCanvasArtwork`. The six story scenes are absent because their
- * bindings are their own approved scene images.
+ * An id belongs here whenever its own illustration is not approved `final`.
+ * That covers two of the three states an asset moves through:
+ *
+ * 1. **Not delivered** — nothing drawn yet; the id borrows a nearby approved
+ *    image so the registry always resolves. Listed here.
+ * 2. **Delivered, under review** — the asset's own PNG is on disk and bound in
+ *    the registry, but the manifest still says `awaiting-final-art`. The app
+ *    must go on drawing the placeholder. Listed here. No asset is in this state
+ *    right now; `TALK-WITH-CLOUD` passed through it and has since been approved.
+ * 3. **Approved final** — `status: 'final'`. Not listed here, and the only
+ *    state in which the delivered artwork reaches a child. `TALK-WITH-CLOUD` is
+ *    the first and so far only asset here.
+ *
+ * Delivering a file does not remove an id from this list; only approval does.
+ *
+ * This is a record, not a runtime switch. What actually decides whether artwork
+ * is drawn is the manifest status, read through `hasFinalCanvasArtwork`. The
+ * list exists so the two can be checked against each other — `canvas.test.ts`
+ * asserts that nothing approved is listed and nothing delivered-but-unapproved
+ * is missing. The six story scenes are absent because their bindings are their
+ * own approved scene images.
  */
 export const assetIdsSharingFallbackArtwork: readonly CanvasAssetId[] = [
+  // `TALK-WITH-CLOUD` is deliberately absent: it is approved `final` and draws
+  // its own artwork. Everything below is still waiting on art of its own.
   'WIS-MONEY-001-WELCOME-HERO',
-  'WIS-MONEY-001-TALK-WITH-CLOUD',
   'WIS-MONEY-001-CHOICE-BACKGROUND',
   'WIS-MONEY-001-TAKEAWAY-BACKGROUND',
   'WIS-MONEY-001-PRACTICE-HERO',

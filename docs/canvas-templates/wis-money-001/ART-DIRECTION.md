@@ -37,11 +37,38 @@ never loud or arcade-like. Aimed at ages 8–11.
 ## Characters
 
 **Cloud** is the CloudWise guide and must follow `docs/CLOUD_CHARACTER.md`:
-ten years old, navy hoodie with the glowing cloud emblem, signature sneakers.
+a child who reads **close to 11 years old** — slightly mature proportions, not
+baby-faced, calm and confident — in the deep navy hoodie with the cloud emblem
+(present and visible; **a glow is not required**), signature sneakers. Never a
+teenager, never an adult.
+
+**The Character Master is `WIS-MONEY-001-TALK-WITH-CLOUD`**, approved 2026-08-17
+and `final` in the manifest. Match Cloud's facial identity, hair silhouette,
+body proportions, expression language and rendering to that file on every
+Cloud-bearing canvas in this pack. Do not reinterpret his face or proportions
+from asset to asset.
 Cloud appears in **Talk with Cloud, Practice, Completion, and both Home
 cards** — the feature card and the compact learned card. On the two card
 canvases his **full face must sit inside the focal-safe area** and must never be
 cropped at any supported width.
+
+**Cloud's outfit rule is fixed.** See `docs/CLOUD_CHARACTER.md` →
+*Outfit direction — FINAL* for the binding version. The core identity — face,
+hair, age read (a child close to 11), body proportions, expression language,
+cloud emblem, premium soft 3D style, deep navy core — does not change between
+assets. The **deep navy hoodie with the cloud
+emblem is the base outfit and the visual foundation**; the emblem is not
+removed and the navy base is not replaced with another main colour. Outfit
+variation is permitted **only as a contextual layer on top of that base**
+(weather, mood, activity, setting) and must stay secondary — the same child
+dressed for the moment, never a redesigned character. Hairstyle, proportions
+and design language never change. Cloud must be recognisable in about one
+second regardless of outfit detail.
+
+All four Cloud canvases in this pack are calm, neutral moments, so all four use
+the **base outfit** with no added layer. `TALK-WITH-CLOUD` is the anchor and
+defines that baseline for the rest of the pack — anchors carry the classic navy
+hoodie only, with no extra layer and no major outfit variation.
 
 **Leo** is the child inside this story and must be **visually separate from
 Cloud**: different hair, different clothing, no navy-hoodie silhouette, and
@@ -180,3 +207,6 @@ roughly the top and bottom sixth in the 132 region.
 7. Nothing important sits in the outer 14% of a full-width band — that is the
    maximum horizontal crop between a 375 and a 430 phone.
 8. The compact Home card and the Library card are two separate compositions.
+9. Cloud reads as a child close to 11 — slightly mature proportions, not
+   baby-faced, not a teenager — with the same face, hair silhouette and
+   proportions as every other Cloud asset in the pack.
