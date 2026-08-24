@@ -1,4 +1,4 @@
-import { Image, ImageStyle, StyleProp, StyleSheet } from 'react-native';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import type { CanvasAssetId } from '../../features/wisdomCanvas/assetIds';
 import { focalCoverInset } from '../../features/wisdomCanvas/focalPoint';
 import { getCanvasMetadata } from '../../features/wisdomCanvas/manifest';
@@ -27,7 +27,7 @@ export function CanvasArtworkLayer({
   assetId: CanvasAssetId;
   /** Overrides the manifest's fit mode when a container needs a tighter crop. */
   fitMode?: CanvasFitMode;
-  style?: StyleProp<ImageStyle>;
+  style?: StyleProp<ViewStyle>;
 }) {
   const source = resolveFinalCanvasImage(assetId);
   if (!source) return null;
@@ -40,15 +40,28 @@ export function CanvasArtworkLayer({
   const focal = metadata?.focalPoint ?? { x: 0.5, y: 0.5 };
 
   return (
-    <Image
+    <View
       accessible={false}
-      resizeMode={resolvedFit}
-      source={source}
+      pointerEvents="none"
       style={[
         StyleSheet.absoluteFillObject,
         resolvedFit === 'cover' ? focalCoverInset(focal) : null,
         style,
       ]}
-    />
+    >
+      <Image
+        accessible={false}
+        resizeMode={resolvedFit}
+        source={source}
+        style={styles.image}
+      />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+});

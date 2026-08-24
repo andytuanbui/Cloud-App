@@ -9,21 +9,20 @@ export function StorySceneCard({
   illustration,
   illustrationAccessibilityLabel,
   illustrationContainerStyle,
-  sceneCount,
-  sceneNumber,
+  partCount,
+  partNumber,
   text,
   title,
 }: {
   /**
-   * The canvas asset for this scene. Each of the six scenes has its own id, so
-   * the container is identified per scene rather than by a shared story id.
+   * The canvas asset for this visual scene. Narrative parts may reuse it.
    */
   assetId?: CanvasAssetId;
   illustration: ReactNode;
   illustrationAccessibilityLabel?: string;
   illustrationContainerStyle?: StyleProp<ViewStyle>;
-  sceneCount: number;
-  sceneNumber: number;
+  partCount: number;
+  partNumber: number;
   text: string;
   title?: string;
 }) {
@@ -42,22 +41,24 @@ export function StorySceneCard({
         {illustration}
       </View>
       <View style={styles.body}>
-        <View style={styles.sceneMeta}>
-          <View style={styles.sceneBadge}>
+        <View style={styles.partMeta}>
+          <View style={styles.partBadge}>
             <AppText tone="inverse" variant="label">
-              Scene {sceneNumber} of {sceneCount}
+              Part {partNumber} of {partCount}
             </AppText>
           </View>
-          <View accessible={false} style={styles.sceneDots}>
-            {Array.from({ length: Math.max(0, sceneCount) }, (_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.sceneDot,
-                  index < sceneNumber && styles.sceneDotActive,
-                ]}
-              />
-            ))}
+          <View
+            accessibilityLabel={`Story progress, part ${partNumber} of ${partCount}`}
+            accessibilityRole="progressbar"
+            accessibilityValue={{ min: 1, max: partCount, now: partNumber }}
+            style={styles.partProgress}
+          >
+            <View
+              style={[
+                styles.partProgressFill,
+                { width: `${Math.min(100, Math.max(0, (partNumber / partCount) * 100))}%` },
+              ]}
+            />
           </View>
         </View>
         {title ? (
@@ -108,32 +109,30 @@ const styles = StyleSheet.create({
     padding: space.lg,
     position: 'relative',
   },
-  sceneMeta: {
+  partMeta: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  sceneBadge: {
+  partBadge: {
     backgroundColor: appColors.primary,
     borderRadius: radii.round,
     paddingHorizontal: space.sm,
     paddingVertical: space.xxs,
   },
-  sceneDots: {
-    flexDirection: 'row',
-    flexShrink: 1,
-    gap: space.xxs,
-    marginLeft: space.sm,
-  },
-  sceneDot: {
+  partProgress: {
     backgroundColor: appColors.border,
     borderRadius: radii.round,
-    height: spacing.md,
-    width: spacing.md,
+    flex: 1,
+    height: spacing.sm,
+    marginLeft: space.sm,
+    maxWidth: 124,
+    overflow: 'hidden',
   },
-  sceneDotActive: {
+  partProgressFill: {
     backgroundColor: appColors.wisdomGoldBright,
-    width: spacing.s14,
+    borderRadius: radii.round,
+    height: '100%',
   },
   sceneText: {
     marginTop: space.xs,

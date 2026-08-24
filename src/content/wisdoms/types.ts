@@ -63,12 +63,24 @@ export type LegacyQuizWisdomContent = WisdomCommonContent & {
   };
 };
 
-export type GuidedStoryScene = {
+/** One reusable illustration in a guided Story. */
+export type GuidedStoryVisual = {
   id: string;
-  text: string;
-  narrationText: string;
   artwork: ImageSourcePropType;
   visualLabel: string;
+};
+
+/**
+ * One paced narrative moment in a guided Story.
+ *
+ * Several beats can reference the same visual. Narrative pacing therefore
+ * does not require a new illustration for every text or narration change.
+ */
+export type GuidedStoryBeat = {
+  id: string;
+  visualId: string;
+  text: string;
+  narrationText: string;
 };
 
 export type GuidedPersonalResponseSuggestion = Choice & {
@@ -128,9 +140,9 @@ export type GuidedTakeawayChoice = Choice;
  */
 export type GuidedStoryWisdomData = Omit<
   GuidedStoryWisdomContent,
-  'artwork' | 'storyScenes'
+  'artwork' | 'storyVisuals'
 > & {
-  storyScenes: Omit<GuidedStoryScene, 'artwork'>[];
+  storyVisuals: Omit<GuidedStoryVisual, 'artwork'>[];
 };
 
 export type GuidedStoryWisdomContent = WisdomCommonContent & {
@@ -138,7 +150,8 @@ export type GuidedStoryWisdomContent = WisdomCommonContent & {
   introduction: string;
   learningOutcomes: string[];
   startButtonLabel: string;
-  storyScenes: GuidedStoryScene[];
+  storyVisuals: GuidedStoryVisual[];
+  storyBeats: GuidedStoryBeat[];
   reflection: {
     question: string;
     choices: GuidedReflectionChoice[];

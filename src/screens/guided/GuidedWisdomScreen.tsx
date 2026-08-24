@@ -105,11 +105,18 @@ export function GuidedWisdomScreen({
   const stage: GuidedWisdomStage = reviewInitializing
     ? 'welcome'
     : session.currentStage;
-  const sceneIndex = Math.min(
-    Math.max(0, session.currentStoryScene),
-    wisdom.storyScenes.length - 1,
+  const beatIndex = Math.min(
+    Math.max(0, session.currentStoryBeat),
+    wisdom.storyBeats.length - 1,
   );
-  const scene = wisdom.storyScenes[sceneIndex];
+  const beat = wisdom.storyBeats[beatIndex];
+  const storyVisual = wisdom.storyVisuals.find(
+    (visual) => visual.id === beat?.visualId,
+  );
+  if (!beat || !storyVisual) {
+    throw new Error(`Guided Story content is incomplete: ${wisdom.id}`);
+  }
+  const storyAssetId = storySceneCanvasAssetIds[storyVisual.id];
   const selectedReflection = wisdom.reflection.choices.find(
     (choice) => choice.id === session.selectedReflectionAnswer,
   );
@@ -142,7 +149,7 @@ export function GuidedWisdomScreen({
     if (!reviewMode && !progress?.guidedSession && !isLearned) {
       updateGuidedSession(wisdom.id, {
         currentStage: 'welcome',
-        currentStoryScene: 0,
+        currentStoryBeat: 0,
         spendAmount: wisdom.decision.initialPlan.spend,
         saveAmount: wisdom.decision.initialPlan.save,
         giveAmount: wisdom.decision.initialPlan.give,
@@ -190,7 +197,7 @@ export function GuidedWisdomScreen({
     setNarrationStatus(narrationService.supported ? 'idle' : 'unavailable');
     setHasNarratedScene(false);
     return () => narrationService.stop();
-  }, [sceneIndex, stage]);
+  }, [beatIndex, stage]);
 
   const updateSession = (
     update: Parameters<typeof updateGuidedSession>[1],
@@ -205,15 +212,15 @@ export function GuidedWisdomScreen({
     if (stage === 'welcome') {
       onBack();
     } else if (stage === 'story') {
-      if (sceneIndex > 0) {
-        updateSession({ currentStoryScene: sceneIndex - 1 });
+      if (beatIndex > 0) {
+        updateSession({ currentStoryBeat: beatIndex - 1 });
       } else {
         moveTo('welcome');
       }
     } else if (stage === 'talk') {
       updateSession({
         currentStage: 'story',
-        currentStoryScene: wisdom.storyScenes.length - 1,
+        currentStoryBeat: wisdom.storyBeats.length - 1,
       });
     } else if (stage === 'choice') {
       moveTo('talk');
@@ -225,7 +232,7 @@ export function GuidedWisdomScreen({
   };
 
   const readScene = () => {
-    const started = narrationService.read(scene.narrationText, {
+    const started = narrationService.read(beat.narrationText, {
       onStateChange: setNarrationStatus,
       onComplete: () => setNarrationStatus('idle'),
       onError: () => setNarrationStatus(
@@ -390,22 +397,22 @@ export function GuidedWisdomScreen({
       {stage === 'story' ? (
         <>
           <View style={styles.storyStageHeading}>
-            <StageHeading eyebrow="Leo’s story" title="One choice at a time" />
+            <StageHeading eyebrow="Leo’s story" title="A hard choice" />
           </View>
           <View style={styles.storyCanvas}>
             <StorySceneCard
-              assetId={storySceneCanvasAssetIds[scene.id]}
+              assetId={storyAssetId}
               illustration={
                 <StoryMomentArtwork
-                  assetId={storySceneCanvasAssetIds[scene.id]}
-                  sceneIndex={sceneIndex}
+                  assetId={storyAssetId}
+                  visualId={storyVisual.id}
                 />
               }
-              illustrationAccessibilityLabel={scene.visualLabel}
-              sceneCount={wisdom.storyScenes.length}
-              sceneNumber={sceneIndex + 1}
-              text={scene.text}
-              title={scene.visualLabel}
+              illustrationAccessibilityLabel={storyVisual.visualLabel}
+              partCount={wisdom.storyBeats.length}
+              partNumber={beatIndex + 1}
+              text={beat.text}
+              title={storyVisual.visualLabel}
             />
             <NarrationControls
               hasPlayed={hasNarratedScene}
@@ -424,10 +431,10 @@ export function GuidedWisdomScreen({
               />
               <PrimaryButton
                 icon="arrow-forward"
-                label={sceneIndex === wisdom.storyScenes.length - 1 ? 'Talk with Cloud' : 'Continue'}
+                label={beatIndex === wisdom.storyBeats.length - 1 ? 'Talk with Cloud' : 'Continue'}
                 onPress={() => {
-                  if (sceneIndex === wisdom.storyScenes.length - 1) moveTo('talk');
-                  else updateSession({ currentStoryScene: sceneIndex + 1 });
+                  if (beatIndex === wisdom.storyBeats.length - 1) moveTo('talk');
+                  else updateSession({ currentStoryBeat: beatIndex + 1 });
                 }}
                 style={styles.pairedButton}
                 testID="guided-cta-story-next"
@@ -864,20 +871,18 @@ function LastPlanCard({ session }: { session: GuidedWisdomSession }) {
 }
 
 /**
- * Leo's six story beats.
+ * Leo's six reusable visual scenes.
  *
- * Each scene has its own canvas asset id. Once that scene's illustration is
- * delivered it is drawn edge to edge in the same container; until then the
- * scene keeps its approved object-led composition, because Leo has no artwork
- * yet (see src/content/characterAssets.ts) and Cloud's artwork must not stand
- * in for him. The six are never collapsed into one asset.
+ * Narrative beats refer to these by stable visual id, so several beats can
+ * keep one illustration on screen. Once a scene's illustration is delivered
+ * it replaces the matching object-led placeholder without changing pacing.
  */
 function StoryMomentArtwork({
   assetId,
-  sceneIndex,
+  visualId,
 }: {
   assetId?: CanvasAssetId;
-  sceneIndex: number;
+  visualId: string;
 }) {
   if (assetId && hasFinalCanvasArtwork(assetId)) {
     return (
@@ -886,7 +891,7 @@ function StoryMomentArtwork({
       </View>
     );
   }
-  if (sceneIndex === 0) {
+  if (visualId === 'leo-wants-the-cards-now') {
     return (
       <LinearGradient colors={[appColors.wisdomNight, appColors.wisdomNightDeep]} style={styles.storyMoment}>
         <View accessible={false} style={styles.storyGoldOrb} />
@@ -908,7 +913,7 @@ function StoryMomentArtwork({
       </LinearGradient>
     );
   }
-  if (sceneIndex === 1) {
+  if (visualId === 'leo-remembers-the-headphones') {
     return (
       <LinearGradient colors={['#A97127', appColors.wisdomNight]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <StoryVisualLabel label="SAVING FOR SOMETHING BIGGER" />
@@ -927,7 +932,7 @@ function StoryMomentArtwork({
       </LinearGradient>
     );
   }
-  if (sceneIndex === 2) {
+  if (visualId === 'leo-remembers-mias-birthday') {
     return (
       <LinearGradient colors={['#5A3B22', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <View accessible={false} style={styles.storyGoldOrb} />
@@ -949,7 +954,7 @@ function StoryMomentArtwork({
       </LinearGradient>
     );
   }
-  if (sceneIndex === 3) {
+  if (visualId === 'leo-sees-three-choices') {
     return (
       <LinearGradient colors={[appColors.wisdomNightSoft, appColors.wisdomNightDeep]} style={[styles.storyMoment, styles.threeProps]}>
         <StoryVisualLabel label="THREE WAYS TO USE MONEY" />
@@ -959,7 +964,7 @@ function StoryMomentArtwork({
       </LinearGradient>
     );
   }
-  if (sceneIndex === 4) {
+  if (visualId === 'leo-pauses') {
     return (
       <LinearGradient colors={['#493E61', appColors.wisdomNightDeep]} end={{ x: 1, y: 1 }} style={styles.storyMoment}>
         <StoryVisualLabel label="A SMALL PAUSE" />
@@ -979,10 +984,10 @@ function StoryMomentArtwork({
   }
   return (
     <LinearGradient colors={[appColors.wisdomNight, '#276657']} style={[styles.storyMoment, styles.planProps]}>
-      <StoryVisualLabel label="A PLAN WITH ROOM FOR EACH CHOICE" />
-      <PlanProp amount="40" icon="football-outline" label="Cards" />
-      <PlanProp amount="30" icon="headset-outline" label="Headphones" />
-      <PlanProp amount="20" icon="gift-outline" label="Mia" />
+      <StoryVisualLabel label="TRYING DIFFERENT GROUPS" />
+      <PlanProp icon="football-outline" label="Cards?" />
+      <PlanProp icon="headset-outline" label="Headphones?" />
+      <PlanProp icon="gift-outline" label="Mia?" />
     </LinearGradient>
   );
 }
@@ -1005,11 +1010,10 @@ function PropTile({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label
   );
 }
 
-function PlanProp({ amount, icon, label }: { amount: string; icon: keyof typeof Ionicons.glyphMap; label: string }) {
+function PlanProp({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label: string }) {
   return (
     <View style={styles.planProp}>
       <Ionicons color={appColors.wisdomGoldBright} name={icon} size={spacing.s24} />
-      <AppText style={styles.planAmount} tone="inverse" variant="cardTitle">{amount} kr</AppText>
       <AppText tone="inverse" variant="caption">{label}</AppText>
     </View>
   );
@@ -1393,7 +1397,7 @@ const styles = StyleSheet.create({
   lastPlanCard: { padding: space.md },
   lastPlanAmounts: { marginTop: space.sm },
   lastPlanTakeaway: { marginTop: space.sm },
-  // Same container as `storyMoment`, so a delivered scene illustration fills
+  // Same container as `storyMoment`, so a delivered visual illustration fills
   // exactly the region the object-led composition occupied.
   storyMomentArtwork: {
     minHeight: 286,
@@ -1490,7 +1494,6 @@ const styles = StyleSheet.create({
   pauseBubbleLabel: { textAlign: 'center' },
   planProps: { gap: space.xs },
   planProp: { alignItems: 'center', backgroundColor: appColors.wisdomGlass, borderColor: appColors.wisdomLine, borderRadius: radii.large, borderWidth: 1, flex: 1, minWidth: 0, padding: space.sm, zIndex: 2 },
-  planAmount: { marginTop: space.xs },
   memoryCard: {
     alignItems: 'center',
     borderColor: appColors.wisdomLine,

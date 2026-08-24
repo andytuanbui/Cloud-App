@@ -27,20 +27,25 @@ const content: GuidedStoryWisdomContent = {
   introduction: 'A fixture child has 60 minutes.\n\nWhat should they do?',
   learningOutcomes: ['Rest a little', 'Practise a little', 'Help a little'],
   startButtonLabel: 'Start the Story',
-  storyScenes: [
+  storyVisuals: [
     {
-      id: 'fixture-scene-one',
-      text: 'The fixture child looked at the clock.',
-      narrationText: 'The fixture child looked at the clock.',
+      id: 'fixture-clock',
       artwork: fixtureArtwork,
       visualLabel: 'A clock',
     },
+  ],
+  storyBeats: [
     {
-      id: 'fixture-scene-two',
+      id: 'fixture-beat-one',
+      visualId: 'fixture-clock',
+      text: 'The fixture child looked at the clock.',
+      narrationText: 'The fixture child looked at the clock.',
+    },
+    {
+      id: 'fixture-beat-two',
+      visualId: 'fixture-clock',
       text: 'There was more than one good way to spend the time.',
       narrationText: 'There was more than one good way to spend the time.',
-      artwork: fixtureArtwork,
-      visualLabel: 'Three ways to spend time',
     },
   ],
   reflection: {

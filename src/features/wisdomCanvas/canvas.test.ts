@@ -31,7 +31,7 @@ const manifest = JSON.parse(
   readFileSync(path.join(packDir, 'manifest.json'), 'utf8'),
 ) as CanvasManifest;
 
-const storySceneIds = threeWaysToUseMoneyData.storyScenes.map((scene) => scene.id);
+const storySceneIds = threeWaysToUseMoneyData.storyVisuals.map((visual) => visual.id);
 const filesOnDisk = readdirSync(packDir);
 
 /**

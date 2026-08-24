@@ -98,7 +98,7 @@ export type GuidedWisdomProgressRecord = {
   started: boolean;
   learned: boolean;
   reviewing: boolean;
-  storySceneIndex: number;
+  storyBeatIndex: number;
   /** Chosen reflection answer id from the definition's talk stage. */
   talkChoiceId?: string;
   /** What the child said back, either a suggestion label or their own words. */

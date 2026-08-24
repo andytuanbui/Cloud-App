@@ -12,8 +12,8 @@ export const guidedWisdomStages = [
 ] as const;
 export type GuidedWisdomStage = (typeof guidedWisdomStages)[number];
 
-export const CURRENT_GUIDED_WISDOM_SESSION_VERSION = 1 as const;
-export const CURRENT_SCHEMA_VERSION = 5 as const;
+export const CURRENT_GUIDED_WISDOM_SESSION_VERSION = 2 as const;
+export const CURRENT_SCHEMA_VERSION = 6 as const;
 
 export type GuidedResponseSource = 'suggested' | 'typed';
 
@@ -31,7 +31,8 @@ export type GuidedTakeaway = {
 export type GuidedWisdomSession = {
   version: typeof CURRENT_GUIDED_WISDOM_SESSION_VERSION;
   currentStage: GuidedWisdomStage;
-  currentStoryScene: number;
+  /** Ordered narrative beat, independent of the visual scene it references. */
+  currentStoryBeat: number;
   selectedReflectionAnswer?: string;
   personalResponse?: GuidedPersonalResponse;
   adaptiveResponse: string;
@@ -60,7 +61,7 @@ export function createDefaultGuidedWisdomSession(): GuidedWisdomSession {
   return {
     version: CURRENT_GUIDED_WISDOM_SESSION_VERSION,
     currentStage: 'welcome',
-    currentStoryScene: 0,
+    currentStoryBeat: 0,
     adaptiveResponse: '',
     spendAmount: 30,
     saveAmount: 30,

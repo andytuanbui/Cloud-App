@@ -14,9 +14,9 @@ import { buildCompletionSummary } from './completion';
 import { testGuidedWisdomDefinition } from './fixtures/testGuidedWisdom';
 import {
   getNextScreen,
-  getNextStoryScene,
+  getNextStoryBeat,
   getPreviousScreen,
-  getPreviousStoryScene,
+  getPreviousStoryBeat,
   getStageLabel,
   getStageNumber,
   getWisdomStatus,
@@ -38,7 +38,7 @@ function progressFor(
     started: false,
     learned: false,
     reviewing: false,
-    storySceneIndex: 0,
+    storyBeatIndex: 0,
     allocation: {},
     practiceAccepted: false,
     completionCount: 0,
@@ -67,11 +67,11 @@ describe('stage navigation', () => {
     assert.equal(getPreviousScreen('welcome'), undefined);
   });
 
-  it('steps story scenes before advancing the stage', () => {
-    assert.deepEqual(getNextStoryScene(0, 3), { sceneIndex: 1, advanceStage: false });
-    assert.deepEqual(getNextStoryScene(2, 3), { sceneIndex: 2, advanceStage: true });
-    assert.deepEqual(getPreviousStoryScene(1), { sceneIndex: 0, returnToWelcome: false });
-    assert.deepEqual(getPreviousStoryScene(0), { sceneIndex: 0, returnToWelcome: true });
+  it('steps story beats before advancing the stage', () => {
+    assert.deepEqual(getNextStoryBeat(0, 3), { beatIndex: 1, advanceStage: false });
+    assert.deepEqual(getNextStoryBeat(2, 3), { beatIndex: 2, advanceStage: true });
+    assert.deepEqual(getPreviousStoryBeat(1), { beatIndex: 0, returnToWelcome: false });
+    assert.deepEqual(getPreviousStoryBeat(0), { beatIndex: 0, returnToWelcome: true });
   });
 });
 
@@ -145,12 +145,12 @@ describe('allocation engine', () => {
 describe('progress isolation', () => {
   it('keeps two Wisdoms independent', () => {
     const store: Record<string, GuidedWisdomProgressRecord> = {};
-    store.a = progressFor('a', { started: true, storySceneIndex: 2 });
+    store.a = progressFor('a', { started: true, storyBeatIndex: 2 });
     store.b = progressFor('b', { started: true, learned: true, completionCount: 1 });
 
     store.a = { ...store.a, allocation: { spend: 10 } };
 
-    assert.equal(store.b.storySceneIndex, 0);
+    assert.equal(store.b.storyBeatIndex, 0);
     assert.deepEqual(store.b.allocation, {});
     assert.equal(store.b.learned, true);
     assert.equal(store.a.learned, false);
@@ -228,6 +228,22 @@ describe('definition validation', () => {
     };
     const issues = validateWisdomDefinition(broken);
     assert.ok(issues.some((issue) => issue.field === 'content.takeaway.choices'));
+  });
+
+  it('detects a narrative beat that references an unknown visual', () => {
+    const broken: GuidedWisdomDefinition = {
+      ...fixture,
+      content: {
+        ...fixture.content,
+        storyBeats: fixture.content.storyBeats.map((beat, index) =>
+          index === 0 ? { ...beat, visualId: 'missing-visual' } : beat,
+        ),
+      },
+    };
+    const issues = validateWisdomDefinition(broken);
+    assert.ok(
+      issues.some((issue) => issue.field === 'content.storyBeats[0].visualId'),
+    );
   });
 
   it('detects duplicate Wisdom ids across the registry', () => {

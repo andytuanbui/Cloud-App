@@ -1,7 +1,9 @@
 import { getLocalDateKey, isValidLocalDateKey } from '../services/date/dateService';
 import { isValidProfileAge, normalizeProfileName } from './profileValidation';
 import {
+  CURRENT_GUIDED_WISDOM_SESSION_VERSION,
   CURRENT_SCHEMA_VERSION,
+  GuidedWisdomSession,
   PersistedAppState,
   WisdomProgress,
 } from './types';
@@ -24,6 +26,32 @@ function nonNegativeInteger(value: unknown): number | null {
     : null;
 }
 
+/** First new narrative beat associated with each legacy WIS-MONEY-001 scene. */
+const moneyStoryBeatByLegacyScene = [0, 3, 5, 8, 9, 10] as const;
+
+/** Preserves the child's narrative position across the scene-to-beat model. */
+function migrateGuidedSession(
+  value: unknown,
+  wisdomId: string,
+): GuidedWisdomSession | undefined {
+  const session = asRecord(value);
+  if (Object.keys(session).length === 0) return undefined;
+
+  const savedBeat = nonNegativeInteger(session.currentStoryBeat);
+  const savedScene = nonNegativeInteger(session.currentStoryScene);
+  const currentStoryBeat = savedBeat ??
+    (wisdomId === 'three-ways-to-use-money' && savedScene !== null
+      ? moneyStoryBeatByLegacyScene[savedScene] ?? savedScene
+      : savedScene) ??
+    0;
+
+  return {
+    ...session,
+    version: CURRENT_GUIDED_WISDOM_SESSION_VERSION,
+    currentStoryBeat,
+  } as GuidedWisdomSession;
+}
+
 function migrateWisdomProgress(
   savedProgress: Record<string, unknown>,
 ): Record<string, WisdomProgress> {
@@ -39,15 +67,16 @@ function migrateWisdomProgress(
       const completionCount = isCompleted
         ? Math.max(1, savedCompletionCount)
         : 0;
-      const guidedSession = asRecord(progress.guidedSession);
-      const lastCompletedGuidedSession = asRecord(
+      const guidedSession = migrateGuidedSession(progress.guidedSession, wisdomId);
+      const lastCompletedGuidedSession = migrateGuidedSession(
         progress.lastCompletedGuidedSession,
+        wisdomId,
       );
       const completedGuidedSession =
-        Object.keys(lastCompletedGuidedSession).length > 0
-          ? progress.lastCompletedGuidedSession
-          : guidedSession.completed === true
-            ? progress.guidedSession
+        lastCompletedGuidedSession
+          ? lastCompletedGuidedSession
+          : guidedSession?.completed === true
+            ? guidedSession
             : undefined;
 
       return [
@@ -60,6 +89,7 @@ function migrateWisdomProgress(
           completionCount,
           completedAt: optionalString(progress.completedAt) ?? undefined,
           lastReviewedAt: optionalString(progress.lastReviewedAt) ?? undefined,
+          guidedSession,
           lastCompletedGuidedSession: completedGuidedSession,
         } as WisdomProgress,
       ];
@@ -87,7 +117,7 @@ export function createDefaultAppState(dateKey = getLocalDateKey()): PersistedApp
 }
 
 /**
- * Migrates both unversioned app state and earlier versioned state to schema v5.
+ * Migrates both unversioned app state and earlier versioned state to schema v6.
  *
  * Wisdom progress keeps all existing fields while permanent completion metadata is
  * normalized, so partial steps, responses, quiz state, and timestamps survive.

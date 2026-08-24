@@ -104,15 +104,21 @@ export function WisdomCanvas({
       accessible={Boolean(label)}
       style={[styles.canvas, { height }, style]}
     >
-      <Image
+      <View
         accessible={false}
-        resizeMode={resolvedFit}
-        source={source}
+        pointerEvents="none"
         style={[
           StyleSheet.absoluteFillObject,
           resolvedFit === 'cover' ? focalCoverInset(focal) : null,
         ]}
-      />
+      >
+        <Image
+          accessible={false}
+          resizeMode={resolvedFit}
+          source={source}
+          style={styles.artwork}
+        />
+      </View>
 
       {isDev && showSafeAreas
         ? metadata?.safeAreas.map((area, index) => (
@@ -148,6 +154,10 @@ const styles = StyleSheet.create({
     borderRadius: radii.hero,
     overflow: 'hidden',
     position: 'relative',
+    width: '100%',
+  },
+  artwork: {
+    height: '100%',
     width: '100%',
   },
   missing: {
