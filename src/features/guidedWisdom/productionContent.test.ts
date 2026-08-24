@@ -9,6 +9,7 @@ import {
   listEngineWisdomIds,
   threeWaysToUseMoneyEngineDefinition,
 } from './definitions';
+import { estimateStoryDuration } from './storyDuration';
 import { guidedStageOrder } from './types';
 import type { GuidedWisdomDefinition } from './types';
 import { validateWisdomDefinition, validateWisdomRegistry } from './validation';
@@ -34,8 +35,8 @@ function asFullDefinition(): GuidedWisdomDefinition {
     content: {
       ...content,
       artwork: stubArtwork,
-      storyScenes: content.storyScenes.map((scene) => ({
-        ...scene,
+      storyVisuals: content.storyVisuals.map((visual) => ({
+        ...visual,
         artwork: stubArtwork,
       })),
     },
@@ -66,10 +67,11 @@ describe('Three Ways to Use Money — stages', () => {
 
   it('supplies content for every stage', () => {
     assert.ok(content.introduction.includes('90 kr'), 'welcome copy');
-    assert.equal(content.storyScenes.length, 6, 'story scenes');
-    content.storyScenes.forEach((scene, index) => {
-      assert.ok(scene.text.trim().length > 0, `scene ${index} text`);
-      assert.ok(scene.narrationText.trim().length > 0, `scene ${index} narration`);
+    assert.equal(content.storyVisuals.length, 6, 'story visuals');
+    assert.equal(content.storyBeats.length, 12, 'story beats');
+    content.storyBeats.forEach((beat, index) => {
+      assert.ok(beat.text.trim().length > 0, `beat ${index} text`);
+      assert.ok(beat.narrationText.trim().length > 0, `beat ${index} narration`);
     });
     assert.ok(content.reflection.question.trim().length > 0, 'talk question');
     assert.ok(content.reflection.choices.length >= 2, 'talk choices');
@@ -77,6 +79,51 @@ describe('Three Ways to Use Money — stages', () => {
     assert.ok(content.takeaway.choices.length >= 2, 'takeaway options');
     assert.ok(content.practice.cardText.trim().length > 0, 'practice instruction');
     assert.ok(content.completion.title.trim().length > 0, 'completion configuration');
+  });
+});
+
+describe('Three Ways to Use Money — Story standard', () => {
+  it('keeps the complete authored beat order', () => {
+    assert.deepEqual(
+      content.storyBeats.map((beat) => beat.id),
+      [
+        'the-packet-in-the-window',
+        'a-card-to-show-his-friends',
+        'money-he-had-earned',
+        'the-crackling-headphones',
+        'closer-than-ever',
+        'two-sleeps-left',
+        'the-drawings-under-the-door',
+        'a-gift-mia-would-use',
+        'three-real-reasons',
+        'only-a-few-packets-left',
+        'trying-different-groups',
+        'the-pause-before-the-choice',
+      ],
+    );
+  });
+
+  it('reuses six visual scenes across twelve narrative beats', () => {
+    const knownVisuals = new Set(content.storyVisuals.map((visual) => visual.id));
+    assert.ok(content.storyBeats.length > content.storyVisuals.length);
+    assert.ok(content.storyBeats.every((beat) => knownVisuals.has(beat.visualId)));
+    assert.ok(
+      new Set(content.storyBeats.map((beat) => beat.visualId)).size <
+        content.storyBeats.length,
+    );
+  });
+
+  it('lands inside the 3–5 minute narration target', () => {
+    const estimate = estimateStoryDuration(content.storyBeats);
+    assert.ok(estimate.minutes >= 3, `${estimate.minutes} minutes is too short`);
+    assert.ok(estimate.minutes <= 5, `${estimate.minutes} minutes is too long`);
+  });
+
+  it('leaves Leo undecided before Story hands off to Talk with Cloud', () => {
+    const finalBeat = content.storyBeats.at(-1);
+    assert.ok(finalBeat?.text.includes('He had not decided yet.'));
+    assert.ok(finalBeat?.text.endsWith('What would you do?'));
+    assert.equal(guidedStageOrder[guidedStageOrder.indexOf('story') + 1], 'talk');
   });
 });
 

@@ -140,9 +140,9 @@ describe('story scenes each render their own canvas', () => {
     }
   });
 
-  it('looks the scene asset up by scene id rather than collapsing the six', () => {
+  it('looks the scene asset up by visual id rather than collapsing the six', () => {
     assert.ok(
-      screen.includes('storySceneCanvasAssetIds[scene.id]'),
+      screen.includes('storySceneCanvasAssetIds[storyVisual.id]'),
       'the Story stage must resolve the current scene’s own asset id',
     );
     // A single literal scene id in the render call would mean all six scenes
@@ -159,7 +159,7 @@ describe('story scenes each render their own canvas', () => {
     const sceneCard = screen.match(/<StorySceneCard[\s\S]*?\/>/)?.[0];
     assert.ok(sceneCard, 'the Story stage no longer renders a StorySceneCard');
     assert.ok(
-      sceneCard.includes('assetId={storySceneCanvasAssetIds[scene.id]}'),
+      sceneCard.includes('assetId={storyAssetId}'),
       'the scene container is not identified by its own asset id',
     );
     assert.ok(
@@ -167,7 +167,7 @@ describe('story scenes each render their own canvas', () => {
       'the scene artwork is not rendered inside the scene container',
     );
     assert.ok(
-      /StoryMomentArtwork[\s\S]{0,160}assetId=\{storySceneCanvasAssetIds\[scene\.id\]\}/.test(
+      /StoryMomentArtwork[\s\S]{0,160}assetId=\{storyAssetId\}/.test(
         sceneCard,
       ),
       'the scene artwork does not receive its own asset id',

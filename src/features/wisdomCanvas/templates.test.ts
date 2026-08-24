@@ -88,7 +88,7 @@ describe('templates and manifest agree', () => {
   });
 
   it('gives all six story scenes the shared story template', () => {
-    const sceneIds = threeWaysToUseMoneyData.storyScenes.map((s) => s.id);
+    const sceneIds = threeWaysToUseMoneyData.storyVisuals.map((visual) => visual.id);
     assert.equal(sceneIds.length, 6);
     assert.equal(templateTypes['story-scene'].length, 6);
     const byId = Object.fromEntries(manifest.assets.map((a) => [a.assetId, a]));

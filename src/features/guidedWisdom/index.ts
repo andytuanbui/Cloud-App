@@ -10,6 +10,7 @@ export * from './stages';
 export * from './allocation';
 export * from './completion';
 export * from './validation';
+export * from './storyDuration';
 export {
   assertRegistryIsValid,
   getGuidedWisdom,

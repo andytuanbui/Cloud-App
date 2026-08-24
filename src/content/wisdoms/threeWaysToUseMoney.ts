@@ -16,7 +16,7 @@ const choicesArtwork = require('../../../assets/cloud/cloud-neighborhood-home.pn
 const pauseArtwork = require('../../../assets/cloud/cat-thinking.png');
 const planArtwork = require('../../../assets/cloud/cloud-hero-wave.png');
 
-/** Scene id → artwork. Keyed by id so scene order can change safely. */
+/** Visual-scene id → artwork. Keyed by id so narrative beats can reuse art. */
 const sceneArtwork: Record<string, GuidedStoryWisdomContent['artwork']> = {
   'leo-wants-the-cards-now': moneyArtwork,
   'leo-remembers-the-headphones': savingsArtwork,
@@ -29,8 +29,8 @@ const sceneArtwork: Record<string, GuidedStoryWisdomContent['artwork']> = {
 export const threeWaysToUseMoney: GuidedStoryWisdomContent = {
   ...threeWaysToUseMoneyData,
   artwork: moneyArtwork,
-  storyScenes: threeWaysToUseMoneyData.storyScenes.map((scene) => ({
-    ...scene,
-    artwork: sceneArtwork[scene.id] ?? moneyArtwork,
+  storyVisuals: threeWaysToUseMoneyData.storyVisuals.map((visual) => ({
+    ...visual,
+    artwork: sceneArtwork[visual.id] ?? moneyArtwork,
   })),
 };

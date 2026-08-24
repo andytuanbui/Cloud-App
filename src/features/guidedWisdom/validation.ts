@@ -48,16 +48,58 @@ export function validateWisdomDefinition(
   if (!content.introduction?.trim()) {
     issues.push(issue(id, 'content.introduction', 'Welcome content is required.'));
   }
-  if (!content.storyScenes?.length) {
-    issues.push(issue(id, 'content.storyScenes', 'At least one story scene is required.'));
+  if (!content.storyVisuals?.length) {
+    issues.push(issue(id, 'content.storyVisuals', 'At least one story visual is required.'));
   }
-  content.storyScenes?.forEach((scene, index) => {
-    if (!scene.text?.trim()) {
-      issues.push(issue(id, `content.storyScenes[${index}].text`, 'Scene text is required.'));
-    }
-    if (!scene.artwork) {
+  const storyVisualIds = new Set<string>();
+  content.storyVisuals?.forEach((visual, index) => {
+    if (!visual.id?.trim()) {
+      issues.push(issue(id, `content.storyVisuals[${index}].id`, 'Visual id is required.'));
+    } else if (storyVisualIds.has(visual.id)) {
       issues.push(
-        issue(id, `content.storyScenes[${index}].artwork`, 'Scene artwork asset is missing.'),
+        issue(id, `content.storyVisuals[${index}].id`, `Duplicate visual id "${visual.id}".`),
+      );
+    }
+    storyVisualIds.add(visual.id);
+    if (!visual.visualLabel?.trim()) {
+      issues.push(
+        issue(id, `content.storyVisuals[${index}].visualLabel`, 'Visual label is required.'),
+      );
+    }
+    if (!visual.artwork) {
+      issues.push(
+        issue(id, `content.storyVisuals[${index}].artwork`, 'Visual artwork asset is missing.'),
+      );
+    }
+  });
+  if (!content.storyBeats?.length) {
+    issues.push(issue(id, 'content.storyBeats', 'At least one story beat is required.'));
+  }
+  const storyBeatIds = new Set<string>();
+  content.storyBeats?.forEach((beat, index) => {
+    if (!beat.id?.trim()) {
+      issues.push(issue(id, `content.storyBeats[${index}].id`, 'Beat id is required.'));
+    } else if (storyBeatIds.has(beat.id)) {
+      issues.push(
+        issue(id, `content.storyBeats[${index}].id`, `Duplicate beat id "${beat.id}".`),
+      );
+    }
+    storyBeatIds.add(beat.id);
+    if (!beat.text?.trim()) {
+      issues.push(issue(id, `content.storyBeats[${index}].text`, 'Beat text is required.'));
+    }
+    if (!beat.narrationText?.trim()) {
+      issues.push(
+        issue(id, `content.storyBeats[${index}].narrationText`, 'Beat narration is required.'),
+      );
+    }
+    if (!storyVisualIds.has(beat.visualId)) {
+      issues.push(
+        issue(
+          id,
+          `content.storyBeats[${index}].visualId`,
+          `Unknown story visual "${beat.visualId}".`,
+        ),
       );
     }
   });

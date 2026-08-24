@@ -127,4 +127,13 @@ describe('both canvas surfaces share the focal implementation', () => {
       );
     }
   });
+
+  it('sizes the web image inside the focal frame instead of using intrinsic pixels', () => {
+    for (const file of files) {
+      const source = readFileSync(path.join(process.cwd(), file), 'utf8');
+      assert.match(source, /<View[\s\S]*?focalCoverInset\(focal\)[\s\S]*?<Image/);
+      assert.match(source, /height:\s*'100%'/);
+      assert.match(source, /width:\s*'100%'/);
+    }
+  });
 });

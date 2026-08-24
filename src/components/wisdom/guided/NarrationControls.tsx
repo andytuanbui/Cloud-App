@@ -48,7 +48,7 @@ export function NarrationControls({
           />
         ) : (
           <SecondaryButton
-            accessibilityLabel="Read this story scene aloud"
+            accessibilityLabel="Read this story part aloud"
             disabled={unavailable || !onRead}
             icon="volume-medium-outline"
             label="Read to Me"
@@ -57,7 +57,7 @@ export function NarrationControls({
           />
         )}
         <TextButton
-          accessibilityLabel="Replay this story scene"
+          accessibilityLabel="Replay this story part"
           disabled={replayDisabled}
           icon="refresh"
           label="Replay"
@@ -77,7 +77,7 @@ export function NarrationControls({
           tone="secondary"
           variant="caption"
         >
-          Reading this scene aloud.
+          Reading this story part aloud.
         </AppText>
       ) : status === 'paused' ? (
         <AppText

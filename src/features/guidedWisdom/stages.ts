@@ -55,24 +55,24 @@ export function getPreviousScreen(
 }
 
 /**
- * Story scenes step within the story stage before the stage itself advances,
- * so scene position is resolved separately from stage position.
+ * Story beats step within the story stage before the stage itself advances,
+ * so narrative position is resolved separately from visual-scene position.
  */
-export function getNextStoryScene(
-  sceneIndex: number,
-  sceneCount: number,
-): { sceneIndex: number; advanceStage: boolean } {
-  if (sceneIndex + 1 < sceneCount) {
-    return { sceneIndex: sceneIndex + 1, advanceStage: false };
+export function getNextStoryBeat(
+  beatIndex: number,
+  beatCount: number,
+): { beatIndex: number; advanceStage: boolean } {
+  if (beatIndex + 1 < beatCount) {
+    return { beatIndex: beatIndex + 1, advanceStage: false };
   }
-  return { sceneIndex, advanceStage: true };
+  return { beatIndex, advanceStage: true };
 }
 
-export function getPreviousStoryScene(
-  sceneIndex: number,
-): { sceneIndex: number; returnToWelcome: boolean } {
-  if (sceneIndex > 0) return { sceneIndex: sceneIndex - 1, returnToWelcome: false };
-  return { sceneIndex: 0, returnToWelcome: true };
+export function getPreviousStoryBeat(
+  beatIndex: number,
+): { beatIndex: number; returnToWelcome: boolean } {
+  if (beatIndex > 0) return { beatIndex: beatIndex - 1, returnToWelcome: false };
+  return { beatIndex: 0, returnToWelcome: true };
 }
 
 /**
